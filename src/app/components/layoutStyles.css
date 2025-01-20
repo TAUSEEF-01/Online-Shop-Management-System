@@ -1,0 +1,49 @@
+/* styles.css */
+
+/* Custom header styles */
+header {
+    background: linear-gradient(90deg, rgba(29,78,216,1) 0%, rgba(99,102,241,1) 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Navigation links */
+  header nav a {
+    color: white;
+    transition: color 0.3s;
+  }
+  
+  header nav a:hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+  
+  /* Input styling */
+  input[type="search"] {
+    border-radius: 9999px;
+    padding: 10px 15px;
+    background-color: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  input[type="search"]:focus {
+    border-color: #6366f1;
+    outline: none;
+  }
+  
+  /* Footer Styling */
+  footer {
+    background-color: #f3f4f6;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  footer .container {
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+  
+  /* Main content area */
+  main {
+    background-color: #f9fafb;
+    padding-top: 20px;
+  }
+  

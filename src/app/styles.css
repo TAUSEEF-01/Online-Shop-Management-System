@@ -1,0 +1,95 @@
+/* styles.css */
+
+/* Sidebar filter styling */
+aside {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  /* Price slider styling */
+  .slider {
+    border-radius: 10px;
+    background-color: #f3f4f6;
+  }
+  
+  .slider .thumb {
+    background-color: #6366f1;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Checkbox styling */
+  input[type="checkbox"] {
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  input[type="checkbox"]:checked {
+    background-color: #6366f1;
+  }
+  
+  /* Product card */
+  .product-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Header styles */
+  header {
+    background: linear-gradient(90deg, rgba(29,78,216,1) 0%, rgba(99,102,241,1) 100%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  header h1 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  /* Footer styles */
+  footer {
+    background-color: #f3f4f6;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  footer .container {
+    color: #6b7280;
+    font-size: 0.875rem;
+  }
+  
+  /* Main content area */
+  main {
+    background-color: #f9fafb;
+    padding-top: 20px;
+  }
+  
+  /* Input Fields */
+  input[type="search"] {
+    border-radius: 9999px;
+    padding: 10px 15px;
+    background-color: #f3f4f6;
+    border: 2px solid #e5e7eb;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  input[type="search"]:focus {
+    border-color: #6366f1;
+    outline: none;
+  }
+  
+  /* Label */
+  label {
+    font-size: 0.9rem;
+    color: #333;
+  }
+  
