@@ -339,5 +339,29 @@ export const api = {
 
     return response.json();
   },
+
+  getAllUsers: async () => {
+    const response = await fetch(`${API_BASE_URL}/auth/users`, {
+      ...defaultOptions,
+      method: 'GET',
+    });
+    return handleResponse(response);
+  },
+
+  updateAdminStatus: async (userId: number, isAdmin: boolean) => {
+    const response = await fetch(`${API_BASE_URL}/auth/update-admin-status`, {
+      ...defaultOptions,
+      method: 'PUT',
+      body: JSON.stringify({ userId, isAdmin }),
+    });
+    return handleResponse(response);
+  },
   
+  get: async (endpoint: string) => {
+    const response = await fetch(`${API_BASE_URL}/products/${endpoint}`, {
+      ...defaultOptions,
+      method: 'GET',
+    });
+    return handleResponse(response);
+  },
 };
