@@ -1,0 +1,441 @@
+[
+  {
+    "prod_image": "images/products/athletic-cotton-socks-6-pairs.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["socks", "sports", "apparel"],
+    "prod_name": "Black and Gray Athletic Cotton Socks - 6 Pairs",
+    "prod_quantity": 100,
+    "prod_price": 10.9,
+    "rating_stars": 4,
+    "rating_count": 87
+  },
+  {
+    "prod_image": "images/products/intermediate-composite-basketball.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["sports", "basketballs"],
+    "prod_name": "Intermediate Size Basketball",
+    "prod_quantity": 100,
+    "prod_price": 20.95,
+    "rating_stars": 4,
+    "rating_count": 127
+  },
+  {
+    "prod_image": "images/products/adults-plain-cotton-tshirt-2-pack-teal.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["tshirts", "apparel", "mens"],
+    "prod_name": "Adults Plain Cotton T-Shirt - 2 Pack",
+    "prod_quantity": 100,
+    "prod_price": 7.99,
+    "rating_stars": 4,
+    "rating_count": 56
+  },
+  {
+    "prod_image": "images/products/black-2-slot-toaster.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["toaster", "kitchen", "appliances"],
+    "prod_name": "2 Slot Toaster - Black",
+    "prod_quantity": 100,
+    "prod_price": 18.99,
+    "rating_stars": 5,
+    "rating_count": 2197
+  },
+  {
+    "prod_image": "images/products/6-piece-white-dinner-plate-set.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["plates", "kitchen", "dining"],
+    "prod_name": "6 Piece White Dinner Plate Set",
+    "prod_quantity": 100,
+    "prod_price": 20.67,
+    "rating_stars": 4,
+    "rating_count": 37
+  },
+  {
+    "prod_image": "images/products/6-piece-non-stick-baking-set.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": ["kitchen", "cookware"],
+    "prod_name": "6-Piece Nonstick, Carbon Steel Oven Bakeware Baking Set",
+    "prod_quantity": 100,
+    "prod_price": 34.99,
+    "rating_stars": 4,
+    "rating_count": 175
+  },
+  {
+    "prod_image": "images/products/plain-hooded-fleece-sweatshirt-yellow.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["hoodies", "sweaters", "apparel"],
+    "prod_name": "Plain Hooded Fleece Sweatshirt",
+    "prod_quantity": 100,
+    "prod_price": 24.0,
+    "rating_stars": 4,
+    "rating_count": 317
+  },
+  {
+    "prod_image": "images/products/luxury-tower-set-6-piece.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": [
+      "bathroom",
+      "washroom",
+      "restroom",
+      "towels",
+      "bath towels"
+    ],
+    "prod_name": "Luxury Towel Set - Graphite Gray",
+    "prod_quantity": 100,
+    "prod_price": 35.99,
+    "rating_stars": 4,
+    "rating_count": 144
+  },
+  {
+    "prod_image": "images/products/liquid-laundry-detergent-plain.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["bathroom", "cleaning"],
+    "prod_name": "Liquid Laundry Detergent, 110 Loads, 82.5 Fl Oz",
+    "prod_quantity": 100,
+    "prod_price": 28.99,
+    "rating_stars": 4,
+    "rating_count": 305
+  },
+  {
+    "prod_image": "images/products/knit-athletic-sneakers-gray.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["shoes", "running shoes", "footwear"],
+    "prod_name": "Waterproof Knit Athletic Sneakers - Gray",
+    "prod_quantity": 100,
+    "prod_price": 33.9,
+    "rating_stars": 4,
+    "rating_count": 89
+  },
+  {
+    "prod_image": "images/products/women-chiffon-beachwear-coverup-black.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["robe", "swimsuit", "swimming", "bathing", "apparel"],
+    "prod_name": "Women's Chiffon Beachwear Cover Up - Black",
+    "prod_quantity": 100,
+    "prod_price": 20.7,
+    "rating_stars": 4,
+    "rating_count": 235
+  },
+  {
+    "prod_image": "images/products/round-sunglasses-black.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["accessories", "shades"],
+    "prod_name": "Round Sunglasses",
+    "prod_quantity": 100,
+    "prod_price": 15.6,
+    "rating_stars": 4,
+    "rating_count": 30
+  },
+  {
+    "prod_image": "images/products/women-beach-sandals.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["footwear", "sandals", "womens", "beach", "summer"],
+    "prod_name": "Women's Two Strap Buckle Sandals - Tan",
+    "prod_quantity": 100,
+    "prod_price": 24.99,
+    "rating_stars": 4,
+    "rating_count": 562
+  },
+  {
+    "prod_image": "images/products/blackout-curtain-set-beige.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": ["bedroom", "curtains", "home"],
+    "prod_name": "Blackout Curtains Set 4-Pack - Beige",
+    "prod_quantity": 100,
+    "prod_price": 45.99,
+    "rating_stars": 4,
+    "rating_count": 232
+  },
+  {
+    "prod_image": "images/products/men-slim-fit-summer-shorts-gray.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["shorts", "apparel", "mens"],
+    "prod_name": "Men's Slim-Fit Summer Shorts",
+    "prod_quantity": 100,
+    "prod_price": 16.99,
+    "rating_stars": 4,
+    "rating_count": 160
+  },
+  {
+    "prod_image": "images/products/electric-glass-and-steel-hot-water-kettle.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": ["water boiler", "appliances", "kitchen"],
+    "prod_name": "Electric Glass and Steel Hot Tea Water Kettle - 1.7-Liter",
+    "prod_quantity": 100,
+    "prod_price": 30.74,
+    "rating_stars": 5,
+    "rating_count": 846
+  },
+  {
+    "prod_image": "images/products/facial-tissue-2-ply-18-boxes.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": [
+      "kleenex",
+      "tissues",
+      "kitchen",
+      "tissues box",
+      "napkins"
+    ],
+    "prod_name": "Ultra Soft Tissue 2-Ply - 18 Box",
+    "prod_quantity": 100,
+    "prod_price": 23.74,
+    "rating_stars": 4,
+    "rating_count": 99
+  },
+  {
+    "prod_image": "images/products/straw-sunhat.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": ["hats", "straw hats", "summer", "apparel"],
+    "prod_name": "Straw Lifeguard Sun Hat",
+    "prod_quantity": 100,
+    "prod_price": 22.0,
+    "rating_stars": 4,
+    "rating_count": 215
+  },
+  {
+    "prod_image": "images/products/sky-flower-stud-earrings.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": ["jewelry", "accessories", "womens"],
+    "prod_name": "Sterling Silver Sky Flower Stud Earrings",
+    "prod_quantity": 100,
+    "prod_price": 17.99,
+    "rating_stars": 4,
+    "rating_count": 52
+  },
+  {
+    "prod_image": "images/products/women-stretch-popover-hoodie-black.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["hooded", "hoodies", "sweaters", "womens", "apparel"],
+    "prod_name": "Women's Stretch Popover Hoodie",
+    "prod_quantity": 100,
+    "prod_price": 13.74,
+    "rating_stars": 4,
+    "rating_count": 2465
+  },
+  {
+    "prod_image": "images/products/bathroom-rug.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["bathmat", "bathroom", "home"],
+    "prod_name": "Bathroom Bath Rug Mat 20 x 31 Inch - Grey",
+    "prod_quantity": 100,
+    "prod_price": 12.5,
+    "rating_stars": 4,
+    "rating_count": 119
+  },
+  {
+    "prod_image": "images/products/women-knit-ballet-flat-black.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["shoes", "flats", "womens", "footwear"],
+    "prod_name": "Women's Knit Ballet Flat",
+    "prod_quantity": 100,
+    "prod_price": 26.4,
+    "rating_stars": 4,
+    "rating_count": 326
+  },
+  {
+    "prod_image": "images/products/men-golf-polo-t-shirt-blue.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["tshirts", "shirts", "apparel", "mens"],
+    "prod_name": "Men's Regular-Fit Quick-Dry Golf Polo Shirt",
+    "prod_quantity": 100,
+    "prod_price": 15.99,
+    "rating_stars": 4,
+    "rating_count": 2556
+  },
+  {
+    "prod_image": "images/products/trash-can-with-foot-pedal-50-liter.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["garbage", "bins", "cans", "kitchen"],
+    "prod_name": "Trash Can with Foot Pedal - Brushed Stainless Steel",
+    "prod_quantity": 100,
+    "prod_price": 83.0,
+    "rating_stars": 4,
+    "rating_count": 2286
+  },
+  {
+    "prod_image": "images/products/duvet-cover-set-blue-twin.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["bedroom", "bed sheets", "sheets", "covers", "home"],
+    "prod_name": "Duvet Cover Set with Zipper Closure",
+    "prod_quantity": 100,
+    "prod_price": 23.99,
+    "rating_stars": 4,
+    "rating_count": 456
+  },
+  {
+    "prod_image": "images/products/women-chunky-beanie-gray.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": [
+      "hats",
+      "winter hats",
+      "beanies",
+      "tuques",
+      "apparel",
+      "womens"
+    ],
+    "prod_name": "Women's Chunky Cable Beanie - Gray",
+    "prod_quantity": 100,
+    "prod_price": 12.5,
+    "rating_stars": 5,
+    "rating_count": 83
+  },
+  {
+    "prod_image": "images/products/men-chino-pants-beige.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["pants", "apparel", "mens"],
+    "prod_name": "Men's Classic-fit Pleated Chino Pants",
+    "prod_quantity": 100,
+    "prod_price": 22.9,
+    "rating_stars": 4,
+    "rating_count": 9017
+  },
+  {
+    "prod_image": "images/products/men-athletic-shoes-green.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["shoes", "running shoes", "footwear", "mens"],
+    "prod_name": "Men's Athletic Sneaker",
+    "prod_quantity": 100,
+    "prod_price": 38.9,
+    "rating_stars": 4,
+    "rating_count": 229
+  },
+  {
+    "prod_image": "images/products/men-navigator-sunglasses-brown.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["sunglasses", "glasses", "accessories", "shades"],
+    "prod_name": "Men's Navigator Sunglasses Pilot",
+    "prod_quantity": 100,
+    "prod_price": 16.9,
+    "rating_stars": 3,
+    "rating_count": 42
+  },
+  {
+    "prod_image": "images/products/non-stick-cooking-set-15-pieces.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": ["cooking set", "kitchen"],
+    "prod_name": "Non-Stick Cookware Set, Pots, Pans and Utensils - 15 Pieces",
+    "prod_quantity": 100,
+    "prod_price": 67.97,
+    "rating_stars": 4,
+    "rating_count": 511
+  },
+  {
+    "prod_image": "images/products/vanity-mirror-silver.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["bathroom", "washroom", "mirrors", "home"],
+    "prod_name": "Vanity Mirror with Heavy Base - Chrome",
+    "prod_quantity": 100,
+    "prod_price": 16.49,
+    "rating_stars": 4,
+    "rating_count": 130
+  },
+  {
+    "prod_image": "images/products/women-french-terry-fleece-jogger-camo.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["pants", "sweatpants", "jogging", "apparel", "womens"],
+    "prod_name": "Women's Fleece Jogger Sweatpant",
+    "prod_quantity": 100,
+    "prod_price": 24.0,
+    "rating_stars": 4,
+    "rating_count": 248
+  },
+  {
+    "prod_image": "images/products/double-elongated-twist-french-wire-earrings.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": ["accessories", "womens"],
+    "prod_name": "Double Oval Twist French Wire Earrings - Gold",
+    "prod_quantity": 100,
+    "prod_price": 24.0,
+    "rating_stars": 4,
+    "rating_count": 117
+  },
+  {
+    "prod_image": "images/products/round-airtight-food-storage-containers.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["boxes", "food containers", "kitchen"],
+    "prod_name": "Round Airtight Food Storage Containers - 5 Piece",
+    "prod_quantity": 100,
+    "prod_price": 28.99,
+    "rating_stars": 4,
+    "rating_count": 126
+  },
+  {
+    "prod_image": "images/products/coffeemaker-with-glass-carafe-black.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["coffeemakers", "kitchen", "appliances"],
+    "prod_name": "Coffeemaker with Glass Carafe and Reusable Filter - 25 Oz, Black",
+    "prod_quantity": 100,
+    "prod_price": 22.5,
+    "rating_stars": 4,
+    "rating_count": 1211
+  },
+  {
+    "prod_image": "images/products/blackout-curtains-black.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["bedroom", "home"],
+    "prod_name": "Blackout Curtains Set 42 x 84-Inch - Black, 2 Panels",
+    "prod_quantity": 100,
+    "prod_price": 30.99,
+    "rating_stars": 4,
+    "rating_count": 363
+  },
+  {
+    "prod_image": "images/products/cotton-bath-towels-teal.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": ["bathroom", "home", "towels"],
+    "prod_name": "100% Cotton Bath Towels - 2 Pack, Light Teal",
+    "prod_quantity": 100,
+    "prod_price": 21.1,
+    "rating_stars": 4,
+    "rating_count": 93
+  },
+  {
+    "prod_image": "images/products/knit-athletic-sneakers-pink.webp",
+    "prod_discount": 0.0,
+    "prod_keywords": ["shoes", "running shoes", "footwear", "womens"],
+    "prod_name": "Waterproof Knit Athletic Sneakers - Pink",
+    "prod_quantity": 100,
+    "prod_price": 33.9,
+    "rating_stars": 4,
+    "rating_count": 89
+  },
+  {
+    "prod_image": "images/products/countertop-blender-64-oz.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["food blenders", "kitchen", "appliances"],
+    "prod_name": "Countertop Blender - 64oz, 1400 Watts",
+    "prod_quantity": 100,
+    "prod_price": 107.47,
+    "rating_stars": 4,
+    "rating_count": 3
+  },
+  {
+    "prod_image": "images/products/floral-mixing-bowl-set.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["mixing bowls", "baking", "cookware", "kitchen"],
+    "prod_name": "10-Piece Mixing Bowl Set with Lids - Floral",
+    "prod_quantity": 100,
+    "prod_price": 38.99,
+    "rating_stars": 5,
+    "rating_count": 679
+  },
+  {
+    "prod_image": "images/products/kitchen-paper-towels-30-pack.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["kitchen", "kitchen towels", "tissues"],
+    "prod_name": "2-Ply Kitchen Paper Towels - 30 Pack",
+    "prod_quantity": 100,
+    "prod_price": 57.99,
+    "rating_stars": 4,
+    "rating_count": 1045
+  },
+  {
+    "prod_image": "images/products/men-cozy-fleece-zip-up-hoodie-red.jpg",
+    "prod_discount": 0.0,
+    "prod_keywords": ["sweaters", "hoodies", "apparel", "mens"],
+    "prod_name": "Men's Full-Zip Hooded Fleece Sweatshirt",
+    "prod_quantity": 100,
+    "prod_price": 24.0,
+    "rating_stars": 4,
+    "rating_count": 3157
+  }
+]

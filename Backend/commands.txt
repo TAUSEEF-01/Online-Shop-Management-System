@@ -1,0 +1,10 @@
+npx create-next-app@latest my-app
+
+npx shadcn@latest init
+
+# Use --force 
+
+npx shadcn@latest add button input card slider label checkbox
+
+
+node .\database.js
