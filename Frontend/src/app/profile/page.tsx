@@ -78,6 +78,19 @@ export default function Profile() {
     );
   };
 
+  const handlePayment = async (billId: number) => {
+    try {
+      await api.updatePaymentStatus(billId, "paid");
+      setBillings((prevBillings) =>
+        prevBillings.map((billing) =>
+          billing.bill_id === billId ? { ...billing, pay_status: "paid" } : billing
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update payment status:", error);
+    }
+  };
+
   const filteredBillings = billings.filter(
     (billing) =>
       new Date(billing.bill_date) >= dateRange[0] &&
@@ -216,6 +229,15 @@ export default function Profile() {
                       )}
                     </ul>
                   </div>
+                  {billing.pay_status.toLowerCase() === "unpaid" && (
+                    <Button
+                      variant="default"
+                      onClick={() => handlePayment(billing.bill_id)}
+                      className="mt-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+                    >
+                      Pay Now
+                    </Button>
+                  )}
                 </div>
               ))}
             </div>
