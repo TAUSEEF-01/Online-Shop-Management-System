@@ -148,16 +148,17 @@ export default function Profile() {
               <div className="flex justify-end space-x-4 mt-6">
                 <Button
                   variant="outline"
-                  onClick={() => router.push("/edit-profile")}
+                  onClick={() => router.push("/profile/edit-profile")}
+                  className="mt-4 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
                 >
                   Edit Profile
                 </Button>
-                <Button
+                {/* <Button
                   variant="destructive"
                   onClick={() => router.push("/change-password")}
                 >
                   Change Password
-                </Button>
+                </Button> */}
               </div>
             </div>
           )}

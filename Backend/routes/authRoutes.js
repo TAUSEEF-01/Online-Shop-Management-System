@@ -215,6 +215,48 @@ router.get('/current-user', (req, res) => {
   }
 });
 
+// Update profile
+router.put('/update-profile', async (req, res) => {
+    try {
+        const { user_name, user_email, user_password, user_contact_no } = req.body;
+        const userId = req.session.user.id;
+
+        // Hash new password if provided
+        let hashedPassword;
+        if (user_password) {
+            hashedPassword = await bcrypt.hash(user_password, 10);
+        }
+
+        // Update user information
+        const updatedUser = await pool.query(
+            `UPDATE users 
+             SET user_name = $1, user_email = $2, user_password = COALESCE($3, user_password), user_contact_no = $4 
+             WHERE user_id = $5 
+             RETURNING user_id, user_name, user_email, user_contact_no, is_admin`,
+            [user_name, user_email, hashedPassword, user_contact_no, userId]
+        );
+
+        if (updatedUser.rows.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        // Update session user info
+        req.session.user = {
+            ...req.session.user,
+            name: updatedUser.rows[0].user_name,
+            email: updatedUser.rows[0].user_email
+        };
+
+        res.json({
+            success: true,
+            user: updatedUser.rows[0]
+        });
+    } catch (err) {
+        console.error("Update profile error:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
 // Logout
 router.post('/logout', (req, res) => {
     try {
