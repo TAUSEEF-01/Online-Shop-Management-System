@@ -30,14 +30,18 @@ export interface Product {
   prod_keywords: string[];
 }
 
-export interface BillData {
-  user_id: number;
-  order_id: number;
-  user_name: string;
+export interface BillProduct {
   prod_id: number;
   prod_qty: number;
   prod_price: number;
   prod_total_price: number;
+}
+
+export interface BillData {
+  user_id: number;
+  order_id: number;
+  user_name: string;
+  products: BillProduct[];
   order_total_price: number;
   bill_total_price: number;
   pay_status: string;

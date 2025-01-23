@@ -5,23 +5,49 @@ const pool = require("../database");
 // Create a new bill
 router.post("/create", async (req, res) => {
   try {
-    const { user_id, order_id, user_name, prod_id, prod_qty, prod_price, prod_total_price, order_total_price, bill_total_price, pay_status } = req.body;
+    const { user_id, order_id, user_name, products, order_total_price, bill_total_price, pay_status } = req.body;
 
     console.log("Creating bill with data:", req.body);
 
-    const newBill = await pool.query(
-      `INSERT INTO bill_detail (bill_date, user_id, order_id, user_name, prod_id, prod_qty, prod_price, prod_total_price, order_total_price, bill_total_price, pay_status)
-       VALUES (CURRENT_DATE, $1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
-      [user_id, order_id, user_name, prod_id, prod_qty, prod_price, prod_total_price, order_total_price, bill_total_price, pay_status]
-    );
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
 
-    console.log("Bill created successfully:", newBill.rows[0]);
+      const billQuery = `
+        INSERT INTO bill_detail (bill_date, user_id, order_id, user_name, order_total_price, bill_total_price, pay_status)
+        VALUES (CURRENT_DATE, $1, $2, $3, $4, $5, $6) RETURNING bill_id
+      `;
+      const billResult = await client.query(billQuery, [user_id, order_id, user_name, order_total_price, bill_total_price, pay_status]);
+      const billId = billResult.rows[0].bill_id;
 
-    res.status(201).json({
-      status: "success",
-      data: newBill.rows[0],
-      message: "Bill created successfully"
-    });
+      const productQueries = products.map(product => {
+        return client.query(`
+          INSERT INTO bill_product (bill_id, prod_id, prod_qty, prod_price, prod_total_price)
+          VALUES ($1, $2, $3, $4, $5)
+        `, [billId, product.prod_id, product.prod_qty, product.prod_price, product.prod_total_price]);
+      });
+
+      await Promise.all(productQueries);
+
+      await client.query('COMMIT');
+
+      console.log("Bill created successfully with ID:", billId);
+
+      res.status(201).json({
+        status: "success",
+        data: { bill_id: billId },
+        message: "Bill created successfully"
+      });
+    } catch (err) {
+      await client.query('ROLLBACK');
+      console.error("Error creating bill:", err.message);
+      res.status(500).json({
+        status: "error",
+        message: "Server error while creating bill"
+      });
+    } finally {
+      client.release();
+    }
   } catch (err) {
     console.error("Error creating bill:", err.message);
     res.status(500).json({
@@ -49,23 +75,107 @@ router.get("/details", async (req, res) => {
   }
 });
 
-// Get bill details by order ID
+// // Get bill details by order ID
+// router.get("/details/:order_id", async (req, res) => {
+//   try {
+//     const { order_id } = req.params;
+//     const billDetails = await pool.query("SELECT * FROM bill_detail WHERE order_id = $1", [order_id]);
+//     res.status(200).json({
+//       status: "success",
+//       data: billDetails.rows,
+//       message: `Fetched bill details for order ID ${order_id} successfully`
+//     });
+//   } catch (err) {
+//     console.error(`Error fetching bill details for order ID ${order_id}:`, err.message);
+//     res.status(500).json({
+//       status: "error",
+//       message: `Server error while fetching bill details for order ID ${order_id}`
+//     });
+//   }
+// });
+
+
+
+// Get bill details by order ID, including product details
 router.get("/details/:order_id", async (req, res) => {
   try {
     const { order_id } = req.params;
-    const billDetails = await pool.query("SELECT * FROM bill_detail WHERE order_id = $1", [order_id]);
+
+    const query = `
+      SELECT 
+        bd.bill_id,
+        bd.bill_date,
+        bd.user_id,
+        bd.order_id,
+        bd.user_name,
+        bd.order_total_price,
+        bd.bill_total_price,
+        bd.pay_status,
+        bp.prod_id,
+        bp.prod_qty,
+        bp.prod_price,
+        bp.prod_total_price
+      FROM 
+        bill_detail bd
+      LEFT JOIN 
+        bill_product bp
+      ON 
+        bd.bill_id = bp.bill_id
+      WHERE 
+        bd.order_id = $1
+    `;
+
+    const billDetails = await pool.query(query, [order_id]);
+
+    // Restructure the response to group products under a single bill
+    const billData = billDetails.rows.reduce((result, row) => {
+      if (!result) {
+        result = {
+          bill_id: row.bill_id,
+          bill_date: row.bill_date,
+          user_id: row.user_id,
+          order_id: row.order_id,
+          user_name: row.user_name,
+          order_total_price: row.order_total_price,
+          bill_total_price: row.bill_total_price,
+          pay_status: row.pay_status,
+          products: [],
+        };
+      }
+
+      if (row.prod_id) {
+        result.products.push({
+          prod_id: row.prod_id,
+          prod_qty: row.prod_qty,
+          prod_price: row.prod_price,
+          prod_total_price: row.prod_total_price,
+        });
+      }
+
+      return result;
+    }, null);
+
+    if (!billData) {
+      return res.status(404).json({
+        status: "error",
+        message: `No bill details found for order ID ${order_id}`,
+      });
+    }
+
     res.status(200).json({
       status: "success",
-      data: billDetails.rows,
-      message: `Fetched bill details for order ID ${order_id} successfully`
+      data: billData,
+      message: `Fetched bill details for order ID ${order_id} successfully`,
     });
   } catch (err) {
     console.error(`Error fetching bill details for order ID ${order_id}:`, err.message);
     res.status(500).json({
       status: "error",
-      message: `Server error while fetching bill details for order ID ${order_id}`
+      message: `Server error while fetching bill details for order ID ${order_id}`,
     });
   }
 });
+
+
 
 module.exports = router;

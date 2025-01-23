@@ -220,21 +220,45 @@ CREATE TABLE IF NOT EXISTS order_detail (
 
 
 
+-- CREATE TABLE IF NOT EXISTS bill_detail (
+--     bill_id SERIAL PRIMARY KEY,
+--     bill_date DATE NOT NULL,
+--     user_id INT REFERENCES users(user_id) NOT NULL,
+--     order_id INT NOT NULL,
+--     user_name VARCHAR(20) NOT NULL,
+--     prod_id INT NOT NULL,
+--     prod_qty INT NOT NULL,
+--     prod_price DOUBLE PRECISION NOT NULL,
+--     prod_total_price DOUBLE PRECISION NOT NULL,
+--     order_total_price DOUBLE PRECISION NOT NULL,
+--     bill_total_price DOUBLE PRECISION NOT NULL,
+--     pay_status VARCHAR(20) CHECK (pay_status IN ('paid', 'unpaid')) NOT NULL,
+--     FOREIGN KEY (order_id) REFERENCES orders(order_id)
+-- );
+
+
 CREATE TABLE IF NOT EXISTS bill_detail (
-    bill_id SERIAL PRIMARY KEY,
-    bill_date DATE NOT NULL,
-    user_id INT REFERENCES users(user_id) NOT NULL,
-    order_id INT NOT NULL,
-    user_name VARCHAR(20) NOT NULL,
-    prod_id INT NOT NULL,
-    prod_qty INT NOT NULL,
-    prod_price DOUBLE PRECISION NOT NULL,
-    prod_total_price DOUBLE PRECISION NOT NULL,
-    order_total_price DOUBLE PRECISION NOT NULL,
-    bill_total_price DOUBLE PRECISION NOT NULL,
-    pay_status VARCHAR(20) CHECK (pay_status IN ('paid', 'unpaid')) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(order_id)
+    bill_id SERIAL PRIMARY KEY, -- Automatically incrementing bill ID
+    bill_date DATE NOT NULL, -- Date of the bill (set to current date)
+    user_id INT REFERENCES users(user_id) NOT NULL, -- Foreign key to users table
+    order_id INT REFERENCES orders(order_id) NOT NULL, -- Foreign key to orders table
+    user_name VARCHAR(100) NOT NULL, -- Name of the user
+    order_total_price DECIMAL(10, 2) NOT NULL, -- Total price of the order
+    bill_total_price DECIMAL(10, 2) NOT NULL, -- Total price of the bill (after any adjustments)
+    pay_status VARCHAR(20) CHECK (pay_status IN ('paid', 'unpaid')) NOT NULL -- Payment status of the bill
 );
+
+
+CREATE TABLE IF NOT EXISTS bill_product (
+    bill_product_id SERIAL PRIMARY KEY, -- Auto-incrementing ID for the product in the bill
+    bill_id INT REFERENCES bill_detail(bill_id) ON DELETE CASCADE, -- Foreign key to the bill_detail table
+    prod_id INT REFERENCES product(prod_id) NOT NULL, -- Foreign key to the product table
+    prod_qty INT NOT NULL, -- Quantity of the product in the bill
+    prod_price DECIMAL(10, 2) NOT NULL, -- Price of the product
+    prod_total_price DECIMAL(10, 2) NOT NULL, -- Total price for the product (price * quantity)
+    UNIQUE (bill_id, prod_id) -- Ensure each product can only appear once per bill
+);
+
 
 
 

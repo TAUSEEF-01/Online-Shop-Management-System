@@ -93,23 +93,47 @@ function setupTables() {
             PRIMARY KEY (order_id, prod_id)
         );`,
 
-        `CREATE TABLE IF NOT EXISTS bill_detail (
-            bill_id SERIAL PRIMARY KEY,
-            bill_date DATE NOT NULL,
-            user_id INT REFERENCES users(user_id) NOT NULL,
-            order_id INT NOT NULL,
-            user_name VARCHAR(20) NOT NULL,
-            prod_id INT NOT NULL,
-            prod_qty INT NOT NULL,
-            prod_price DOUBLE PRECISION NOT NULL,
-            prod_total_price DOUBLE PRECISION NOT NULL,
-            order_total_price DOUBLE PRECISION NOT NULL,
-            bill_total_price DOUBLE PRECISION NOT NULL,
-            pay_status VARCHAR(20) CHECK (pay_status IN ('paid', 'unpaid')) NOT NULL,
-            FOREIGN KEY (order_id) REFERENCES orders(order_id)
-        );
+        // `CREATE TABLE IF NOT EXISTS bill_detail (
+        //     bill_id SERIAL PRIMARY KEY,
+        //     bill_date DATE NOT NULL,
+        //     user_id INT REFERENCES users(user_id) NOT NULL,
+        //     order_id INT NOT NULL,
+        //     user_name VARCHAR(20) NOT NULL,
+        //     prod_id INT NOT NULL,
+        //     prod_qty INT NOT NULL,
+        //     prod_price DOUBLE PRECISION NOT NULL,
+        //     prod_total_price DOUBLE PRECISION NOT NULL,
+        //     order_total_price DOUBLE PRECISION NOT NULL,
+        //     bill_total_price DOUBLE PRECISION NOT NULL,
+        //     pay_status VARCHAR(20) CHECK (pay_status IN ('paid', 'unpaid')) NOT NULL,
+        //     FOREIGN KEY (order_id) REFERENCES orders(order_id)
+        // );`,
         
-        `
+
+
+        `CREATE TABLE IF NOT EXISTS bill_detail (
+            bill_id SERIAL PRIMARY KEY, 
+            bill_date DATE NOT NULL, 
+            user_id INT REFERENCES users(user_id) NOT NULL,
+            order_id INT REFERENCES orders(order_id) NOT NULL,
+            user_name VARCHAR(100) NOT NULL,
+            order_total_price DECIMAL(10, 2) NOT NULL, 
+            bill_total_price DECIMAL(10, 2) NOT NULL, 
+            pay_status VARCHAR(20) CHECK (pay_status IN ('paid', 'unpaid')) NOT NULL 
+        );`,
+
+        `CREATE TABLE IF NOT EXISTS bill_product (
+            bill_product_id SERIAL PRIMARY KEY,
+            bill_id INT REFERENCES bill_detail(bill_id) ON DELETE CASCADE, 
+            prod_id INT REFERENCES product(prod_id) NOT NULL,
+            prod_qty INT NOT NULL,
+            prod_price DECIMAL(10, 2) NOT NULL,
+            prod_total_price DECIMAL(10, 2) NOT NULL, 
+            UNIQUE (bill_id, prod_id)
+        );`,
+
+
+
         // `CREATE TABLE IF NOT EXISTS bill_detail (
         //     bill_id SERIAL PRIMARY KEY,
         //     bill_date DATE NOT NULL,

@@ -114,10 +114,7 @@ export default function Cart() {
           user_id: userId,
           order_id: orderId,
           user_name: "John Doe", // Replace with actual user name
-          prod_id: 1, // Replace with actual product ID
-          prod_qty: 1, // Replace with actual product quantity
-          prod_price: 100, // Replace with actual product price
-          prod_total_price: 100, // Replace with actual product total price
+          products: orderDetails,
           order_total_price: total,
           bill_total_price: total,
           pay_status: "unpaid"
