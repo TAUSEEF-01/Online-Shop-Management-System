@@ -116,8 +116,9 @@ router.get('/natural-join', async (req, res) => {
       FROM order_detail NATURAL JOIN product;
     `;
     const results = await pool.query(query);
+    // console.log("Raw query results:", results.rowCount);
     // const results = await dbQuery(query);
-    console.log("Raw results:", results);
+    // console.log("Raw results:", results);
     res.status(200).json({results,
       message: "Fetched natural join data successfully"
   }); // Ensure `results` is JSON serializable

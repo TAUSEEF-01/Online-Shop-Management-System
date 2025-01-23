@@ -123,15 +123,18 @@ useEffect(() => {
       try {
         console.log("Fetching query results...");
         const response = await api.get('/natural-join');
-        console.log("Raw results:", response);
+        // console.log("Raw results:", response);
   
         // Extract rows if they exist
         const rows = response?.results?.rows || [];
+        // console.log("number of results", rows.length);
         setQueryResults(rows);
       } catch (error) {
         console.error("Error fetching query results:", error);
       }
     };
+
+    
   
     fetchQueryResults();
   }, []);
