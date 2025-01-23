@@ -257,6 +257,41 @@ router.put('/update-profile', async (req, res) => {
     }
 });
 
+// Update admin status
+router.put('/update-admin-status', async (req, res) => {
+    try {
+        const { userId, isAdmin } = req.body;
+
+        const updatedUser = await pool.query(
+            'UPDATE users SET is_admin = $1 WHERE user_id = $2 RETURNING user_id, user_name, user_email, is_admin',
+            [isAdmin, userId]
+        );
+
+        if (updatedUser.rows.length === 0) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        res.json({
+            success: true,
+            user: updatedUser.rows[0]
+        });
+    } catch (err) {
+        console.error("Update admin status error:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+// Get all users
+router.get('/users', async (req, res) => {
+    try {
+        const users = await pool.query('SELECT user_id AS id, user_name AS name, user_email AS email, is_admin FROM users');
+        res.status(200).json(users.rows);
+    } catch (err) {
+        console.error("Error fetching users:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
 // Logout
 router.post('/logout', (req, res) => {
     try {
