@@ -205,6 +205,14 @@ export const api = {
     return handleResponse(response);
   },
 
+  clearCart: async (userId: number) => {
+    const response = await fetch(`${API_BASE_URL}/cart/clear/${userId}`, {
+      ...defaultOptions,
+      method: 'DELETE',
+    });
+    return handleResponse(response);
+  },
+
   getCurrentUserId: async () => {
     const response = await fetch(`${API_BASE_URL}/auth/current-user`, {
       ...defaultOptions,
@@ -300,5 +308,22 @@ export const api = {
   //   });
   //   return handleResponse(response);
   // },
+
+  updatePaymentStatus: async (billId: number, newStatus: string) => {
+    const response = await fetch(`${API_BASE_URL}/billing/updatePaymentStatus`, {
+      ...defaultOptions,
+      method: 'PUT',
+      body: JSON.stringify({ billId, newStatus }),
+    });
+    return handleResponse(response);
+  },
+
+  getBillingsByUserId: async (userId: number) => {
+    const response = await fetch(`${API_BASE_URL}/billing/user/${userId}`, {
+      ...defaultOptions,
+      method: 'GET',
+    });
+    return handleResponse(response);
+  },
   
 };

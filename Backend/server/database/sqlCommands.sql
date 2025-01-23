@@ -274,9 +274,10 @@ CREATE TABLE IF NOT EXISTS payment (
 );
 
 CREATE TABLE IF NOT EXISTS shopping_cart (
-    cart_id SERIAL PRIMARY KEY,
-    prod_id INT REFERENCES product(prod_id) UNIQUE,
+    cart_id SERIAL,
+    prod_id INT REFERENCES product(prod_id),
     user_id INT REFERENCES users(user_id) NOT NULL
+    PRIMARY KEY (prod_id, user_id)
 );
 
 CREATE TABLE IF NOT EXISTS order_return (

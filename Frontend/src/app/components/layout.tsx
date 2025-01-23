@@ -58,7 +58,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <header className="bg-blue-600 text-white p-4">
         <div className="container mx-auto flex items-center justify-between">
           <div className="text-3xl font-bold tracking-wide hover:text-blue-200 transition-all">
-            My Store
+            <Link href="/">
+              My Store
+            </Link>
           </div>
 
           <nav className="flex items-center space-x-6">

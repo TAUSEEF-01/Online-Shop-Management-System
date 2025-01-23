@@ -162,6 +162,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import { api } from '@/utils/api';
 import { useSearchParams } from 'next/navigation';
 import ProtectedRoute from '../components/protected-route';
+import { useRouter } from 'next/navigation';
+
 
 // Update the interface to represent the structure correctly
 interface ProductDetail {
@@ -184,6 +186,8 @@ interface BillDetail {
 }
 
 export default function Billing() {
+  const router = useRouter();
+  
   const [billDetails, setBillDetails] = useState<BillDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -255,11 +259,46 @@ export default function Billing() {
                       <p><strong>Price:</strong> {product.prod_price}</p>
                       <p><strong>Total Price:</strong> {product.prod_total_price}</p>
                     </div>
+                    
                   ))
+                  
                 ) : (
                   <p className="text-gray-500">No products available for this bill.</p>
                 )}
               </CardContent>
+              
+              <div className="mt-6 flex justify-center">
+              <Button 
+                className="w-40 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105"
+                  onClick={async () => {
+                  try {
+                    if (billDetails) {
+                    const newStatus = billDetails.pay_status === 'paid' ? 'unpaid' : 'paid';
+                    await api.updatePaymentStatus(billDetails.bill_id, newStatus);
+                    setBillDetails({
+                      ...billDetails,
+                      pay_status: newStatus
+                    });
+                    }
+                  } catch (error) {
+                    console.error('Failed to update payment status:', error);
+                  }
+                }}
+              >
+                {billDetails?.pay_status === 'paid' ? 'Mark as Unpaid' : 'Pay Now'}
+              </Button>
+
+              
+              </div>
+
+              <div className="mt-6 flex justify-center">
+                <Button 
+                  className="w-40 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-2 px-4 rounded-full shadow-lg transition-all duration-300 ease-in-out transform hover:scale-105 mb-4"
+                  onClick={() => router.replace('/')}
+                >
+                  Return to Home
+                </Button>
+              </div>
             </Card>
           ) : (
             <p className="text-center text-gray-500">No bill details available.</p>

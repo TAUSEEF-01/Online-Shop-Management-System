@@ -176,6 +176,98 @@ router.get("/details/:order_id", async (req, res) => {
   }
 });
 
+// Get all billings by user ID
+router.get("/user/:user_id", async (req, res) => {
+  try {
+    const { user_id } = req.params;
 
+    const query = `
+      SELECT 
+        bd.bill_id,
+        bd.bill_date,
+        bd.order_total_price,
+        bd.bill_total_price,
+        bd.pay_status,
+        bp.prod_id,
+        bp.prod_qty,
+        bp.prod_price,
+        bp.prod_total_price
+      FROM 
+        bill_detail bd
+      LEFT JOIN 
+        bill_product bp
+      ON 
+        bd.bill_id = bp.bill_id
+      WHERE 
+        bd.user_id = $1
+    `;
+
+    const billings = await pool.query(query, [user_id]);
+
+    // Restructure the response to group products under each bill
+    const billingData = billings.rows.reduce((result, row) => {
+      let bill = result.find(b => b.bill_id === row.bill_id);
+      if (!bill) {
+        bill = {
+          bill_id: row.bill_id,
+          bill_date: row.bill_date,
+          order_total_price: row.order_total_price,
+          bill_total_price: row.bill_total_price,
+          pay_status: row.pay_status,
+          products: [],
+        };
+        result.push(bill);
+      }
+
+      if (row.prod_id) {
+        bill.products.push({
+          prod_id: row.prod_id,
+          prod_qty: row.prod_qty,
+          prod_price: row.prod_price,
+          prod_total_price: row.prod_total_price,
+        });
+      }
+
+      return result;
+    }, []);
+
+    res.status(200).json({
+      status: "success",
+      data: billingData,
+      message: `Fetched billing details for user ID ${user_id} successfully`,
+    });
+  } catch (err) {
+    console.error(`Error fetching billing details for user ID ${user_id}:`, err.message);
+    res.status(500).json({
+      status: "error",
+      message: `Server error while fetching billing details for user ID ${user_id}`,
+    });
+  }
+});
+
+// Update payment status
+router.put("/updatePaymentStatus", async (req, res) => {
+  const { billId, newStatus } = req.body;
+
+  try {
+    const updateQuery = `
+      UPDATE bill_detail
+      SET pay_status = $1
+      WHERE bill_id = $2
+    `;
+    await pool.query(updateQuery, [newStatus, billId]);
+
+    res.status(200).json({
+      status: "success",
+      message: "Payment status updated successfully",
+    });
+  } catch (err) {
+    console.error("Error updating payment status:", err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while updating payment status",
+    });
+  }
+});
 
 module.exports = router;

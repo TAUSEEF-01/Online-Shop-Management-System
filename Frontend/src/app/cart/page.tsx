@@ -122,6 +122,21 @@ export default function Cart() {
 
         if (billResponse.status === "success") {
           console.log("Bill created successfully");
+
+          // // // // Clear the cart after successful order and bill creation
+          // await api.clearCart(userId);
+          // setCartItems([]);
+
+          // Clear the user's cart after successful bill creation
+        const clearCartResponse = await api.clearCart(userId);
+
+        if (clearCartResponse.status === "success") {
+          setCartItems([]);
+          console.log("Cart cleared successfully");
+        } else {
+          console.error("Failed to clear cart:", clearCartResponse.message);
+        }
+
           router.push(`/billing?orderId=${orderId}`);
         } else {
           console.error("Failed to create bill");
@@ -240,11 +255,6 @@ export default function Cart() {
               </CardContent>
               <CardFooter>
                 <Button className="w-full" onClick={proceedToCheckout}>
-
-                {/* <Button className="w-full" onClick={() => {
-                    console.log("Bill created successfully");
-                    router.push("/billing");
-                  }}> */}
                   Proceed to Checkout
                 </Button>
               </CardFooter>
