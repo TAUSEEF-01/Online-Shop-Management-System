@@ -48,6 +48,12 @@ export default function AdminDashboard() {
               Show All Users
             </button>
           </Link>
+
+          <Link href="/admin/query-results">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors">
+              Query
+            </button>
+          </Link>
         </div>
       </Flex>
       <Text className="mt-2 text-gray-600">Overview of your store's performance</Text>

@@ -64,13 +64,25 @@ router.get("/allProducts", async (req, res) => {
 
 // queries --->
 // Utility to query the database
+// const dbQuery = async (query, params = []) => {
+//   try {
+//     const result = await pool.query(query, params);
+//     return result.rows;
+//   } catch (err) {
+//     console.error('Database error:', err);
+//     throw err;
+//   }
+// };
+
 const dbQuery = async (query, params = []) => {
   try {
-    const result = await pool.query(query, params);
-    return result.rows;
-  } catch (err) {
-    console.error('Database error:', err);
-    throw err;
+    const client = await pool.connect();
+    const result = await client.query(query, params);
+    client.release();
+    return result.rows; // Ensure this returns an array of objects
+  } catch (error) {
+    console.error("Database query error:", error);
+    throw error; // Propagate error for the client to handle
   }
 };
 
@@ -88,14 +100,34 @@ router.put('/update-product', async (req, res) => {
 });
 
 
-// i. Natural Join, Cross Product, Outer Join, Join with USING, ON
+// // i. Natural Join, Cross Product, Outer Join, Join with USING, ON
+// router.get('/natural-join', async (req, res) => {
+//   const query = `
+//     SELECT * 
+//     FROM order_detail NATURAL JOIN product;
+//   `;
+//   res.json(await dbQuery(query));
+// });
+
 router.get('/natural-join', async (req, res) => {
-  const query = `
-    SELECT * 
-    FROM order_detail NATURAL JOIN product;
-  `;
-  res.json(await dbQuery(query));
+  try {
+    const query = `
+      SELECT * 
+      FROM order_detail NATURAL JOIN product;
+    `;
+    const results = await pool.query(query);
+    // const results = await dbQuery(query);
+    console.log("Raw results:", results);
+    res.status(200).json({results,
+      message: "Fetched natural join data successfully"
+  }); // Ensure `results` is JSON serializable
+  } catch (error) {
+    console.error("Error fetching natural join data:", error);
+    res.status(500).json({ message: "Failed to fetch data", error: error.message });
+  }
 });
+
+
 
 router.get('/cross-product', async (req, res) => {
   const query = `

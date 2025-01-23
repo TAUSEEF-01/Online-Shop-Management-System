@@ -357,4 +357,11 @@ export const api = {
     return handleResponse(response);
   },
   
+  get: async (endpoint: string) => {
+    const response = await fetch(`${API_BASE_URL}/products/${endpoint}`, {
+      ...defaultOptions,
+      method: 'GET',
+    });
+    return handleResponse(response);
+  },
 };
