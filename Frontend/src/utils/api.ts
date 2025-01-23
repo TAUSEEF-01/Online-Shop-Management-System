@@ -325,5 +325,19 @@ export const api = {
     });
     return handleResponse(response);
   },
+
+  updateProfile: async (data: { user_name: string; user_email: string; user_password: string; user_contact_no: string; }) => {
+    const response = await fetch(`${API_BASE_URL}/auth/update-profile`, {
+      ...defaultOptions,
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error((await response.json()).message);
+    }
+
+    return response.json();
+  },
   
 };
