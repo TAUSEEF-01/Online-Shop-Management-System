@@ -130,13 +130,42 @@ router.get('/natural-join', async (req, res) => {
 
 
 
+// router.get('/cross-product', async (req, res) => {
+//   const query = `
+//     SELECT * 
+//     FROM users, orders;
+//   `;
+//   res.json(await dbQuery(query));
+// });
+
+
 router.get('/cross-product', async (req, res) => {
-  const query = `
-    SELECT * 
-    FROM users, orders;
-  `;
-  res.json(await dbQuery(query));
+  try {
+    const query = `
+      SELECT * 
+      FROM users, orders; -- Cross product of users and orders tables
+    `;
+    const results = await pool.query(query); // Use pool.query to execute the query
+
+    // Log the number of rows fetched (optional for debugging)
+    console.log("Raw query results (rowCount):", results.rowCount);
+
+    // Respond with the results and a success message
+    res.status(200).json({
+      results: results.rows, // Only send the rows
+      message: "Fetched cross-product data successfully"
+    });
+  } catch (error) {
+    console.error("Error fetching cross-product data:", error);
+
+    // Handle errors and send a response
+    res.status(500).json({ 
+      message: "Failed to fetch data", 
+      error: error.message 
+    });
+  }
 });
+
 
 router.get('/outer-join', async (req, res) => {
   const query = `
