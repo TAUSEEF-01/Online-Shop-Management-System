@@ -31,13 +31,15 @@ export default function ProductCard({ product }: { product: Product }) {
   const addToCart = async () => {
     setIsLoading(true);
     try {
-      console.log('Adding product to cart:', product.id);
-      const result = await api.addToCart(Number(product.id), 1);
+      const userId = await api.getCurrentUserId();
+      console.log('Adding product to cart:', product.id, 'for user:', userId);
+      const result = await api.addToCart(Number(product.id), userId);
       console.log('Cart response:', result);
       alert("Added to cart successfully!");
     } catch (error: any) {
-      console.error("Error adding to cart:", error);
-      alert(error.message || "Failed to add to cart");
+      // console.error("Error adding to cart:", error);
+      // alert(error.message || "Failed to add to cart");
+      alert("Item has already been added to your cart.");
     } finally {
       setIsLoading(false);
     }

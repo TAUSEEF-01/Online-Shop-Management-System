@@ -27,22 +27,29 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     try {
       const response = await fetch('/api/auth/logout', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
-        credentials: 'include',
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setIsMenuOpen(false);
-        router.replace('/login'); // Redirect to login page after successful logout
-      } else {
-        console.error('Logout failed:', data.message);
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.message || 'Logout failed');
       }
+
+      // Clear local storage
+      localStorage.removeItem('user');
+      
+      // Reset states
+      setIsAdmin(false);
+      setIsMenuOpen(false);
+
+      // Redirect to login
+      router.replace('/login');
     } catch (error) {
       console.error('Logout error:', error);
+      alert('Failed to logout. Please try again.');
     }
   };
 

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from "react";
 import { Input } from "./ui/input";
@@ -15,7 +15,7 @@ export default function AddProductForm() {
     rating_stars: 0,
     rating_count: 0,
     prod_discount: 0,
-    prod_keywords: [] as string[],
+    prod_keywords: [] as string[]
   });
   const [keywords, setKeywords] = useState("");
   const [message, setMessage] = useState({ type: "", content: "" });
@@ -30,7 +30,7 @@ export default function AddProductForm() {
         },
         body: JSON.stringify({
           ...formData,
-          prod_keywords: keywords.split(",").map((k) => k.trim()),
+          prod_keywords: keywords.split(",").map(k => k.trim())
         }),
       });
 
@@ -47,14 +47,11 @@ export default function AddProductForm() {
           rating_stars: 0,
           rating_count: 0,
           prod_discount: 0,
-          prod_keywords: [],
+          prod_keywords: []
         });
         setKeywords("");
       } else {
-        setMessage({
-          type: "error",
-          content: data.message || "Failed to add product",
-        });
+        setMessage({ type: "error", content: data.message || "Failed to add product" });
       }
     } catch (error) {
       setMessage({ type: "error", content: "Error connecting to server" });
@@ -64,13 +61,7 @@ export default function AddProductForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       {message.content && (
-        <div
-          className={`p-4 rounded-md ${
-            message.type === "success"
-              ? "bg-green-100 text-green-700"
-              : "bg-red-100 text-red-700"
-          }`}
-        >
+        <div className={`p-4 rounded-md ${message.type === 'success' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
           {message.content}
         </div>
       )}
@@ -80,9 +71,7 @@ export default function AddProductForm() {
         <Input
           id="prod_name"
           value={formData.prod_name}
-          onChange={(e) =>
-            setFormData({ ...formData, prod_name: e.target.value })
-          }
+          onChange={(e) => setFormData({...formData, prod_name: e.target.value})}
           required
         />
       </div>
@@ -92,9 +81,7 @@ export default function AddProductForm() {
         <Input
           id="prod_image"
           value={formData.prod_image}
-          onChange={(e) =>
-            setFormData({ ...formData, prod_image: e.target.value })
-          }
+          onChange={(e) => setFormData({...formData, prod_image: e.target.value})}
           required
         />
       </div>
@@ -106,12 +93,7 @@ export default function AddProductForm() {
             id="prod_quantity"
             type="number"
             value={formData.prod_quantity}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                prod_quantity: Number(e.target.value),
-              })
-            }
+            onChange={(e) => setFormData({...formData, prod_quantity: Number(e.target.value)})}
             required
           />
         </div>
@@ -123,9 +105,7 @@ export default function AddProductForm() {
             type="number"
             step="0.01"
             value={formData.prod_price}
-            onChange={(e) =>
-              setFormData({ ...formData, prod_price: Number(e.target.value) })
-            }
+            onChange={(e) => setFormData({...formData, prod_price: Number(e.target.value)})}
             required
           />
         </div>
@@ -141,9 +121,7 @@ export default function AddProductForm() {
             max="5"
             step="0.1"
             value={formData.rating_stars}
-            onChange={(e) =>
-              setFormData({ ...formData, rating_stars: Number(e.target.value) })
-            }
+            onChange={(e) => setFormData({...formData, rating_stars: Number(e.target.value)})}
             required
           />
         </div>
@@ -154,9 +132,7 @@ export default function AddProductForm() {
             id="rating_count"
             type="number"
             value={formData.rating_count}
-            onChange={(e) =>
-              setFormData({ ...formData, rating_count: Number(e.target.value) })
-            }
+            onChange={(e) => setFormData({...formData, rating_count: Number(e.target.value)})}
             required
           />
         </div>
@@ -168,12 +144,7 @@ export default function AddProductForm() {
             type="number"
             step="0.01"
             value={formData.prod_discount}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                prod_discount: Number(e.target.value),
-              })
-            }
+            onChange={(e) => setFormData({...formData, prod_discount: Number(e.target.value)})}
             required
           />
         </div>

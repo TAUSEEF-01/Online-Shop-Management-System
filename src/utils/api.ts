@@ -30,6 +30,45 @@ export interface Product {
   prod_keywords: string[];
 }
 
+export interface BillData {
+  user_id: number;
+  order_id: number;
+  user_name: string;
+  prod_id: number;
+  prod_qty: number;
+  prod_price: number;
+  prod_total_price: number;
+  order_total_price: number;
+  bill_total_price: number;
+  pay_status: string;
+}
+
+// export interface OrderDetail {
+//   order_id: number;
+//   prod_id: number;
+//   prod_qty: number;
+//   prod_price: number;
+//   prod_total_price: number;
+// }
+
+
+export interface OrderItemDetail {
+  prod_id: number;
+  prod_qty: number;
+  prod_price: number;
+  prod_total_price: number;
+}
+
+export interface OrderData {
+  user_id: number;
+  // order_date: string;
+  user_address: string;
+  total_amt: number;
+  order_status: string;
+  // order_details: OrderDetail[];
+  order_details: OrderItemDetail[];
+}
+
 const handleResponse = async (response: Response) => {
   try {
     const contentType = response.headers.get("content-type");
@@ -47,17 +86,24 @@ const handleResponse = async (response: Response) => {
   }
 };
 
+const defaultHeaders = {
+  'Content-Type': 'application/json',
+  'Accept': 'application/json',
+};
+
+const defaultOptions = {
+  credentials: 'include' as RequestCredentials,
+  headers: defaultHeaders,
+};
+
 export const api = {
   login: async (data: LoginData) => {
     try {
       console.log('Sending login request with data:', data);
       
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
+        ...defaultOptions,
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
         body: JSON.stringify(data),
       });
       
@@ -77,8 +123,8 @@ export const api = {
 
   signup: async (data: SignupData) => {
     const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+      ...defaultOptions,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     });
 
@@ -91,19 +137,16 @@ export const api = {
 
   logout: async () => {
     const response = await fetch(`${API_BASE_URL}/auth/logout`, {
+      ...defaultOptions,
       method: 'POST',
-      credentials: 'include',
     });
     return response.json();
   },
 
   getUserInfo: async () => {
     const response = await fetch(`${API_BASE_URL}/auth/user-info`, {
+      ...defaultOptions,
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
     });
 
     if (!response.ok) {
@@ -116,52 +159,142 @@ export const api = {
   // Add to cart
   addToCart: async (prod_id: number, user_id: number) => {
     console.log('Adding to cart:', { prod_id, user_id });
-    const response = await fetch(`${API_BASE_URL}/cart/add`, { // Updated URL
+    const response = await fetch(`${API_BASE_URL}/cart/add`, {
+      ...defaultOptions,
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
       body: JSON.stringify({ prod_id, user_id }),
     });
     
     return handleResponse(response);
   },
 
+  // Add to cart with cart_id
+  addToCartWithCartId: async (cartId: number, prod_id: number) => {
+    const response = await fetch(`${API_BASE_URL}/cart/addToCart/${cartId}`, {
+      ...defaultOptions,
+      method: 'POST',
+      body: JSON.stringify({ prod_id }),
+    });
+    return handleResponse(response);
+  },
+
   // Get cart items
   getCartItems: async (userId: number) => {
-    const response = await fetch(`${API_BASE_URL}/cart/items/${userId}`);
-    return handleResponse(response);
+    try {
+      const response = await fetch(`${API_BASE_URL}/cart/items/${userId}`, {
+        ...defaultOptions,
+        method: 'GET',
+      });
+      return handleResponse(response);
+    } catch (error) {
+      console.error('Failed to fetch cart items:', error);
+      throw new Error('Network error while fetching cart items');
+    }
   },
 
   // Remove from cart
   removeFromCart: async (cartId: number) => {
     const response = await fetch(`${API_BASE_URL}/cart/remove/${cartId}`, {
+      ...defaultOptions,
       method: 'DELETE',
     });
     return handleResponse(response);
   },
 
   getCurrentUserId: async () => {
-    const response = await fetch(`${API_BASE_URL}/api/auth/current-user`, {
+    const response = await fetch(`${API_BASE_URL}/auth/current-user`, {
+      ...defaultOptions,
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
     });
     
     const data = await handleResponse(response);
     return data.userId;
   },
 
-  getAllProducts: async () => {
-    const response = await fetch(`${API_BASE_URL}/products/allProducts`, {
+  getCartIdByUserId: async (userId: number) => {
+    const response = await fetch(`${API_BASE_URL}/cart/${userId}`, {
+      ...defaultOptions,
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      }
     });
-    
     return handleResponse(response);
   },
+
+  checkAuth: async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/auth/check-auth`, {
+        ...defaultOptions,
+        method: 'GET',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Authentication check failed');
+      }
+      
+      return await response.json();
+    } catch (error) {
+      console.error('Auth check error:', error);
+      return { authenticated: false };
+    }
+  },
+
+  getAllProducts: async () => {
+    const response = await fetch(`${API_BASE_URL}/products/allProducts`, {
+      ...defaultOptions,
+      method: 'GET',
+    });
+    return handleResponse(response);
+  },
+
+  createBill: async (data: BillData) => {
+    const response = await fetch(`${API_BASE_URL}/billing/create`, {
+      ...defaultOptions,
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    return handleResponse(response);
+  },
+
+  getBillDetails: async () => {
+    const response = await fetch(`${API_BASE_URL}/billing/details`, {
+      ...defaultOptions,
+      method: 'GET',
+    });
+    return handleResponse(response);
+  },
+
+  getBillDetailsByOrderId: async (orderId: number) => {
+    const response = await fetch(`${API_BASE_URL}/billing/details/${orderId}`, {
+      ...defaultOptions,
+      method: 'GET',
+    });
+    return handleResponse(response);
+  },
+
+  createOrder: async (data: OrderData) => {
+    const response = await fetch(`${API_BASE_URL}/orders/create`, {
+      ...defaultOptions,
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    return handleResponse(response);
+  },
+
+  createBillDetails: async (data: BillData) => {
+    const response = await fetch(`${API_BASE_URL}/billing/create`, {
+      ...defaultOptions,
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    return handleResponse(response);
+  },
+
+  // createOrderDetails: async (data: OrderDetail) => {
+  //   const response = await fetch(`${API_BASE_URL}/orders/create`, {
+  //     ...defaultOptions,
+  //     method: 'POST',
+  //     body: JSON.stringify(data),
+  //   });
+  //   return handleResponse(response);
+  // },
+  
 };
