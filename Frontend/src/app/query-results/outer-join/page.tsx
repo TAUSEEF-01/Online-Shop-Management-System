@@ -256,7 +256,7 @@ export default function QueryExecutionPage() {
           {filteredResults && (
             <div className="mt-6 bg-gray-100 rounded-lg p-4">
               <h2 className="text-xl font-semibold mb-4">
-                Results of the natural join query
+                Results of the outer join query
               </h2>
               <div className="overflow-x-auto">
                 <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
