@@ -450,62 +450,182 @@ router.get('/group-by', async (req, res) => {
 
 
 
+// router.get('/having', async (req, res) => {
+//   const query = `
+//     SELECT user_id, COUNT(*) AS order_count 
+//     FROM orders 
+//     GROUP BY user_id 
+//     HAVING COUNT(*) > 5;
+//   `;
+//   res.json(await dbQuery(query));
+// });
+
+
+
 router.get('/having', async (req, res) => {
-  const query = `
-    SELECT user_id, COUNT(*) AS order_count 
-    FROM orders 
-    GROUP BY user_id 
-    HAVING COUNT(*) > 5;
-  `;
-  res.json(await dbQuery(query));
+  try {
+    const query = `
+      SELECT user_id, COUNT(*) AS order_count 
+      FROM orders 
+      GROUP BY user_id 
+      HAVING COUNT(*) > 5;
+    `;
+    const results = await pool.query(query);
+
+    console.log("Raw query results (rowCount):", results.rowCount);
+
+    res.status(200).json({
+      results: results.rows,
+      message: "Fetched having data successfully"
+    });
+  } catch (error) {
+    console.error("Error fetching having data:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch data",
+      error: error.message
+    });
+  }
 });
 
-// v. WITH Clause
+
+// // v. WITH Clause
+// router.get('/with-clause', async (req, res) => {
+//   const query = `
+//     WITH high_rated_products AS (
+//         SELECT * 
+//         FROM product 
+//         WHERE rating_stars >= 4
+//     )
+//     SELECT * 
+//     FROM high_rated_products;
+//   `;
+//   res.json(await dbQuery(query));
+// });
+
+
 router.get('/with-clause', async (req, res) => {
-  const query = `
-    WITH high_rated_products AS (
-        SELECT * 
-        FROM product 
-        WHERE rating_stars >= 4
-    )
-    SELECT * 
-    FROM high_rated_products;
-  `;
-  res.json(await dbQuery(query));
+  try {
+    const query = `
+      WITH high_rated_products AS (
+          SELECT * 
+          FROM product 
+          WHERE rating_stars >= 4
+      )
+      SELECT * 
+      FROM high_rated_products;
+    `;
+    const results = await pool.query(query);
+
+    console.log("Raw query results (rowCount):", results.rowCount);
+
+    res.status(200).json({
+      results: results.rows,
+      message: "Fetched with-clause data successfully"
+    });
+  } catch (error) {
+    console.error("Error fetching with-clause data:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch data",
+      error: error.message
+    });
+  }
 });
 
-// vi. String Operations
+
+
+
+// // vi. String Operations
+// router.get('/string-operations', async (req, res) => {
+//   const query = `
+//     SELECT prod_name, 
+//            LOWER(prod_name) AS lower_name, 
+//            UPPER(prod_name) AS upper_name 
+//     FROM product;
+//   `;
+//   res.json(await dbQuery(query));
+// });
+
+
 router.get('/string-operations', async (req, res) => {
-  const query = `
-    SELECT prod_name, 
-           LOWER(prod_name) AS lower_name, 
-           UPPER(prod_name) AS upper_name 
-    FROM product;
-  `;
-  res.json(await dbQuery(query));
+  try {
+    const query = `
+      SELECT prod_name, 
+             LOWER(prod_name) AS lower_name, 
+             UPPER(prod_name) AS upper_name 
+      FROM product;
+    `;
+    const results = await pool.query(query);
+
+    console.log("Raw query results (rowCount):", results.rowCount);
+
+    res.status(200).json({
+      results: results.rows,
+      message: "Fetched string operations data successfully"
+    });
+  } catch (error) {
+    console.error("Error fetching string operations data:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch data",
+      error: error.message
+    });
+  }
 });
 
 
 
-router.delete('/delete-cart-item', async (req, res) => {
-  const { prod_id } = req.body;
-  const query = `
-    DELETE FROM shopping_cart 
-    WHERE prod_id = $1 
-    RETURNING *;
-  `;
-  res.json(await dbQuery(query, [prod_id]));
-});
+// router.delete('/delete-cart-item', async (req, res) => {
+//   const { prod_id } = req.body;
+//   const query = `
+//     DELETE FROM shopping_cart 
+//     WHERE prod_id = $1 
+//     RETURNING *;
+//   `;
+//   res.json(await dbQuery(query, [prod_id]));
+// });
 
-// viii. Aggregate Functions
+
+
+
+
+// // viii. Aggregate Functions
+// router.get('/aggregate-functions', async (req, res) => {
+//   const query = `
+//     SELECT AVG(prod_price) AS avg_price, 
+//            SUM(prod_price) AS total_price 
+//     FROM product;
+//   `;
+//   res.json(await dbQuery(query));
+// });
+
+
 router.get('/aggregate-functions', async (req, res) => {
-  const query = `
-    SELECT AVG(prod_price) AS avg_price, 
-           SUM(prod_price) AS total_price 
-    FROM product;
-  `;
-  res.json(await dbQuery(query));
+  try {
+    const query = `
+      SELECT AVG(prod_price) AS avg_price, 
+             SUM(prod_price) AS total_price 
+      FROM product;
+    `;
+    const results = await pool.query(query);
+
+    console.log("Raw query results (rowCount):", results.rowCount);
+
+    res.status(200).json({
+      results: results.rows,
+      message: "Fetched aggregate function data successfully"
+    });
+  } catch (error) {
+    console.error("Error fetching aggregate function data:", error);
+
+    res.status(500).json({
+      message: "Failed to fetch data",
+      error: error.message
+    });
+  }
 });
+
 
 
 module.exports = router;
