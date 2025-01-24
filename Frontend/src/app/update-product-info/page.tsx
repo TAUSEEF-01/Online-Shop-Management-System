@@ -21,12 +21,12 @@ import { Title } from '@tremor/react';
 
 const UpdateProductInfoPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [priceRange, setPriceRange] = useState([0, 3000]);
+  const [priceRange, setPriceRange] = useState([0, 300000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const router = useRouter();
 
-  const categories = ['socks', 'basketballs', 'apparel', 'tshirts', 'sports', 'bathroom', 'mens', 'hoodies', 'sweaters', 'kitchen', 'cleaning', 'swimming', 'robe', 'swimsuit', 'accessories'];
+  const categories = ['socks', 'basketballs', 'apparel', 'tshirts', 'sports', 'bathroom', 'mens', 'hoodies', 'sweaters', 'kitchen', 'cleaning', 'swimming', 'robe', 'swimsuit', 'accessories', 'Camera', 'DSLR', 'Photo'];
 
   useEffect(() => {
     const fetchProducts = async () => {

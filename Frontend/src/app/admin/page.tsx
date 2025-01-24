@@ -250,8 +250,9 @@ export default function AdminDashboard() {
     <ProtectedRoute>
       <main className="p-6 md:p-12 bg-gradient-to-br from-white via-gray-100 to-gray-200 rounded-xl mx-auto max-w-7xl shadow-lg">
         <Title className="text-3xl font-bold text-indigo-700 mb-4">Admin Dashboard
-          <Badge size="xl" color="green">
-            Live
+          {/* <Badge size="xl" color="green"> */}
+          <Badge className="text-2xl font-bold text-green-700 ml-4"> 
+            (Live)
           </Badge>
         </Title>
         {/* Header */}
