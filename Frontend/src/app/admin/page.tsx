@@ -271,8 +271,15 @@ export default function AdminDashboard() {
                     Add Product
                   </button>
                 </Link>
+
                 
-                <Link href="/admin/users">
+                <Link href="/update-product-info">
+                  <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition-all hover:shadow-lg">
+                    Update Product Information
+                  </button>
+                </Link>
+                
+                <Link href="/users">
                   <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow transition-all hover:shadow-lg">
                     Show All Users
                   </button>

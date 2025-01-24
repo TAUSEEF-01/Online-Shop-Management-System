@@ -100,6 +100,39 @@ router.put('/update-product', async (req, res) => {
 });
 
 
+// Update product information
+router.put('/update-product-info/:prod_id', async (req, res) => {
+  const { prod_id } = req.params;
+  const { prod_name, prod_image, prod_quantity, prod_price, rating_stars, rating_count, prod_discount, prod_keywords } = req.body;
+
+  try {
+    const query = `
+      UPDATE product 
+      SET prod_name = $1, prod_image = $2, prod_quantity = $3, prod_price = $4, rating_stars = $5, rating_count = $6, prod_discount = $7, prod_keywords = $8
+      WHERE prod_id = $9
+      RETURNING *;
+    `;
+    const updatedProduct = await pool.query(query, [prod_name, prod_image, prod_quantity, prod_price, rating_stars, rating_count, prod_discount, JSON.stringify(prod_keywords), prod_id]);
+
+    if (updatedProduct.rows.length === 0) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: updatedProduct.rows[0],
+      message: "Product updated successfully"
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while updating product"
+    });
+  }
+});
+
+
 // // i. Natural Join, Cross Product, Outer Join, Join with USING, ON
 // router.get('/natural-join', async (req, res) => {
 //   const query = `
