@@ -62,6 +62,53 @@ export default function AdminDashboard() {
               Query - Cross Product
             </button>
           </Link>
+
+
+          <Link href="/query-results/outer-join">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors">
+              Query - Outer Join
+            </button>
+          </Link>
+
+          
+
+          <Link href="/query-results/join-using">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors">
+              Query - Join Using
+            </button>
+          </Link>
+
+
+          
+          <Link href="/query-results/join-on">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors">
+              Query - Join On
+            </button>
+          </Link>
+
+          
+          <Link href="/query-results/nested-any">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors">
+              Query - Nested Any
+            </button>
+          </Link>
+
+
+          
+          <Link href="/query-results/nested-from">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors">
+              Query - Nested From
+            </button>
+          </Link>
+
+          
+
+          <Link href="/query-results/order-by">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors">
+              Query - Order By
+            </button>
+          </Link>
+
         </div>
       </Flex>
       <Text className="mt-2 text-gray-600">Overview of your store's performance</Text>
