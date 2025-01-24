@@ -154,6 +154,35 @@ router.put('/update-product-info/:prod_id', async (req, res) => {
   }
 });
 
+// Delete product by ID
+router.delete("/delete/:prod_id", async (req, res) => {
+  const { prod_id } = req.params;
+  try {
+    const deleteResult = await pool.query(
+      "DELETE FROM product WHERE prod_id = $1 RETURNING *",
+      [prod_id]
+    );
+
+    if (deleteResult.rows.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "Product not found"
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: deleteResult.rows[0],
+      message: "Product deleted successfully"
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while deleting product"
+    });
+  }
+});
 
 // // i. Natural Join, Cross Product, Outer Join, Join with USING, ON
 // router.get('/natural-join', async (req, res) => {

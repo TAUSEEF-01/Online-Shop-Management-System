@@ -52,6 +52,17 @@ const EditProductPage = () => {
     }
   };
 
+  const handleDeleteProduct = async () => {
+    if (product && window.confirm('Are you sure you want to delete this product?')) {
+      try {
+        await api.deleteProduct(product.prod_id);
+        router.push('/update-product-info');
+      } catch (error) {
+        console.error('Failed to delete product:', error);
+      }
+    }
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -166,10 +177,17 @@ const EditProductPage = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end mt-8">
+              <div className="flex justify-end gap-4 mt-8">
+                <Button
+                  onClick={handleDeleteProduct}
+                  variant="destructive" // Assuming you have a destructive variant in your Button component
+                  className="bg-red-600 hover:bg-red-700 text-white"
+                >
+                  Delete Product
+                </Button>
                 <Button
                   onClick={handleUpdateProduct}
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-colors"
+                  className="bg-blue-600 hover:bg-blue-700 text-white"
                 >
                   Update Product
                 </Button>
