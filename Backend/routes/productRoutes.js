@@ -61,8 +61,29 @@ router.get("/allProducts", async (req, res) => {
     }
 });
 
+
+
+router.get("/test", async (req, res) => {
+  try {
+    console.log("Route params:", req.params);
+    console.log("Query params:", req.query);
+    
+    
+    res.status(200).json({
+      status: "success",
+      message: "Test successfully"
+    }); // Ensure `results` is JSON serializable
+  } catch (error) {
+    console.error("Error fetching natural join data:", error);
+    res.status(500).json({ message: "Failed to fetch data", error: error.message });
+  }
+});
+
+
+
+
 // Get product by ID
-router.get("/:prod_id", async (req, res) => {
+router.get("/get-product-info/:prod_id", async (req, res) => {
   const { prod_id } = req.params;
   try {
     const product = await pool.query("SELECT * FROM product WHERE prod_id = $1", [prod_id]);
@@ -96,30 +117,67 @@ router.get("/:prod_id", async (req, res) => {
 //   }
 // };
 
-const dbQuery = async (query, params = []) => {
+
+
+
+
+
+
+
+// const dbQuery = async (query, params = []) => {
+//   try {
+//     const client = await pool.connect();
+//     const result = await client.query(query, params);
+//     client.release();
+//     return result.rows; // Ensure this returns an array of objects
+//   } catch (error) {
+//     console.error("Database query error:", error);
+//     throw error; // Propagate error for the client to handle
+//   }
+// };
+
+
+// // vii. Update and Delete
+// router.put('/update-product', async (req, res) => {
+//   const { prod_id, discount } = req.body;
+//   const query = `
+//     UPDATE product 
+//     SET prod_discount = $1 
+//     WHERE prod_id = $2
+//     RETURNING *;
+//   `;
+//   res.json(await dbQuery(query, [discount, prod_id]));
+// });
+
+
+
+router.get("/natural-join", async (req, res) => {
   try {
-    const client = await pool.connect();
-    const result = await client.query(query, params);
-    client.release();
-    return result.rows; // Ensure this returns an array of objects
+    console.log("Route params:", req.params);
+    console.log("Query params:", req.query);
+    
+    const query = `
+      SELECT * 
+      FROM order_detail NATURAL JOIN product;
+    `;
+    const results = await pool.query(query);
+    // console.log("Raw query results:", results.rowCount);
+    // const results = await dbQuery(query);
+    console.log("Raw results:", results);
+    res.status(200).json({
+      status: "success",
+      results,
+      // data: results.rows,
+      message: "Fetched natural join data successfully"
+    }); // Ensure `results` is JSON serializable
   } catch (error) {
-    console.error("Database query error:", error);
-    throw error; // Propagate error for the client to handle
+    console.error("Error fetching natural join data:", error);
+    res.status(500).json({ message: "Failed to fetch data", error: error.message });
   }
-};
-
-
-// vii. Update and Delete
-router.put('/update-product', async (req, res) => {
-  const { prod_id, discount } = req.body;
-  const query = `
-    UPDATE product 
-    SET prod_discount = $1 
-    WHERE prod_id = $2
-    RETURNING *;
-  `;
-  res.json(await dbQuery(query, [discount, prod_id]));
 });
+
+
+
 
 
 // Update product information
@@ -193,24 +251,10 @@ router.delete("/delete/:prod_id", async (req, res) => {
 //   res.json(await dbQuery(query));
 // });
 
-router.get('/natural-join', async (req, res) => {
-  try {
-    const query = `
-      SELECT * 
-      FROM order_detail NATURAL JOIN product;
-    `;
-    const results = await pool.query(query);
-    // console.log("Raw query results:", results.rowCount);
-    // const results = await dbQuery(query);
-    // console.log("Raw results:", results);
-    res.status(200).json({results,
-      message: "Fetched natural join data successfully"
-  }); // Ensure `results` is JSON serializable
-  } catch (error) {
-    console.error("Error fetching natural join data:", error);
-    res.status(500).json({ message: "Failed to fetch data", error: error.message });
-  }
-});
+
+
+
+
 
 
 
