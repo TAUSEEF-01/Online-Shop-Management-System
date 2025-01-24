@@ -153,8 +153,8 @@ router.get("/get-product-info/:prod_id", async (req, res) => {
 
 router.get("/natural-join", async (req, res) => {
   try {
-    console.log("Route params:", req.params);
-    console.log("Query params:", req.query);
+    // console.log("Route params:", req.params);
+    // console.log("Query params:", req.query);
     
     const query = `
       SELECT * 

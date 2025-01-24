@@ -215,6 +215,30 @@ router.get('/current-user', (req, res) => {
   }
 });
 
+
+// Get current user name
+router.get('/current-user-name/:userId', async (req, res) => {
+    try {
+        const { userId } = req.params; // Extract userId from req.params
+        const userName = await pool.query(
+            'SELECT user_name FROM users WHERE user_id = $1',
+            [userId]
+        );
+
+        if (userName.rows.length === 0) {
+            // Handle case where user is not found
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        console.log("User name:", userName.rows[0].user_name);
+        res.status(200).json({ user_name: userName.rows[0].user_name });
+    } catch (err) {
+        console.error("Error fetching user name:", err);
+        res.status(500).json({ message: "Server error" });
+    }
+});
+
+
 // Update profile
 router.put('/update-profile', async (req, res) => {
     try {
@@ -291,6 +315,9 @@ router.get('/users', async (req, res) => {
         res.status(500).json({ message: "Server error" });
     }
 });
+
+
+
 
 // Logout
 router.post('/logout', (req, res) => {
