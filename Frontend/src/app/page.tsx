@@ -30,9 +30,9 @@ interface APIResponse {
 }
 
 export default function Home() {
-  const categories = ['socks', 'basketballs', 'apparel', 'tshirts', 'sports', 'bathroom', 'mens', 'hoodies', 'sweaters', ' kitchen', 'cleaning', 'swimming', 'robe', 'swimsuit', 'accessories'];
+  const categories = ['socks', 'basketballs', 'apparel', 'tshirts', 'sports', 'bathroom', 'mens', 'hoodies', 'sweaters', ' kitchen', 'cleaning', 'swimming', 'robe', 'swimsuit', 'accessories', 'Camera', 'DSLR', 'Photo'];
   const [products, setProducts] = useState<Product[]>([]);
-  const [priceRange, setPriceRange] = useState([0, 3000]);
+  const [priceRange, setPriceRange] = useState([0, 300000]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
@@ -41,7 +41,7 @@ export default function Home() {
     const fetchProducts = async () => {
       try {
         const result = await api.getAllProducts();
-        console.log('Raw API response:', result);
+        // console.log('Raw API response:', result);
 
         if (result.status === 'success' && Array.isArray(result.data)) {
           console.log('Processed products:', result.data);
@@ -60,6 +60,7 @@ export default function Home() {
 
     fetchProducts();
   }, []);
+
 
   const filteredProducts = Array.isArray(products) ? products.filter(
     (product) =>

@@ -9,22 +9,30 @@ import { Card } from '@/app/components/ui/card';
 const EditProductPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const productId = searchParams?.get('productId'); // Ensure searchParams is not undefined
+  const productId = searchParams?.get('productId');
   const [product, setProduct] = useState<UpdateProductData | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Handle loading state
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProduct = async () => {
-      if (productId) {
-        try {
-          const response = await api.getProductInfo(productId);
-          setProduct(response.data); // Adjust for nested "data" property
-        } catch (error) {
-          console.error('Failed to fetch product:', error);
-        } finally {
-          setIsLoading(false); // Ensure loading is complete
+      if (!productId) {
+        setError("No product ID provided");
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await api.getProductInfo(productId);
+        if (response.data) {
+          setProduct(response.data);
+        } else {
+          setError(`Product with ID ${productId} not found`);
         }
-      } else {
+      } catch (error) {
+        console.error('Failed to fetch product:', error);
+        setError("This product no longer exists or was deleted");
+      } finally {
         setIsLoading(false);
       }
     };
@@ -64,11 +72,47 @@ const EditProductPage = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading product information...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+          <div className="text-center">
+            <div className="text-red-500 text-5xl mb-4">⚠️</div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Product Not Found</h2>
+            <p className="text-gray-600 mb-8">{error}</p>
+            <div className="space-y-4">
+              <Button
+                onClick={() => router.push('/update-product-info')}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Back to Products
+              </Button>
+              <Button
+                onClick={() => window.location.reload()}
+                variant="outline"
+                className="w-full"
+              >
+                Try Again
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (!product) {
-    return <div>Product not found.</div>;
+    return null;
   }
 
   return (
