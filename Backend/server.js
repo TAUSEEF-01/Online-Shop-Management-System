@@ -70,6 +70,27 @@ app.get("/test", (req, res) => {
   res.send("Hello World");
 });
 
+
+// Add new route for raw SQL queries
+app.post("/execute-query", async (req, res) => {
+  const { query } = req.body;
+  const pool = require("./database"); // Make sure this points to your database configuration
+
+  try {
+    const result = await pool.query(query);
+    res.json({
+      success: true,
+      data: result.rows,
+      rowCount: result.rowCount
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
 // Routes without /api prefix
 app.use("/auth", authRoutes);
 app.use("/products", productRoutes);  // Changed from /api/products to /products

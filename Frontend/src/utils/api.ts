@@ -86,6 +86,13 @@ export interface OrderData {
   order_details: OrderItemDetail[];
 }
 
+export interface QueryResult {
+  success: boolean;
+  data: any[];
+  rowCount?: number;
+  error?: string;
+}
+
 const handleResponse = async (response: Response) => {
   try {
     const contentType = response.headers.get("content-type");
@@ -113,7 +120,7 @@ const defaultOptions = {
   headers: defaultHeaders,
 };
 
-export const api = {
+const api = {
   login: async (data: LoginData) => {
     try {
       console.log('Sending login request with data:', data);
@@ -234,6 +241,16 @@ export const api = {
     
     const data = await handleResponse(response);
     return data.userId;
+  },
+
+  getCurrentUserName: async (userId: number) => {
+    const response = await fetch(`${API_BASE_URL}/auth/current-user-name/${userId}`, {
+      ...defaultOptions,
+      method: 'GET',
+    });
+    
+    const data = await handleResponse(response);
+    return data.user_name;
   },
 
   getCartIdByUserId: async (userId: number) => {
@@ -407,4 +424,24 @@ export const api = {
     });
     return handleResponse(response);
   },
+
+
+  getPaymentDoneInfo: async (endpoint: string) => {
+    const response = await fetch(`${API_BASE_URL}/billing${endpoint}`, {
+      ...defaultOptions,
+      method: 'GET',
+    });
+    return handleResponse(response);
+  },
+
+  executeRawQuery: async (query: string): Promise<QueryResult> => {
+    const response = await fetch(`${API_BASE_URL}/execute-query`, {
+      ...defaultOptions,
+      method: 'POST',
+      body: JSON.stringify({ query }),
+    });
+    return handleResponse(response);
+  }
 };
+
+export { api };

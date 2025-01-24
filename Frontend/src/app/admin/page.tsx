@@ -354,6 +354,17 @@ export default function AdminDashboard() {
                     Aggregate Functions
                   </button>
                 </Link>
+                <Link href="/query-results/payment-done">
+                  <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                    Payment Done
+                  </button>
+                </Link>
+                <Link href="/query-results/any-query">
+                  <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                    Any Query
+                  </button>
+                </Link>
+                
               </div>
             </div>
             {/* Add additional query buttons as needed */}

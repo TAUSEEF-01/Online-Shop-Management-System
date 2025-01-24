@@ -58,12 +58,13 @@ router.post("/create", async (req, res) => {
 });
 
 // Get all bill details
-router.get("/details", async (req, res) => {
+router.get("/payment-done", async (req, res) => {
   try {
-    const billDetails = await pool.query("SELECT * FROM bill_detail");
+    const paidBillDetails = await pool.query(`SELECT * from bill_detail
+      where pay_status = 'paid';`);
     res.status(200).json({
       status: "success",
-      data: billDetails.rows,
+      data: paidBillDetails.rows,
       message: "Fetched all bill details successfully"
     });
   } catch (err) {
@@ -74,6 +75,34 @@ router.get("/details", async (req, res) => {
     });
   }
 });
+
+
+
+router.get("/natural-join", async (req, res) => {
+  try {
+    // console.log("Route params:", req.params);
+    // console.log("Query params:", req.query);
+    
+    const query = `
+      SELECT * 
+      FROM order_detail NATURAL JOIN product;
+    `;
+    const results = await pool.query(query);
+    // console.log("Raw query results:", results.rowCount);
+    // const results = await dbQuery(query);
+    console.log("Raw results:", results);
+    res.status(200).json({
+      status: "success",
+      results,
+      // data: results.rows,
+      message: "Fetched natural join data successfully"
+    }); // Ensure `results` is JSON serializable
+  } catch (error) {
+    console.error("Error fetching natural join data:", error);
+    res.status(500).json({ message: "Failed to fetch data", error: error.message });
+  }
+});
+
 
 // // Get bill details by order ID
 // router.get("/details/:order_id", async (req, res) => {

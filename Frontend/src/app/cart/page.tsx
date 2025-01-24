@@ -88,6 +88,8 @@ export default function Cart() {
   const proceedToCheckout = async () => {
     try {
       const userId = await api.getCurrentUserId();
+      const username = await api.getCurrentUserName(userId);
+      // console.log("Username:", username);
       const orderDetails = cartItems.map(item => ({
         prod_id: item.prod_id,
         prod_qty: item.quantity,
@@ -113,7 +115,7 @@ export default function Cart() {
         const billResponse = await api.createBill({
           user_id: userId,
           order_id: orderId,
-          user_name: "John Doe", // Replace with actual user name
+          user_name: username, // Replace with actual user name
           products: orderDetails,
           order_total_price: total,
           bill_total_price: total,

@@ -249,15 +249,15 @@ CREATE TABLE IF NOT EXISTS bill_detail (
 );
 
 
-CREATE TABLE IF NOT EXISTS bill_product (
-    bill_product_id SERIAL PRIMARY KEY, -- Auto-incrementing ID for the product in the bill
-    bill_id INT REFERENCES bill_detail(bill_id) ON DELETE CASCADE, -- Foreign key to the bill_detail table
-    prod_id INT REFERENCES product(prod_id) NOT NULL, -- Foreign key to the product table
-    prod_qty INT NOT NULL, -- Quantity of the product in the bill
-    prod_price DECIMAL(10, 2) NOT NULL, -- Price of the product
-    prod_total_price DECIMAL(10, 2) NOT NULL, -- Total price for the product (price * quantity)
-    UNIQUE (bill_id, prod_id) -- Ensure each product can only appear once per bill
-);
+-- CREATE TABLE IF NOT EXISTS bill_product (
+--     bill_product_id SERIAL PRIMARY KEY, -- Auto-incrementing ID for the product in the bill
+--     bill_id INT REFERENCES bill_detail(bill_id) ON DELETE CASCADE, -- Foreign key to the bill_detail table
+--     prod_id INT REFERENCES product(prod_id) NOT NULL, -- Foreign key to the product table
+--     prod_qty INT NOT NULL, -- Quantity of the product in the bill
+--     prod_price DECIMAL(10, 2) NOT NULL, -- Price of the product
+--     prod_total_price DECIMAL(10, 2) NOT NULL, -- Total price for the product (price * quantity)
+--     UNIQUE (bill_id, prod_id) -- Ensure each product can only appear once per bill
+-- );
 
 
 
