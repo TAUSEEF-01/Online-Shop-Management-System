@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { Card, Table, Title, Text, Button } from "@tremor/react";
-import { api } from '../../../utils/api';
+import { api } from '../../utils/api';
 
 interface User {
   id: number;

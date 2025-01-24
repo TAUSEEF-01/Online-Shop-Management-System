@@ -21,6 +21,8 @@ export interface User {
 }
 
 export interface Product {
+  prod_quantity: number;
+  prod_discount: number;
   prod_id: number;
   prod_name: string;
   prod_image: string;
@@ -55,6 +57,17 @@ export interface BillData {
 //   prod_total_price: number;
 // }
 
+export interface UpdateProductData {
+  prod_id: number;
+  prod_name: string;
+  prod_image: string;
+  prod_quantity: number;
+  prod_price: number;
+  rating_stars: number;
+  rating_count: number;
+  prod_discount: number;
+  prod_keywords: string[];
+}
 
 export interface OrderItemDetail {
   prod_id: number;
@@ -357,7 +370,21 @@ export const api = {
     return handleResponse(response);
   },
   
-  get: async (endpoint: string) => {
+  updateProductInfo: async (data: UpdateProductData) => {
+    const response = await fetch(`${API_BASE_URL}/products/update-product-info/${data.prod_id}`, {
+      ...defaultOptions,
+      method: 'PUT',
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error((await response.json()).message);
+    }
+
+    return response.json();
+  },
+
+  getProductInfo: async (endpoint: string) => {
     const response = await fetch(`${API_BASE_URL}/products/${endpoint}`, {
       ...defaultOptions,
       method: 'GET',
