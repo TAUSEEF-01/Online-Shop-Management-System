@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { api, Product, UpdateProductData } from '../../utils/api';
+import { useRouter } from 'next/navigation';
+import { api, Product } from '../../utils/api';
 import Image from 'next/image';
 import { Star } from 'lucide-react';
 import { Button } from '@/app/components/ui/button';
@@ -16,7 +17,7 @@ import { Title } from '@tremor/react';
 
 const UpdateProductInfoPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [editingProduct, setEditingProduct] = useState<UpdateProductData | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -35,45 +36,15 @@ const UpdateProductInfoPage = () => {
     fetchProducts();
   }, []);
 
-  const handleEditClick = (product: Product) => {
-    setEditingProduct({
-      prod_id: product.prod_id,
-      prod_name: product.prod_name,
-      prod_image: product.prod_image,
-      prod_quantity: product.prod_quantity,
-      prod_price: product.prod_price,
-      rating_stars: product.rating_stars,
-      rating_count: product.rating_count,
-      prod_discount: product.prod_discount,
-      prod_keywords: product.prod_keywords,
-    });
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (editingProduct) {
-      setEditingProduct({
-        ...editingProduct,
-        [e.target.name]: e.target.value,
-      });
-    }
-  };
-
-  const handleUpdateProduct = async () => {
-    if (editingProduct) {
-      try {
-        await api.updateProductInfo(editingProduct);
-        setEditingProduct(null);
-        const updatedProducts = await api.getAllProducts();
-        setProducts(updatedProducts);
-      } catch (error) {
-        console.error('Failed to update product:', error);
-      }
-    }
+  const handleEditClick = (productId: number) => {
+    console.log("Edit button clicked for product ID:", productId);
+    // router.push(`/edit-product/${productId}`);
+    router.push(`/edit-product?productId=${productId}`);
   };
 
   return (
-    <div>
-    <Title className="text-3xl font-bold text-indigo-700 mb-4">
+    <div className="container mx-auto px-4 py-8">
+      <Title className="text-4xl font-extrabold text-center bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-8">
         Update Product Information
       </Title>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -124,72 +95,13 @@ const UpdateProductInfoPage = () => {
               </div>
             </CardContent>
             <CardFooter className="mt-auto">
-              <Button className="w-full" onClick={() => handleEditClick(product)}>
+              <Button className="w-full" onClick={() => handleEditClick(product.prod_id)}>
                 Edit
               </Button>
             </CardFooter>
           </Card>
         ))}
       </div>
-      {editingProduct && (
-        <div>
-          <h2>Edit Product</h2>
-          <input
-            type="text"
-            name="prod_name"
-            value={editingProduct.prod_name}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="prod_image"
-            value={editingProduct.prod_image}
-            onChange={handleInputChange}
-          />
-          <input
-            type="number"
-            name="prod_quantity"
-            value={editingProduct.prod_quantity}
-            onChange={handleInputChange}
-          />
-          <input
-            type="number"
-            name="prod_price"
-            value={editingProduct.prod_price}
-            onChange={handleInputChange}
-          />
-          <input
-            type="number"
-            name="rating_stars"
-            value={editingProduct.rating_stars}
-            onChange={handleInputChange}
-          />
-          <input
-            type="number"
-            name="rating_count"
-            value={editingProduct.rating_count}
-            onChange={handleInputChange}
-          />
-          <input
-            type="number"
-            name="prod_discount"
-            value={editingProduct.prod_discount}
-            onChange={handleInputChange}
-          />
-          <input
-            type="text"
-            name="prod_keywords"
-            value={editingProduct.prod_keywords.join(', ')}
-            onChange={(e) =>
-              setEditingProduct({
-                ...editingProduct,
-                prod_keywords: e.target.value.split(',').map((keyword) => keyword.trim()),
-              })
-            }
-          />
-          <Button onClick={handleUpdateProduct}>Update Product</Button>
-        </div>
-      )}
     </div>
   );
 };

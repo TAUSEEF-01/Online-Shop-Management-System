@@ -61,6 +61,28 @@ router.get("/allProducts", async (req, res) => {
     }
 });
 
+// Get product by ID
+router.get("/:prod_id", async (req, res) => {
+  const { prod_id } = req.params;
+  try {
+    const product = await pool.query("SELECT * FROM product WHERE prod_id = $1", [prod_id]);
+    console.log("product", product);
+    if (product.rows.length === 0) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+    res.status(200).json({
+      status: "success",
+      data: product.rows[0],
+      message: "Product retrieved successfully"
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while retrieving product"
+    });
+  }
+});
 
 // queries --->
 // Utility to query the database

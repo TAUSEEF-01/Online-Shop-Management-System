@@ -371,7 +371,7 @@ export const api = {
   },
   
   updateProductInfo: async (data: UpdateProductData) => {
-    const response = await fetch(`${API_BASE_URL}/product/update-product-info/${data.prod_id}`, {
+    const response = await fetch(`${API_BASE_URL}/products/update-product-info/${data.prod_id}`, {
       ...defaultOptions,
       method: 'PUT',
       body: JSON.stringify(data),
@@ -384,7 +384,7 @@ export const api = {
     return response.json();
   },
 
-  get: async (endpoint: string) => {
+  getProductInfo: async (endpoint: string) => {
     const response = await fetch(`${API_BASE_URL}/products/${endpoint}`, {
       ...defaultOptions,
       method: 'GET',
