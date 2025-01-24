@@ -391,4 +391,12 @@ export const api = {
     });
     return handleResponse(response);
   },
+
+  deleteProduct: async (productId: number) => {
+    const response = await fetch(`${API_BASE_URL}/products/delete/${productId}`, {
+      ...defaultOptions,
+      method: 'DELETE',
+    });
+    return handleResponse(response);
+  },
 };
