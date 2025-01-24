@@ -59,7 +59,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="container mx-auto flex items-center justify-between">
           <div className="text-3xl font-bold tracking-wide hover:text-blue-200 transition-all">
             <Link href="/">
-              My Store
+              MY STORE
             </Link>
           </div>
 
@@ -67,9 +67,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {isAdmin && (
               <Link
                 href="/admin"
-                className="hover:bg-blue-800 text-white px-4 py-2 rounded-md font-medium transition-all duration-200 flex items-center gap-2"
+                // className="hover:bg-blue-800 text-white px-4 py-2 rounded-md font-medium transition-all duration-200 flex items-center gap-2"
               >
-                Admin Dashboard
+                <button 
+                // className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-medium py-2 px-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:-translate-y-0.5"
+                >
+                  Admin Dashboard
+                </button>
               </Link>
             )}
 

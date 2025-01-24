@@ -167,15 +167,45 @@ router.get('/cross-product', async (req, res) => {
 });
 
 
+// router.get('/outer-join', async (req, res) => {
+//   const query = `
+//     SELECT o.*, u.user_name 
+//     FROM orders o 
+//     FULL OUTER JOIN users u 
+//     ON o.user_id = u.user_id;
+//   `;
+//   res.json(await dbQuery(query));
+// });
+
 router.get('/outer-join', async (req, res) => {
-  const query = `
-    SELECT o.*, u.user_name 
-    FROM orders o 
-    FULL OUTER JOIN users u 
-    ON o.user_id = u.user_id;
-  `;
-  res.json(await dbQuery(query));
+  try {
+    const query = `
+      SELECT o.*, u.user_name 
+      FROM orders o 
+      FULL OUTER JOIN users u 
+      ON o.user_id = u.user_id;
+    `;
+    const results = await pool.query(query); // Use pool.query to execute the query
+
+    // Log the number of rows fetched (optional for debugging)
+    console.log("Raw query results (rowCount):", results.rowCount);
+
+    // Respond with the results and a success message
+    res.status(200).json({
+      results: results.rows, // Only send the rows
+      message: "Fetched outer join data successfully"
+    });
+  } catch (error) {
+    console.error("Error fetching outer join data:", error);
+
+    // Handle errors and send a response
+    res.status(500).json({
+      message: "Failed to fetch data",
+      error: error.message
+    });
+  }
 });
+
 
 router.get('/join-using', async (req, res) => {
   const query = `

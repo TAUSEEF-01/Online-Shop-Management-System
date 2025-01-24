@@ -49,9 +49,17 @@ export default function AdminDashboard() {
             </button>
           </Link>
 
-          <Link href="/admin/query-results">
+          {/* <Link href="/admin/query-results"> */}
+          <Link href="/query-results/natural-join">
             <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors">
-              Query
+              Query - Natural Join
+            </button>
+          </Link>
+
+
+          <Link href="/query-results/cross-product">
+            <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-sm transition-colors">
+              Query - Cross Product
             </button>
           </Link>
         </div>
