@@ -385,7 +385,7 @@ export const api = {
   },
 
   getProductInfo: async (endpoint: string) => {
-    const response = await fetch(`${API_BASE_URL}/products/${endpoint}`, {
+    const response = await fetch(`${API_BASE_URL}/products/get-product-info/${endpoint}`, {
       ...defaultOptions,
       method: 'GET',
     });
@@ -396,6 +396,14 @@ export const api = {
     const response = await fetch(`${API_BASE_URL}/products/delete/${productId}`, {
       ...defaultOptions,
       method: 'DELETE',
+    });
+    return handleResponse(response);
+  },
+
+  get: async (endpoint: string) => {
+    const response = await fetch(`${API_BASE_URL}/products${endpoint}`, {
+      ...defaultOptions,
+      method: 'GET',
     });
     return handleResponse(response);
   },
