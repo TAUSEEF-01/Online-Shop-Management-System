@@ -123,3 +123,50 @@ select * from shopping_cart;
 
 -- -- Step 2: Add the new composite primary key
 -- ALTER TABLE shopping_cart ADD PRIMARY KEY (cart_id);
+
+
+
+
+
+
+
+
+
+
+-- select * from product
+-- where prod_name = 'Adults Plain Cotton T-Shirt - 2 Pack';
+
+
+
+-- SELECT * 
+-- FROM order_detail NATURAL JOIN product;
+
+
+-- SELECT * 
+-- FROM order_detail
+
+-- select * from product;
+
+-- select * from payment;
+
+
+-- select user_name from users
+-- where user_id = 1;
+
+-- select * from users;
+
+
+-- SELECT prod_id, prod_name,  prod_price, rating_stars, rating_count
+-- FROM product 
+-- WHERE prod_price > ANY (
+--   SELECT prod_price 
+--   FROM product 
+--   WHERE rating_count > 150
+-- );
+
+
+select * from bill_detail
+
+SELECT SUM(bill_total_price) AS total_price 
+FROM bill_detail where pay_status = 'paid';
+
