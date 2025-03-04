@@ -15,17 +15,18 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const router = useRouter();
-  const { cartCount } = useCart();
+  const { cartCount, refreshCartCount } = useCart();
 
   useEffect(() => {
     // Check if user is admin when component mounts
     const user = localStorage.getItem("user");
-    console.log("User:", user);
     if (user) {
       const userData = JSON.parse(user);
       setIsAdmin(userData.is_admin);
+      // Refresh cart count when component mounts
+      refreshCartCount();
     }
-  }, []);
+  }, [refreshCartCount]);
 
   const handleLogout = async () => {
     try {
