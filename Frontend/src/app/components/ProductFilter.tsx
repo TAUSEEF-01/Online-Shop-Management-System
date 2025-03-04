@@ -3,6 +3,15 @@ import { Slider } from "@/app/components/ui/slider";
 import { Label } from "@/app/components/ui/label";
 import { Checkbox } from "@/app/components/ui/checkbox";
 import ProductCard from "../components/product-card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/app/components/ui/select";
+import { ArrowUpDown } from "lucide-react";
+import { useState } from "react";
 
 interface ProductFilterProps {
   categories: string[];
@@ -14,6 +23,7 @@ interface ProductFilterProps {
   setSearchTerm: (value: string) => void;
   loading: boolean;
   filteredProducts: any[];
+  onSort: (value: string) => void;
 }
 
 export default function ProductFilter({
@@ -26,7 +36,15 @@ export default function ProductFilter({
   setSearchTerm,
   loading,
   filteredProducts,
+  onSort,
 }: ProductFilterProps) {
+  const [sortValue, setSortValue] = useState("");
+
+  const handleSort = (value: string) => {
+    setSortValue(value);
+    onSort(value);
+  };
+
   return (
     <div className="flex flex-col md:flex-row mx-4">
       {/* Existing sidebar */}
@@ -37,49 +55,64 @@ export default function ProductFilter({
             <Label>Price Range</Label>
             <Slider
               min={0}
-              max={3000}
+              max={30000}
               step={10}
               value={priceRange}
               onValueChange={setPriceRange}
               className="mt-2 [&>.range-thumb]:rounded-full [&>.range-thumb]:bg-white [&>.range-thumb]:border-2 [&>.range-thumb]:border-black"
             />
             <div className="flex justify-between mt-2">
-              <span>${priceRange[0] / 100}</span>
-              <span>${priceRange[1] / 100}</span>
+              <span>${priceRange[0]/100}</span>
+              <span>${priceRange[1]/1000}</span>
             </div>
           </div>
-          <div className="max-h-[50vh] overflow-y-auto">
+            <div className="max-h-[65vh] overflow-y-auto">
             <Label className="mb-2">Categories</Label>
             {categories.map((category) => (
               <div key={category} className="flex items-center space-x-2 mt-1">
-                <Checkbox
-                  id={category}
-                  checked={selectedCategories.includes(category)}
-                  onCheckedChange={(checked) => {
-                    setSelectedCategories(
-                      checked
-                        ? [...selectedCategories, category]
-                        : selectedCategories.filter((c) => c !== category)
-                    );
-                  }}
-                />
-                <label htmlFor={category}>{category}</label>
+              <Checkbox
+                id={category}
+                checked={selectedCategories.includes(category)}
+                onCheckedChange={(checked) => {
+                setSelectedCategories(
+                  checked
+                  ? [...selectedCategories, category]
+                  : selectedCategories.filter((c) => c !== category)
+                );
+                }}
+              />
+              <label htmlFor={category}>{category}</label>
               </div>
             ))}
-          </div>
+            </div>
         </div>
       </aside>
 
-      {/* Main content area with sticky search */}
+      {/* Main content area with sticky search and sort */}
       <div className="flex-1 mx-4">
         <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md pt-4 pb-6 pl-2 pr-2">
-          <Input
-            type="search"
-            placeholder="Search products..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="py-2 px-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
-          />
+          <div className="flex items-center gap-4 mb-4">
+            <Input
+              type="search"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="py-2 px-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
+            />
+            <Select value={sortValue} onValueChange={handleSort}>
+              <SelectTrigger className="w-[180px]">
+                <div className="flex items-center gap-2">
+                  <ArrowUpDown className="h-4 w-4" />
+                  <SelectValue placeholder="Sort by" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                <SelectItem value="rating-desc">Highest Rating</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
         <div className="pt-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

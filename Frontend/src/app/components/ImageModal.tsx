@@ -9,7 +9,12 @@ interface ImageModalProps {
   imageAlt: string;
 }
 
-export default function ImageModal({ isOpen, onClose, imageUrl, imageAlt }: ImageModalProps) {
+export default function ImageModal({
+  isOpen,
+  onClose,
+  imageUrl,
+  imageAlt,
+}: ImageModalProps) {
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={onClose}>
@@ -37,7 +42,10 @@ export default function ImageModal({ isOpen, onClose, imageUrl, imageAlt }: Imag
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-3xl transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900">
+                <Dialog.Title
+                  as="h3"
+                  className="text-lg font-medium leading-6 text-gray-900"
+                >
                   Image Preview
                 </Dialog.Title>
                 <div className="mt-4">
