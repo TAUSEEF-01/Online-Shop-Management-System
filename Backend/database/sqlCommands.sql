@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS product (
     prod_id SERIAL PRIMARY KEY,
     prod_name VARCHAR(255) UNIQUE NOT NULL,
     prod_image VARCHAR(255) NOT NULL,
-    prod_quantity INTEGER NOT NULL,
+    prod_quantity INTEGER NOT NULL, 
     prod_price DECIMAL(10,2) NOT NULL,
     rating_stars INTEGER NOT NULL,
     rating_count INTEGER NOT NULL,
@@ -272,6 +272,9 @@ CREATE TABLE IF NOT EXISTS payment (
     order_id INT REFERENCES orders(order_id) NOT NULL,
     user_id INT REFERENCES users(user_id) NOT NULL
 );
+
+
+
 
 CREATE TABLE IF NOT EXISTS shopping_cart (
     cart_id SERIAL,

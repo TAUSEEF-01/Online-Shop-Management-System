@@ -96,6 +96,147 @@ router.post('/login', async (req, res) => {
     }
 });
 
+
+
+// // Logout
+// router.post('/logout', (req, res) => {
+//     try {
+//         if (!req.session.user) {
+//             return res.status(200).json({ message: "Already logged out" });
+//         }
+
+//         req.session.destroy((err) => {
+//             if (err) {
+//                 console.error('Logout error:', err);
+//                 return res.status(500).json({ message: "Could not log out" });
+//             }
+
+//             res.clearCookie('connect.sid');
+//             res.status(200).json({ message: "Logged out successfully" });
+//         });
+
+//         console.log('Cookies:', req.headers.cookie);
+
+//     } catch (error) {
+//         console.error('Logout error:', error);
+//         res.status(500).json({ message: "Server error during logout" });
+//     }
+// });
+
+
+
+// router.post('/logout', (req, res) => {
+
+//     console.log("Session in logout:", req.session);
+
+//     if (!req.session) {
+//         return res.status(200).json({ message: "Already logged out" });
+//     }
+
+//     req.session.destroy((err) => {
+//         if (err) {
+//             console.error('Logout error:', err);
+//             return res.status(500).json({ message: "Could not log out" });
+//         }
+
+//         req.session.destroy();
+
+//         // // Remove session from store
+//         // req.sessionStore.destroy(req.sessionID, () => {
+//         //     res.clearCookie('connect.sid'); // Default session cookie name
+//         //     res.status(200).json({ message: "Logged out successfully" });
+//         // });
+//     });
+// });
+
+
+
+// router.post('/logout', (req, res) => {
+//     console.log("Session in logout:", req.session); // Debugging
+
+//     if (!req.session) {
+//         return res.status(200).json({ message: "Already logged out" });
+//     }
+
+//     req.session.destroy((err) => {
+//         if (err) {
+//             console.error('Logout error:', err);
+//             return res.status(500).json({ message: "Could not log out" });
+//         }
+
+//         // Ensure session store is also cleared
+//         req.sessionStore.destroy(req.sessionID, () => {
+//             res.clearCookie('connect.sid'); // Default session cookie name
+//             return res.status(200).json({ message: "Logged out successfully" });
+//         });
+//     });
+// });
+
+
+
+// router.post('/logout', (req, res) => {
+//     console.log("Session in logout:", req.session); // Debugging
+
+//     if (!req.session) {
+//         return res.status(200).json({ message: "Already logged out" });
+//     }
+
+//     req.session.destroy((err) => {
+//         if (err) {
+//             console.error('Logout error:', err);
+//             return res.status(500).json({ message: "Could not log out" });
+//         }
+
+//         res.clearCookie('connect.sid', { path: '/' }); // Ensure session cookie is removed
+
+//         return res.status(200).json({ message: "Logged out successfully" });
+//     });
+// });
+
+router.post('/logout', (req, res) => { 
+    console.log("Session in logout:", req.session); // Debugging 
+ 
+    if (!req.session) { 
+        return res.status(200).json({ message: "Already logged out" }); 
+    } 
+ 
+    const cookieName = 'connect.sid'; // Confirm this is your actual cookie name
+    
+    req.session.destroy((err) => { 
+        if (err) { 
+            console.error('Logout error:', err); 
+            return res.status(500).json({ message: "Could not log out" }); 
+        } 
+        
+        // Try multiple approaches to ensure cookie is cleared
+        res.clearCookie(cookieName);
+        res.clearCookie(cookieName, { path: '/' });
+        res.clearCookie(cookieName, { 
+            path: '/',
+            httpOnly: true,
+            secure: false,
+            maxAge: 0,
+            expires: new Date(0)
+        });
+ 
+        return res.status(200).json({ message: "Logged out successfully" }); 
+    }); 
+});
+
+
+
+
+
+
+
+router.get('/status', (req, res) => {
+    if (req.session && req.session.user) {
+        return res.json({ isAuthenticated: true, user: req.session.user });
+    }
+    return res.json({ isAuthenticated: false });
+});
+
+
 // Check auth status
 router.get('/check-auth', async (req, res) => {
     try {
@@ -319,27 +460,7 @@ router.get('/users', async (req, res) => {
 
 
 
-// Logout
-router.post('/logout', (req, res) => {
-    try {
-        if (!req.session) {
-            return res.status(200).json({ message: "Already logged out" });
-        }
 
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Logout error:', err);
-                return res.status(500).json({ message: "Could not log out" });
-            }
-
-            res.clearCookie('sessionId');
-            res.status(200).json({ message: "Logged out successfully" });
-        });
-    } catch (error) {
-        console.error('Logout error:', error);
-        res.status(500).json({ message: "Server error during logout" });
-    }
-});
 
 module.exports = router;
 
