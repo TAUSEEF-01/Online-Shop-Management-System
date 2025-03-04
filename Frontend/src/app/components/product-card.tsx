@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { api } from "@/utils/api";
 import ImageModal from "./ImageModal";
+import { useCart } from "../context/CartContext";
 
 interface Rating {
   stars: number;
@@ -29,14 +30,14 @@ interface Product {
 export default function ProductCard({ product }: { product: Product }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { incrementCart } = useCart();
 
   const addToCart = async () => {
     setIsLoading(true);
     try {
       const userId = await api.getCurrentUserId();
-      console.log("Adding product to cart:", product.id, "for user:", userId);
       const result = await api.addToCart(Number(product.id), userId);
-      console.log("Cart response:", result);
+      incrementCart(); // Increment cart count after successful addition
       alert("Added to cart successfully!");
     } catch (error: any) {
       alert("Item has already been added to your cart.");
