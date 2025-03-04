@@ -159,6 +159,16 @@ export default function Signup() {
             Sign in
           </Link>
         </p>
+
+
+        {/* Add return to home button */}
+        <div className="text-center mt-4">
+          <Link href="/">
+            <Button className="w-full py-2.5 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-all duration-200 transform hover:scale-[1.02]">
+              Return to Home
+            </Button>
+          </Link>
+        </div>
       </div>
     </div>
   );

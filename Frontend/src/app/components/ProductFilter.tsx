@@ -52,7 +52,7 @@ export default function ProductFilter({
         <div className="space-y-6">
           <h2 className="text-xl font-semibold">Filters</h2>
           <div>
-            <Label>Price Range</Label>
+            <Label className="mb-2 block text-lg font-bold text-indigo-700">Price Range</Label>
             <Slider
               min={0}
               max={30000}
@@ -66,24 +66,29 @@ export default function ProductFilter({
               <span>${priceRange[1]/1000}</span>
             </div>
           </div>
-            <div className="max-h-[65vh] overflow-y-auto">
-            <Label className="mb-2">Categories</Label>
-            {categories.map((category) => (
-              <div key={category} className="flex items-center space-x-2 mt-1">
-              <Checkbox
-                id={category}
-                checked={selectedCategories.includes(category)}
-                onCheckedChange={(checked) => {
-                setSelectedCategories(
-                  checked
-                  ? [...selectedCategories, category]
-                  : selectedCategories.filter((c) => c !== category)
-                );
-                }}
-              />
-              <label htmlFor={category}>{category}</label>
+              <div>
+                <Label className="mb-2 block text-lg font-bold text-indigo-700">Categories</Label>
+              <div className="grid grid-cols-2 gap-2">
+                {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => {
+                  setSelectedCategories(
+                    selectedCategories.includes(category)
+                    ? selectedCategories.filter((c) => c !== category)
+                    : [...selectedCategories, category]
+                  );
+                  }}
+                  className={`py-2 px-4 rounded-full whitespace-nowrap text-sm ${
+                  selectedCategories.includes(category)
+                    ? 'bg-black text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {category}
+                </button>
+                ))}
               </div>
-            ))}
             </div>
         </div>
       </aside>
