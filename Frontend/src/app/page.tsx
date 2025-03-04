@@ -1,179 +1,3 @@
-// "use client";
-
-// import { useState, useEffect } from "react";
-// import Layout from "./components/layout";
-// import ProductCard from "./components/product-card";
-// import { Input } from "@/app/components/ui/input";
-// import { Slider } from "@/app/components/ui/slider";
-// import { Label } from "@/app/components/ui/label";
-// import { Checkbox } from "@/app/components/ui/checkbox";
-// import "./styles.css";
-// import { api } from '@/utils/api';
-// import ProtectedRoute from "./components/protected-route";
-
-// interface Product {
-//   prod_id: number;
-//   prod_name: string;
-//   prod_image: string;
-//   prod_quantity: number;
-//   prod_price: number;
-//   rating_stars: number;
-//   rating_count: number;
-//   prod_discount: number;
-//   prod_keywords: string[];
-// }
-
-// interface APIResponse {
-//   status: string;
-//   data: Product[];
-//   message: string;
-// }
-
-// export default function Home() {
-//   const categories = ['socks', 'basketballs', 'apparel', 'tshirts', 'sports', 'bathroom', 'mens', 'hoodies', 'sweaters', ' kitchen', 'cleaning', 'swimming', 'robe', 'swimsuit', 'accessories', 'Camera', 'DSLR', 'Photo'];
-//   const [products, setProducts] = useState<Product[]>([]);
-//   const [priceRange, setPriceRange] = useState([0, 300000]);
-//   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-//   const [searchTerm, setSearchTerm] = useState("");
-//   const [loading, setLoading] = useState(true);
-
-//   useEffect(() => {
-//     const fetchProducts = async () => {
-//       try {
-//         const result = await api.getAllProducts();
-//         // console.log('Raw API response:', result);
-
-//         if (result.status === 'success' && Array.isArray(result.data)) {
-//           console.log('Processed products:', result.data);
-//           setProducts(result.data);
-//         } else {
-//           console.error('Invalid response format:', result);
-//           setProducts([]);
-//         }
-//       } catch (error) {
-//         console.error('Error fetching products:', error);
-//         setProducts([]);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchProducts();
-//   }, []);
-
-
-//   const filteredProducts = Array.isArray(products) ? products.filter(
-//     (product) =>
-//       product.prod_price >= (priceRange[0] / 100) &&
-//       product.prod_price <= (priceRange[1] / 100) &&
-//       (selectedCategories.length === 0 ||
-//         product.prod_keywords?.some((keyword) =>
-//           selectedCategories.includes(keyword)
-//         )) &&
-//       product.prod_name.toLowerCase().includes(searchTerm.toLowerCase())
-//   ) : [];
-
-//   return (
-//     <ProtectedRoute>
-//       <Layout>
-//         <div className="flex flex-col md:flex-row">
-//           {/* Existing sidebar */}
-//           <aside className="w-full md:w-64 pr-8 mb-4 md:mb-0 md:sticky md:top-4 md:h-[calc(100vh-2rem)] overflow-auto">
-//             <div className="space-y-6">
-//               <h2 className="text-xl font-semibold">Filters</h2>
-//               <div>
-//                 <Label>Price Range</Label>
-//                 <Slider
-//                   min={0}
-//                   max={3000}
-//                   step={10}
-//                   value={priceRange}
-//                   onValueChange={setPriceRange}
-//                   className="mt-2 [&>.range-thumb]:rounded-full [&>.range-thumb]:bg-white [&>.range-thumb]:border-2 [&>.range-thumb]:border-black"
-//                 />
-//                 <div className="flex justify-between mt-2">
-//                   <span>${priceRange[0]/100}</span>
-//                   <span>${priceRange[1]/100}</span>
-//                 </div>
-//               </div>
-//               <div className="max-h-[50vh] overflow-y-auto">
-//                 <Label className="mb-2">Categories</Label>
-//                 {categories.map((category) => (
-//                   <div key={category} className="flex items-center space-x-2 mt-1">
-//                     <Checkbox
-//                       id={category}
-//                       checked={selectedCategories.includes(category)}
-//                       onCheckedChange={(checked) => {
-//                         setSelectedCategories(
-//                           checked
-//                             ? [...selectedCategories, category]
-//                             : selectedCategories.filter((c) => c !== category)
-//                         );
-//                       }}
-//                     />
-//                     <label htmlFor={category}>{category}</label>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           </aside>
-
-//           {/* Main content area with sticky search */}
-//           <div className="flex-1 mx-4">
-//               <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-md pt-4 pb-6 pl-2 pr-2">
-//               <Input
-//                 type="search"
-//                 placeholder="Search products..."
-//                 value={searchTerm}
-//                 onChange={(e) => setSearchTerm(e.target.value)}
-//                 className="py-2 px-4 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500"
-//               />
-//               {/* Add a pseudo-element for the shadow/gradient effect */}
-              
-//             </div>
-//             {/* Add padding-top to create space below sticky search */}
-//             <div className="pt-6">
-//               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-//                 {loading ? (
-//                   <p>Loading products...</p>
-//                 ) : (
-//                   filteredProducts.map((product) => (
-//                     <div key={product.prod_id} className="product-card">
-//                       <ProductCard 
-//                         product={{
-//                           id: product.prod_id.toString(),
-//                           name: product.prod_name,
-//                           image: product.prod_image,
-//                           priceCents: Math.round(product.prod_price * 100), // Convert dollars to cents for display
-//                           rating: {
-//                             stars: product.rating_stars,
-//                             count: product.rating_count
-//                           },
-//                           keywords: product.prod_keywords
-//                         }} 
-//                       />
-//                     </div>
-//                   ))
-//                 )}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </Layout>
-//     </ProtectedRoute>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import { useState } from "react";
@@ -181,18 +5,34 @@ import Link from "next/link";
 import { ArrowRight, ChevronRight, Star } from "lucide-react";
 import Image from "next/image";
 import logo from "./Featured_image.png";
+import ImageModal from "./components/ImageModal";
 
 export default function HomePage() {
   const [activeCategory, setActiveCategory] = useState("all");
-  
+  const [selectedImage, setSelectedImage] = useState<{
+    url: string;
+    name: string;
+  } | null>(null);
+
   const featuredProducts = [
     {
       id: 1,
       name: "Premium Leather Backpack",
       price: "$89.99",
       rating: 4.8,
-      image: "https://m.media-amazon.com/images/I/91yWDlPnDYL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
-      category: "accessories"
+      image:
+        "https://m.media-amazon.com/images/I/91yWDlPnDYL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+      category: "accessories",
+      description:
+        "Handcrafted genuine leather backpack with laptop compartment. Water-resistant, durable, and stylish.",
+      features: [
+        "Genuine leather",
+        "15-inch laptop pocket",
+        "Water-resistant",
+        "Multiple compartments",
+      ],
+      stockCount: 15,
+      discount: "10% OFF",
     },
     {
       id: 2,
@@ -200,7 +40,17 @@ export default function HomePage() {
       price: "$16.90",
       rating: 4.7,
       image: "https://m.media-amazon.com/images/I/716wB8xkndL._AC_SX679_.jpg",
-      category: "electronics"
+      category: "electronics",
+      description:
+        "Professional-grade blender with variable speed control. Perfect for smoothies, soups, and more.",
+      features: [
+        "1400W motor",
+        "64oz capacity",
+        "6 preset programs",
+        "Dishwasher safe",
+      ],
+      stockCount: 23,
+      discount: "15% OFF",
     },
     {
       id: 3,
@@ -208,29 +58,53 @@ export default function HomePage() {
       price: "$29.99",
       rating: 4.5,
       image: "https://m.media-amazon.com/images/I/71drNwPTpfL._AC_SX679_.jpg",
-      category: "clothing"
+      category: "clothing",
+      description:
+        "100% organic cotton t-shirt. Sustainably sourced and ethically manufactured.",
+      features: [
+        "100% organic",
+        "Pre-shrunk",
+        "Breathable fabric",
+        "Multiple colors",
+      ],
+      stockCount: 50,
+      discount: "Buy 2 Get 1 Free",
     },
     {
       id: 4,
       name: "Stainless Steel Water Bottle",
       price: "$24.99",
       rating: 4.9,
-      image: "https://m.media-amazon.com/images/I/614A3+XLTdL._AC_SY300_SX300_.jpg",
-      category: "lifestyle"
-    }
+      image:
+        "https://m.media-amazon.com/images/I/614A3+XLTdL._AC_SY300_SX300_.jpg",
+      category: "lifestyle",
+      description:
+        "Double-walled vacuum insulated bottle. Keeps drinks cold for 24 hours or hot for 12 hours.",
+      features: [
+        "24hr cold/12hr hot",
+        "BPA-free",
+        "Leak-proof",
+        "Multiple sizes",
+      ],
+      stockCount: 35,
+      discount: "20% OFF",
+    },
   ];
-  
+
   const categories = [
     { id: "all", name: "All Products" },
     { id: "clothing", name: "Clothing" },
     { id: "electronics", name: "Electronics" },
     { id: "accessories", name: "Accessories" },
-    { id: "lifestyle", name: "Lifestyle" }
+    { id: "lifestyle", name: "Lifestyle" },
   ];
-  
-  const filteredProducts = activeCategory === "all" 
-    ? featuredProducts 
-    : featuredProducts.filter(product => product.category === activeCategory);
+
+  const filteredProducts =
+    activeCategory === "all"
+      ? featuredProducts
+      : featuredProducts.filter(
+          (product) => product.category === activeCategory
+        );
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -272,49 +146,54 @@ export default function HomePage() {
         </div>
       </section> */}
 
+      <section className="relative bg-gray-100 py-20">
+        <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center md:space-x-12">
+          <div className="md:w-1/2 mb-10 md:mb-0">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+              Discover Quality Products for Every Need
+            </h1>
+            <p className="text-lg text-gray-600 mb-8">
+              Welcome to our carefully curated collection of premium products
+              designed to enhance your everyday life. From stylish accessories
+              to practical essentials, we've got you covered.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/Home">
+                <button className="bg-black hover:bg-gray-800 text-white font-medium py-3 px-8 rounded-md transition duration-300 flex items-center gap-2">
+                  Shop Now <ArrowRight size={18} />
+                </button>
+              </Link>
+              <Link href="/">
+                <button className="bg-white hover:bg-gray-50 text-gray-800 font-medium py-3 px-8 rounded-md border border-gray-300 transition duration-300">
+                  Learn More
+                </button>
+              </Link>
+            </div>
+          </div>
 
-<section className="relative bg-gray-100 py-20">
-  <div className="container mx-auto px-4 md:px-8 flex flex-col md:flex-row items-center md:space-x-12">
-    <div className="md:w-1/2 mb-10 md:mb-0">
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Discover Quality Products for Every Need</h1>
-      <p className="text-lg text-gray-600 mb-8">
-        Welcome to our carefully curated collection of premium products designed to enhance your everyday life. From stylish accessories to practical essentials, we've got you covered.
-      </p>
-      <div className="flex flex-col sm:flex-row gap-4">
-        <Link href="/Home">
-          <button className="bg-black hover:bg-gray-800 text-white font-medium py-3 px-8 rounded-md transition duration-300 flex items-center gap-2">
-            Shop Now <ArrowRight size={18} />
-          </button>
-        </Link>
-        <Link href="/">
-          <button className="bg-white hover:bg-gray-50 text-gray-800 font-medium py-3 px-8 rounded-md border border-gray-300 transition duration-300">
-            Learn More
-          </button>
-        </Link>
-      </div>
-    </div>
-
-    <div className="md:w-1/2 flex justify-center md:justify-end">
-      <div className="relative">
-        <Image
-          src={logo}
-          alt="Featured Collection"
-          width={300}
-          height={300}
-          className="rounded-lg shadow-lg object-cover"
-        />
-        <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-lg shadow-md">
-          <p className="text-sm font-semibold">New Spring Collection</p>
-          <p className="text-xs text-gray-500">Limited time offer</p>
+          <div className="md:w-1/2 flex justify-center md:justify-end">
+            <div className="relative">
+              <Image
+                src={logo}
+                alt="Featured Collection"
+                width={300}
+                height={300}
+                className="rounded-lg shadow-lg object-cover"
+              />
+              <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-lg shadow-md">
+                <p className="text-sm font-semibold">New Spring Collection</p>
+                <p className="text-xs text-gray-500">Limited time offer</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>  
-  </div>
-</section>
+      </section>
 
       {/* Categories Section */}
       <section className="py-16 bg-white">
+      
         <div className="container mx-auto px-4">
+
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-800">Featured Products</h2>
             <Link href="/Home" className="text-gray-600 hover:text-black flex items-center gap-1 text-sm font-medium">
@@ -337,33 +216,92 @@ export default function HomePage() {
               </button>
             ))}
           </div>
-          
+          {/* ...existing category buttons... */}
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {filteredProducts.map(product => (
-              <div key={product.id} className="group rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300">
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                className="group rounded-lg overflow-hidden border border-gray-200 hover:shadow-lg transition duration-300"
+              >
                 <div className="relative h-64 bg-gray-100">
-                  <img 
-                    src={product.image} 
+                  <img
+                    src={product.image}
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                   />
-                  <button className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white hover:bg-black hover:text-white text-black font-medium py-2 px-4 rounded-md transition-all duration-300 opacity-0 group-hover:opacity-100">
+                  {product.discount && (
+                    <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-md text-sm font-medium">
+                      {product.discount}
+                    </div>
+                  )}
+                  <button
+                    className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white hover:bg-black hover:text-white text-black font-medium py-2 px-4 rounded-md transition-all duration-300 opacity-0 group-hover:opacity-100"
+                    onClick={() =>
+                      setSelectedImage({
+                        url: product.image,
+                        name: product.name,
+                      })
+                    }
+                  >
                     Quick View
                   </button>
                 </div>
                 <div className="p-4">
-                  <div className="flex items-center gap-1 mb-2">
-                    <Star size={16} className="fill-yellow-400 text-yellow-400" />
-                    <span className="text-sm text-gray-600">{product.rating}</span>
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex items-center gap-1">
+                      <Star
+                        size={16}
+                        className="fill-yellow-400 text-yellow-400"
+                      />
+                      <span className="text-sm text-gray-600">
+                        {product.rating}
+                      </span>
+                    </div>
+                    <span className="text-sm text-gray-500">
+                      {product.stockCount} in stock
+                    </span>
                   </div>
-                  <h3 className="font-medium text-gray-800 mb-1">{product.name}</h3>
-                  <p className="font-bold text-gray-900">{product.price}</p>
+                  <h3 className="font-medium text-gray-800 mb-1">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-2 line-clamp-2">
+                    {product.description}
+                  </p>
+                  <div className="flex flex-wrap gap-1 mb-3">
+                    {product.features.map((feature, index) => (
+                      <span
+                        key={index}
+                        className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full"
+                      >
+                        {feature}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <p className="font-bold text-gray-900">{product.price}</p>
+                    {/* <button className="bg-black text-white px-3 py-1 rounded-md text-sm hover:bg-gray-800 transition-colors">
+                      Add to Cart
+                    </button> */}
+                  </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* ...existing other sections... */}
+
+      {/* Add Image Modal */}
+      {selectedImage && (
+        <ImageModal
+          isOpen={!!selectedImage}
+          onClose={() => setSelectedImage(null)}
+          imageUrl={selectedImage.url}
+          imageAlt={selectedImage.name}
+        />
+      )}
 
       {/* Benefits Section */}
       <section className="py-16 bg-gray-50">
@@ -426,15 +364,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
