@@ -261,23 +261,47 @@ const api = {
     return handleResponse(response);
   },
 
+  // checkAuth: async () => {
+  //   try {
+  //     const response = await fetch(`${API_BASE_URL}/auth/status`, {
+  //       ...defaultOptions,
+  //       method: 'GET',
+  //     });
+      
+  //     if (!response.ok) {
+  //       throw new Error('Authentication check failed');
+  //     }
+      
+  //     return await response.json();
+  //   } catch (error) {
+  //     console.error('Auth check error:', error);
+  //     return { authenticated: false };
+  //   }
+  // },
+
   checkAuth: async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/check-auth`, {
+
+      console.log('Checking authentication status', defaultOptions);
+
+      const response = await fetch(`${API_BASE_URL}/auth/status`, {
         ...defaultOptions,
         method: 'GET',
       });
-      
+
       if (!response.ok) {
         throw new Error('Authentication check failed');
       }
-      
-      return await response.json();
+
+      const data = await response.json();
+      console.log('Auth check response:', data);
+      return data.isAuthenticated; // Ensure it matches the backend response
     } catch (error) {
       console.error('Auth check error:', error);
-      return { authenticated: false };
+      return false; // Default to false if an error occurs
     }
   },
+
 
   getAllProducts: async () => {
     const response = await fetch(`${API_BASE_URL}/products/allProducts`, {

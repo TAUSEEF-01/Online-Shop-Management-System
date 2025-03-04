@@ -2,7 +2,7 @@
 
 /* Custom header styles */
 header {
-    background: linear-gradient(90deg, rgba(29,78,216,1) 0%, rgba(99,102,241,1) 100%);
+    background: linear-gradient(90deg, rgb(190, 203, 237) 0%, rgb(222, 222, 241) 100%);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
@@ -26,7 +26,7 @@ header {
   }
   
   input[type="search"]:focus {
-    border-color: #6366f1;
+    border-color: #e0e0f8;
     outline: none;
   }
   

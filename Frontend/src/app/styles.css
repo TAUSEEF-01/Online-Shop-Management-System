@@ -15,7 +15,7 @@ aside {
   }
   
   .slider .thumb {
-    background-color: #6366f1;
+    background-color: #dedff7;
     border-radius: 50%;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   }
@@ -27,7 +27,7 @@ aside {
   }
   
   input[type="checkbox"]:checked {
-    background-color: #6366f1;
+    background-color: #f6f6f6;
   }
   
   /* Product card */
@@ -45,7 +45,7 @@ aside {
   
   /* Header styles */
   header {
-    background: linear-gradient(90deg, rgba(29,78,216,1) 0%, rgba(99,102,241,1) 100%);
+    background: linear-gradient(90deg, rgb(229, 231, 238) 0%, rgb(198, 198, 233) 100%);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
@@ -77,13 +77,13 @@ aside {
   input[type="search"] {
     border-radius: 9999px;
     padding: 10px 15px;
-    background-color: #f3f4f6;
-    border: 2px solid #e5e7eb;
+    background-color: #fbfbfb;
+    border: 2px solid #becdeb;
     transition: all 0.3s ease-in-out;
   }
   
   input[type="search"]:focus {
-    border-color: #6366f1;
+    border-color: #acadf2;
     outline: none;
   }
   

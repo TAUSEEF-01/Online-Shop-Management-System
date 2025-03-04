@@ -37,6 +37,20 @@ app.use(cors({
 // }));
 
 
+// app.use(session({
+//   store: new MemoryStore({
+//       checkPeriod: 86400000 // Prune expired entries every 24h
+//   }),
+//   secret: 'abc@123',
+//   resave: false,
+//   saveUninitialized: false,
+//   cookie: {
+//       maxAge: 86400000, // 1 day in milliseconds
+//       httpOnly: true,
+//       secure: false // Set to true if using HTTPS
+//   }
+// }));
+
 app.use(session({
   store: new MemoryStore({
       checkPeriod: 86400000 // Prune expired entries every 24h
@@ -45,24 +59,37 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-      maxAge: 86400000, // 1 day in milliseconds
+      maxAge: 86400000, // 1 day
       httpOnly: true,
-      secure: false // Set to true if using HTTPS
+      secure: false,  // Set to `true` if using HTTPS
+      path: '/' // Ensure path matches the one in `res.clearCookie`
   }
 }));
 
+// // Modify session debug middleware to be more detailed
+// app.use((req, res, next) => {
+//   console.log('Session Debug:', {
+//     sessionID: req.sessionID,
+//     session: req.session,
+//     userId: req.session?.user?.id,
+//     isAuthenticated: !!req.session?.user,
+//     cookies: req.headers.cookie
+//   });
+//   next();
+// });
 
-// Modify session debug middleware to be more detailed
+
 app.use((req, res, next) => {
   console.log('Session Debug:', {
-    sessionID: req.sessionID,
-    session: req.session,
-    userId: req.session?.user?.id,
-    isAuthenticated: !!req.session?.user,
-    cookies: req.headers.cookie
+      sessionID: req.sessionID,
+      session: req.session,
+      userId: req.session?.user?.id || null,
+      isAuthenticated: !!req.session?.user,
+      cookies: req.headers.cookie
   });
   next();
 });
+
 
 app.use(express.json());
 
