@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:5000';
+const API_BASE_URL = "http://localhost:5000";
 
 export interface LoginData {
   user_email: string;
@@ -10,7 +10,7 @@ export interface SignupData {
   user_email: string;
   user_password: string;
   user_contact_no: string;
-  is_admin: boolean;
+  is_admin: boolean; // Add this line
 }
 
 export interface User {
@@ -101,68 +101,76 @@ const handleResponse = async (response: Response) => {
     }
     const data = await response.json();
     if (!response.ok) {
-      throw new Error(data.message || 'API request failed');
+      throw new Error(data.message || "API request failed");
     }
     return data;
   } catch (error) {
-    console.error('Response handling error:', error);
-    throw new Error('Failed to process server response');
+    console.error("Response handling error:", error);
+    throw new Error("Failed to process server response");
   }
 };
 
 const defaultHeaders = {
-  'Content-Type': 'application/json',
-  'Accept': 'application/json',
+  "Content-Type": "application/json",
+  Accept: "application/json",
 };
 
 const defaultOptions = {
-  credentials: 'include' as RequestCredentials,
+  credentials: "include" as RequestCredentials,
   headers: defaultHeaders,
 };
 
 const api = {
   login: async (data: LoginData) => {
     try {
-      console.log('Sending login request with data:', data);
-      
+      console.log("Sending login request with data:", data);
+
       const response = await fetch(`${API_BASE_URL}/auth/login`, {
         ...defaultOptions,
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify(data),
       });
-      
+
       const responseData = await response.json();
-      console.log('Login response:', responseData);
+      console.log("Login response:", responseData);
 
       if (!response.ok) {
-        throw new Error(responseData.message || 'Login failed');
+        throw new Error(responseData.message || "Login failed");
       }
-      
+
       return responseData;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error("Login error:", error);
       throw error;
     }
   },
 
   signup: async (data: SignupData) => {
+    // const response = await fetch(`${API_BASE_URL}/auth/signup`, {
+    //   ...defaultOptions,
+    //   method: "POST",
+    //   body: JSON.stringify(data),
+    // });
+
+    // if (!response.ok) {
+    //   throw new Error((await response.json()).message);
+    // }
+
+    // return response.json();
+
     const response = await fetch(`${API_BASE_URL}/auth/signup`, {
       ...defaultOptions,
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error((await response.json()).message);
-    }
-
-    return response.json();
+    return response.status === 200;
   },
 
   logout: async () => {
     const response = await fetch(`${API_BASE_URL}/auth/logout`, {
       ...defaultOptions,
-      method: 'POST',
+      method: "POST",
     });
     return response.json();
   },
@@ -170,11 +178,11 @@ const api = {
   getUserInfo: async () => {
     const response = await fetch(`${API_BASE_URL}/auth/user-info`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch user information');
+      throw new Error("Failed to fetch user information");
     }
 
     return response.json();
@@ -182,13 +190,13 @@ const api = {
 
   // Add to cart
   addToCart: async (prod_id: number, user_id: number) => {
-    console.log('Adding to cart:', { prod_id, user_id });
+    console.log("Adding to cart:", { prod_id, user_id });
     const response = await fetch(`${API_BASE_URL}/cart/add`, {
       ...defaultOptions,
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ prod_id, user_id }),
     });
-    
+
     return handleResponse(response);
   },
 
@@ -196,7 +204,7 @@ const api = {
   addToCartWithCartId: async (cartId: number, prod_id: number) => {
     const response = await fetch(`${API_BASE_URL}/cart/addToCart/${cartId}`, {
       ...defaultOptions,
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ prod_id }),
     });
     return handleResponse(response);
@@ -207,12 +215,12 @@ const api = {
     try {
       const response = await fetch(`${API_BASE_URL}/cart/items/${userId}`, {
         ...defaultOptions,
-        method: 'GET',
+        method: "GET",
       });
       return handleResponse(response);
     } catch (error) {
-      console.error('Failed to fetch cart items:', error);
-      throw new Error('Network error while fetching cart items');
+      console.error("Failed to fetch cart items:", error);
+      throw new Error("Network error while fetching cart items");
     }
   },
 
@@ -220,7 +228,7 @@ const api = {
   removeFromCart: async (cartId: number) => {
     const response = await fetch(`${API_BASE_URL}/cart/remove/${cartId}`, {
       ...defaultOptions,
-      method: 'DELETE',
+      method: "DELETE",
     });
     return handleResponse(response);
   },
@@ -228,7 +236,7 @@ const api = {
   clearCart: async (userId: number) => {
     const response = await fetch(`${API_BASE_URL}/cart/clear/${userId}`, {
       ...defaultOptions,
-      method: 'DELETE',
+      method: "DELETE",
     });
     return handleResponse(response);
   },
@@ -236,19 +244,22 @@ const api = {
   getCurrentUserId: async () => {
     const response = await fetch(`${API_BASE_URL}/auth/current-user`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
-    
+
     const data = await handleResponse(response);
     return data.userId;
   },
 
   getCurrentUserName: async (userId: number) => {
-    const response = await fetch(`${API_BASE_URL}/auth/current-user-name/${userId}`, {
-      ...defaultOptions,
-      method: 'GET',
-    });
-    
+    const response = await fetch(
+      `${API_BASE_URL}/auth/current-user-name/${userId}`,
+      {
+        ...defaultOptions,
+        method: "GET",
+      }
+    );
+
     const data = await handleResponse(response);
     return data.user_name;
   },
@@ -256,7 +267,7 @@ const api = {
   getCartIdByUserId: async (userId: number) => {
     const response = await fetch(`${API_BASE_URL}/cart/${userId}`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
     return handleResponse(response);
   },
@@ -267,11 +278,11 @@ const api = {
   //       ...defaultOptions,
   //       method: 'GET',
   //     });
-      
+
   //     if (!response.ok) {
   //       throw new Error('Authentication check failed');
   //     }
-      
+
   //     return await response.json();
   //   } catch (error) {
   //     console.error('Auth check error:', error);
@@ -281,32 +292,30 @@ const api = {
 
   checkAuth: async () => {
     try {
-
-      console.log('Checking authentication status', defaultOptions);
+      console.log("Checking authentication status", defaultOptions);
 
       const response = await fetch(`${API_BASE_URL}/auth/status`, {
         ...defaultOptions,
-        method: 'GET',
+        method: "GET",
       });
 
       if (!response.ok) {
-        throw new Error('Authentication check failed');
+        throw new Error("Authentication check failed");
       }
 
       const data = await response.json();
-      console.log('Auth check response:', data);
+      console.log("Auth check response:", data);
       return data.isAuthenticated; // Ensure it matches the backend response
     } catch (error) {
-      console.error('Auth check error:', error);
+      console.error("Auth check error:", error);
       return false; // Default to false if an error occurs
     }
   },
 
-
   getAllProducts: async () => {
     const response = await fetch(`${API_BASE_URL}/products/allProducts`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
     return handleResponse(response);
   },
@@ -314,7 +323,7 @@ const api = {
   createBill: async (data: BillData) => {
     const response = await fetch(`${API_BASE_URL}/billing/create`, {
       ...defaultOptions,
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
     return handleResponse(response);
@@ -323,7 +332,7 @@ const api = {
   getBillDetails: async () => {
     const response = await fetch(`${API_BASE_URL}/billing/details`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
     return handleResponse(response);
   },
@@ -331,7 +340,7 @@ const api = {
   getBillDetailsByOrderId: async (orderId: number) => {
     const response = await fetch(`${API_BASE_URL}/billing/details/${orderId}`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
     return handleResponse(response);
   },
@@ -339,7 +348,7 @@ const api = {
   createOrder: async (data: OrderData) => {
     const response = await fetch(`${API_BASE_URL}/orders/create`, {
       ...defaultOptions,
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
     return handleResponse(response);
@@ -348,7 +357,7 @@ const api = {
   createBillDetails: async (data: BillData) => {
     const response = await fetch(`${API_BASE_URL}/billing/create`, {
       ...defaultOptions,
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
     return handleResponse(response);
@@ -364,26 +373,34 @@ const api = {
   // },
 
   updatePaymentStatus: async (billId: number, newStatus: string) => {
-    const response = await fetch(`${API_BASE_URL}/billing/updatePaymentStatus`, {
-      ...defaultOptions,
-      method: 'PUT',
-      body: JSON.stringify({ billId, newStatus }),
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/billing/updatePaymentStatus`,
+      {
+        ...defaultOptions,
+        method: "PUT",
+        body: JSON.stringify({ billId, newStatus }),
+      }
+    );
     return handleResponse(response);
   },
 
   getBillingsByUserId: async (userId: number) => {
     const response = await fetch(`${API_BASE_URL}/billing/user/${userId}`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
     return handleResponse(response);
   },
 
-  updateProfile: async (data: { user_name: string; user_email: string; user_password: string; user_contact_no: string; }) => {
+  updateProfile: async (data: {
+    user_name: string;
+    user_email: string;
+    user_password: string;
+    user_contact_no: string;
+  }) => {
     const response = await fetch(`${API_BASE_URL}/auth/update-profile`, {
       ...defaultOptions,
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify(data),
     });
 
@@ -397,7 +414,7 @@ const api = {
   getAllUsers: async () => {
     const response = await fetch(`${API_BASE_URL}/auth/users`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
     return handleResponse(response);
   },
@@ -405,18 +422,21 @@ const api = {
   updateAdminStatus: async (userId: number, isAdmin: boolean) => {
     const response = await fetch(`${API_BASE_URL}/auth/update-admin-status`, {
       ...defaultOptions,
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify({ userId, isAdmin }),
     });
     return handleResponse(response);
   },
-  
+
   updateProductInfo: async (data: UpdateProductData) => {
-    const response = await fetch(`${API_BASE_URL}/products/update-product-info/${data.prod_id}`, {
-      ...defaultOptions,
-      method: 'PUT',
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/products/update-product-info/${data.prod_id}`,
+      {
+        ...defaultOptions,
+        method: "PUT",
+        body: JSON.stringify(data),
+      }
+    );
 
     if (!response.ok) {
       throw new Error((await response.json()).message);
@@ -426,34 +446,39 @@ const api = {
   },
 
   getProductInfo: async (endpoint: string) => {
-    const response = await fetch(`${API_BASE_URL}/products/get-product-info/${endpoint}`, {
-      ...defaultOptions,
-      method: 'GET',
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/products/get-product-info/${endpoint}`,
+      {
+        ...defaultOptions,
+        method: "GET",
+      }
+    );
     return handleResponse(response);
   },
 
   deleteProduct: async (productId: number) => {
-    const response = await fetch(`${API_BASE_URL}/products/delete/${productId}`, {
-      ...defaultOptions,
-      method: 'DELETE',
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/products/delete/${productId}`,
+      {
+        ...defaultOptions,
+        method: "DELETE",
+      }
+    );
     return handleResponse(response);
   },
 
   get: async (endpoint: string) => {
     const response = await fetch(`${API_BASE_URL}/products${endpoint}`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
     return handleResponse(response);
   },
 
-
   getPaymentDoneInfo: async (endpoint: string) => {
     const response = await fetch(`${API_BASE_URL}/billing${endpoint}`, {
       ...defaultOptions,
-      method: 'GET',
+      method: "GET",
     });
     return handleResponse(response);
   },
@@ -461,11 +486,11 @@ const api = {
   executeRawQuery: async (query: string): Promise<QueryResult> => {
     const response = await fetch(`${API_BASE_URL}/execute-query`, {
       ...defaultOptions,
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ query }),
     });
     return handleResponse(response);
-  }
+  },
 };
 
 export { api };
