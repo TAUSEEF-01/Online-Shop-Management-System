@@ -8,6 +8,7 @@ import { Card } from "@/app/components/ui/card";
 import AdminLayout from "../components/admin-layout";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
+import Image from "next/image";
 
 const categories = [
   "socks",
@@ -119,49 +120,70 @@ const EditProductPage = () => {
     </div>
   );
 
+  const renderImagePreview = () => (
+    <div className="md:col-span-2 mt-4">
+      <Label className="text-sm font-medium text-gray-700">Image Preview</Label>
+      <div className="mt-2 relative w-full h-[200px] rounded-lg overflow-hidden border border-gray-200">
+        {product?.prod_image ? (
+          <Image
+            src={product.prod_image}
+            alt="Product preview"
+            layout="fill"
+            objectFit="contain"
+            className="bg-white"
+          />
+        ) : (
+          <div className="flex items-center justify-center h-full bg-gray-50 text-gray-400">
+            No image URL provided
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   if (isLoading) {
     return (
-      // <AdminLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading product information...</p>
-          </div>
+      <AdminLayout>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading product information...</p>
         </div>
-      // </AdminLayout>
+      </div>
+      </AdminLayout>
     );
   }
 
   if (error) {
     return (
-      // <AdminLayout>
-        <div className="min-h-screen flex items-center justify-center">
-          <Card className="p-8 max-w-md w-full">
-            <div className="text-center">
-              <div className="text-red-500 text-5xl mb-4">⚠️</div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                Product Not Found
-              </h2>
-              <p className="text-gray-600 mb-8">{error}</p>
-              <div className="space-y-4">
-                <Button
-                  onClick={() => router.push("/update-product-info")}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                >
-                  Back to Products
-                </Button>
-                <Button
-                  onClick={() => window.location.reload()}
-                  variant="outline"
-                  className="w-full"
-                >
-                  Try Again
-                </Button>
-              </div>
+      <AdminLayout>
+      <div className="min-h-screen flex items-center justify-center">
+        <Card className="p-8 max-w-md w-full">
+          <div className="text-center">
+            <div className="text-red-500 text-5xl mb-4">⚠️</div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+              Product Not Found
+            </h2>
+            <p className="text-gray-600 mb-8">{error}</p>
+            <div className="space-y-4">
+              <Button
+                onClick={() => router.push("/update-product-info")}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                Back to Products
+              </Button>
+              <Button
+                onClick={() => window.location.reload()}
+                variant="outline"
+                className="w-full"
+              >
+                Try Again
+              </Button>
             </div>
-          </Card>
-        </div>
-      // </AdminLayout>
+          </div>
+        </Card>
+      </div>
+      </AdminLayout>
     );
   }
 
@@ -181,108 +203,109 @@ const EditProductPage = () => {
   };
 
   return (
-    // <AdminLayout>
-      <div className="max-w-4xl mx-auto py-8 px-4">
-        <Card className="backdrop-blur-sm bg-white/90 shadow-xl rounded-xl">
-          <div className="p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-              Edit Product Details
-            </h1>
+    <AdminLayout>
+    <div className="max-w-4xl mx-auto py-8 px-4">
+      <Card className="backdrop-blur-sm bg-white/90 shadow-xl rounded-xl">
+        <div className="p-8">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+            Edit Product Details
+          </h1>
 
-            <div className="space-y-8">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {renderFormField(
-                  "Product Name",
-                  "prod_name",
-                  "text",
-                  product.prod_name,
-                  handleInputChange
-                )}
-                {renderFormField(
-                  "Image URL",
-                  "prod_image",
-                  "text",
-                  product.prod_image,
-                  handleInputChange
-                )}
-                {renderFormField(
-                  "Quantity",
-                  "prod_quantity",
-                  "number",
-                  product.prod_quantity,
-                  handleInputChange
-                )}
-                {renderFormField(
-                  "Price",
-                  "prod_price",
-                  "number",
-                  product.prod_price,
-                  handleInputChange
-                )}
-                {renderFormField(
-                  "Rating Stars",
-                  "rating_stars",
-                  "number",
-                  product.rating_stars,
-                  handleInputChange
-                )}
-                {renderFormField(
-                  "Rating Count",
-                  "rating_count",
-                  "number",
-                  product.rating_count,
-                  handleInputChange
-                )}
-                {renderFormField(
-                  "Discount (%)",
-                  "prod_discount",
-                  "number",
-                  product.prod_discount,
-                  handleInputChange
-                )}
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {renderFormField(
+                "Product Name",
+                "prod_name",
+                "text",
+                product.prod_name,
+                handleInputChange
+              )}
+              {renderFormField(
+                "Image URL",
+                "prod_image",
+                "text",
+                product.prod_image,
+                handleInputChange
+              )}
+              {renderImagePreview()}
+              {renderFormField(
+                "Quantity",
+                "prod_quantity",
+                "number",
+                product.prod_quantity,
+                handleInputChange
+              )}
+              {renderFormField(
+                "Price",
+                "prod_price",
+                "number",
+                product.prod_price,
+                handleInputChange
+              )}
+              {renderFormField(
+                "Rating Stars",
+                "rating_stars",
+                "number",
+                product.rating_stars,
+                handleInputChange
+              )}
+              {renderFormField(
+                "Rating Count",
+                "rating_count",
+                "number",
+                product.rating_count,
+                handleInputChange
+              )}
+              {renderFormField(
+                "Discount (%)",
+                "prod_discount",
+                "number",
+                product.prod_discount,
+                handleInputChange
+              )}
 
-                <div className="md:col-span-2 space-y-2">
-                  <Label className="text-sm font-medium text-gray-700">
-                    Categories
-                  </Label>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mt-2">
-                    {categories.map((category) => (
-                      <button
-                        key={category}
-                        onClick={() => handleCategoryToggle(category)}
-                        className={`py-2 px-4 rounded-full text-sm transition-colors ${
-                          product.prod_keywords.includes(category)
-                            ? "bg-blue-600 text-white hover:bg-blue-700"
-                            : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                        }`}
-                      >
-                        {category}
-                      </button>
-                    ))}
-                  </div>
+              <div className="md:col-span-2 space-y-2">
+                <Label className="text-sm font-medium text-gray-700">
+                  Categories
+                </Label>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2 mt-2">
+                  {categories.map((category) => (
+                    <button
+                      key={category}
+                      onClick={() => handleCategoryToggle(category)}
+                      className={`py-2 px-4 rounded-full text-sm transition-colors ${
+                        product.prod_keywords.includes(category)
+                          ? "bg-blue-600 text-white hover:bg-blue-700"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                    >
+                      {category}
+                    </button>
+                  ))}
                 </div>
               </div>
+            </div>
 
-              <div className="flex justify-end gap-4 pt-6 border-t">
-                <Button
-                  onClick={handleDeleteProduct}
-                  variant="destructive"
-                  className="bg-red-500 hover:bg-red-600 transition-colors"
-                >
-                  Delete Product
-                </Button>
-                <Button
-                  onClick={handleUpdateProduct}
-                  className="bg-blue-600 hover:bg-blue-700 transition-colors"
-                >
-                  Update Product
-                </Button>
-              </div>
+            <div className="flex justify-end gap-4 pt-6 border-t">
+              <Button
+                onClick={handleDeleteProduct}
+                variant="destructive"
+                className="bg-red-500 hover:bg-red-600 transition-colors"
+              >
+                Delete Product
+              </Button>
+              <Button
+                onClick={handleUpdateProduct}
+                className="bg-blue-600 hover:bg-blue-700 transition-colors"
+              >
+                Update Product
+              </Button>
             </div>
           </div>
-        </Card>
-      </div>
-    // </AdminLayout>
+        </div>
+      </Card>
+    </div>
+    </AdminLayout>
   );
 };
 

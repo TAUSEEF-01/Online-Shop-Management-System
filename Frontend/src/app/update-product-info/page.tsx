@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { api, Product } from "../../utils/api";
 import ProductFilter from "../components/ProductFilter";
+import AdminLayout from "../components/admin-layout";
 
 const UpdateProductInfoPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -85,6 +86,7 @@ const UpdateProductInfoPage = () => {
   );
 
   return (
+    <AdminLayout>
     <div className="container mx-auto py-8">
       <ProductFilter
         categories={categories}
@@ -101,7 +103,9 @@ const UpdateProductInfoPage = () => {
         onEdit={handleEditClick}
       />
     </div>
+    </AdminLayout>
   );
+
 };
 
 export default UpdateProductInfoPage;

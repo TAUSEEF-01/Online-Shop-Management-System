@@ -223,6 +223,7 @@
 import { Card, Grid, Table, Title, Text, BarChart, Flex, Metric, Badge } from "@tremor/react";
 import Link from "next/link";
 import ProtectedRoute from "../components/protected-route";
+import AdminLayout from "../components/admin-layout";
 
 interface SaleData {
   date: string;
@@ -248,13 +249,13 @@ const dataFormatter = (number: number) => "$" + Intl.NumberFormat("us").format(n
 export default function AdminDashboard() {
   return (
     <ProtectedRoute>
+      <AdminLayout>
       <main className="p-6 md:p-12 bg-gradient-to-br from-white via-gray-100 to-gray-200 rounded-xl mx-auto max-w-7xl shadow-lg">
-        <Title className="text-3xl font-bold text-indigo-700 mb-4">Admin Dashboard
-          {/* <Badge size="xl" color="green"> */}
+        {/* <Title className="text-3xl font-bold text-indigo-700 mb-4">Admin Dashboard
           <Badge className="text-2xl font-bold text-green-700 ml-4"> 
             (Live)
           </Badge>
-        </Title>
+        </Title> */}
         {/* Header */}
         <Flex justifyContent="between" className="items-center">
           {/* <Flex justifyContent="start" className="space-x-3 items-center"> */}
@@ -433,6 +434,8 @@ export default function AdminDashboard() {
           </Table>
         </Card>
       </main>
+      </AdminLayout>
     </ProtectedRoute>
+   
   );
 }
