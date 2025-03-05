@@ -206,7 +206,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </Link> */}
           </nav>
 
-          <nav className="flex items-center space-x-6">
+          <nav className="flex items-center space-x-6 mr-3">
             {/* <div className="relative inline-block">
               <Link href="/cart" className="relative inline-flex items-center">
                 <ShoppingCart className="h-6 w-6 text-white hover:text-blue-200 transition-all" />
