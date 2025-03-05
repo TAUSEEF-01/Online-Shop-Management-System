@@ -121,20 +121,20 @@ const EditProductPage = () => {
 
   if (isLoading) {
     return (
-      <AdminLayout>
+      // <AdminLayout>
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
             <p className="text-gray-600">Loading product information...</p>
           </div>
         </div>
-      </AdminLayout>
+      // </AdminLayout>
     );
   }
 
   if (error) {
     return (
-      <AdminLayout>
+      // <AdminLayout>
         <div className="min-h-screen flex items-center justify-center">
           <Card className="p-8 max-w-md w-full">
             <div className="text-center">
@@ -161,7 +161,7 @@ const EditProductPage = () => {
             </div>
           </Card>
         </div>
-      </AdminLayout>
+      // </AdminLayout>
     );
   }
 
@@ -181,7 +181,7 @@ const EditProductPage = () => {
   };
 
   return (
-    <AdminLayout>
+    // <AdminLayout>
       <div className="max-w-4xl mx-auto py-8 px-4">
         <Card className="backdrop-blur-sm bg-white/90 shadow-xl rounded-xl">
           <div className="p-8">
@@ -282,7 +282,7 @@ const EditProductPage = () => {
           </div>
         </Card>
       </div>
-    </AdminLayout>
+    // </AdminLayout>
   );
 };
 
