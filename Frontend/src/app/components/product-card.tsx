@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { api } from "@/utils/api";
 import ImageModal from "./ImageModal";
+import { useCart } from "../context/CartContext";
 
 interface Rating {
   stars: number;
@@ -24,19 +25,26 @@ interface Product {
   rating: Rating;
   priceCents: number;
   keywords: string[];
+  onEdit?: () => void;
 }
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({
+  product,
+  isEditMode = false,
+}: {
+  product: Product;
+  isEditMode?: boolean;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { incrementCart } = useCart();
 
   const addToCart = async () => {
     setIsLoading(true);
     try {
       const userId = await api.getCurrentUserId();
-      console.log("Adding product to cart:", product.id, "for user:", userId);
       const result = await api.addToCart(Number(product.id), userId);
-      console.log("Cart response:", result);
+      incrementCart(); // Increment cart count after successful addition
       alert("Added to cart successfully!");
     } catch (error: any) {
       alert("Item has already been added to your cart.");
@@ -54,62 +62,81 @@ export default function ProductCard({ product }: { product: Product }) {
 
   return (
     <>
-      <Card className="h-[32rem] flex flex-col">
-        <CardHeader className="p-0 relative">
-          <div className="relative h-48 w-full">
+      <Card className="h-[32rem] flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white rounded-lg overflow-hidden">
+        <CardHeader className="p-0 relative group">
+          <div className="relative h-52 w-full overflow-hidden">
             <Image
               src={product.image || "/placeholder.svg"}
               alt={product.name}
               layout="fill"
               objectFit="cover"
-              className="transition-transform hover:scale-105"
+              className="transition-transform duration-500 group-hover:scale-110"
             />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
           </div>
           <Button
-            className="absolute top-2 right-2 bg-white/80 backdrop-blur-md p-2 rounded-full"
+            className="absolute top-2 right-2 bg-white/80 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white"
             onClick={() => setIsModalOpen(true)}
           >
             <Eye className="h-5 w-5 text-gray-700" />
           </Button>
         </CardHeader>
-        <CardContent className="p-4 flex-1">
-          <CardTitle className="text-lg mb-2 line-clamp-2 h-14">
+
+        <CardContent className="p-6 flex-1">
+          <CardTitle className="text-lg font-semibold mb-3 line-clamp-2 h-14 text-gray-800">
             {product.name}
           </CardTitle>
-          <div className="flex items-center mb-2">
+
+          <div className="flex items-center mb-3">
             {[...Array(5)].map((_, i) => (
               <Star
                 key={i}
-                className={`h-5 w-5 ${
+                className={`h-4 w-4 ${
                   i < Math.floor(product.rating.stars)
                     ? "text-yellow-400 fill-current"
-                    : "text-gray-300"
+                    : "text-gray-200"
                 }`}
               />
             ))}
-            <span className="ml-2 text-sm text-gray-600">
-              {product.rating.count} reviews
+            <span className="ml-2 text-sm text-gray-500">
+              ({product.rating.count})
             </span>
           </div>
-          <p className="text-2xl font-bold mb-2">
+
+          <p className="text-2xl font-bold mb-3 text-blue-600">
             {formatPrice(product.priceCents)}
           </p>
-          <div className="flex flex-wrap gap-1 mb-2 max-h-20 overflow-y-auto">
+
+          <div className="flex flex-wrap gap-1.5 mb-3 max-h-20 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200">
             {product.keywords.map((keyword, index) => (
               <span
                 key={index}
-                className="bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs"
+                className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium hover:bg-gray-200 transition-colors"
               >
                 {keyword}
               </span>
             ))}
           </div>
         </CardContent>
-        <CardFooter className="mt-auto">
-          <Button className="w-full" onClick={addToCart} disabled={isLoading}>
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            {isLoading ? "Adding..." : "Add to Cart"}
-          </Button>
+
+        <CardFooter className="p-6 pt-0">
+          {isEditMode ? (
+            <Button
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg"
+              onClick={product.onEdit}
+            >
+              Edit Product
+            </Button>
+          ) : (
+            <Button
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg disabled:opacity-50"
+              onClick={addToCart}
+              disabled={isLoading}
+            >
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              {isLoading ? "Adding..." : "Add to Cart"}
+            </Button>
+          )}
         </CardFooter>
       </Card>
 
