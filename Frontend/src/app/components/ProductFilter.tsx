@@ -24,6 +24,8 @@ interface ProductFilterProps {
   loading: boolean;
   filteredProducts: any[];
   onSort: (value: string) => void;
+  isEditMode?: boolean;
+  onEdit?: (productId: number) => void;
 }
 
 export default function ProductFilter({
@@ -37,6 +39,8 @@ export default function ProductFilter({
   loading,
   filteredProducts,
   onSort,
+  isEditMode = false,
+  onEdit,
 }: ProductFilterProps) {
   const [sortValue, setSortValue] = useState("");
 
@@ -52,7 +56,9 @@ export default function ProductFilter({
         <div className="space-y-6">
           <h2 className="text-xl font-semibold">Filters</h2>
           <div>
-            <Label className="mb-2 block text-lg font-bold text-indigo-700">Price Range</Label>
+            <Label className="mb-2 block text-lg font-bold text-indigo-700">
+              Price Range
+            </Label>
             <Slider
               min={0}
               max={30000}
@@ -62,34 +68,36 @@ export default function ProductFilter({
               className="mt-2 [&>.range-thumb]:rounded-full [&>.range-thumb]:bg-white [&>.range-thumb]:border-2 [&>.range-thumb]:border-black"
             />
             <div className="flex justify-between mt-2">
-              <span>${priceRange[0]/100}</span>
-              <span>${priceRange[1]/1000}</span>
+              <span>${priceRange[0] / 100}</span>
+              <span>${priceRange[1] / 1000}</span>
             </div>
           </div>
-              <div>
-                <Label className="mb-2 block text-lg font-bold text-indigo-700">Categories</Label>
-              <div className="grid grid-cols-2 gap-2">
-                {categories.map((category) => (
+          <div>
+            <Label className="mb-2 block text-lg font-bold text-indigo-700">
+              Categories
+            </Label>
+            <div className="grid grid-cols-2 gap-2">
+              {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => {
-                  setSelectedCategories(
-                    selectedCategories.includes(category)
-                    ? selectedCategories.filter((c) => c !== category)
-                    : [...selectedCategories, category]
-                  );
+                    setSelectedCategories(
+                      selectedCategories.includes(category)
+                        ? selectedCategories.filter((c) => c !== category)
+                        : [...selectedCategories, category]
+                    );
                   }}
                   className={`py-2 px-4 rounded-full whitespace-nowrap text-sm ${
-                  selectedCategories.includes(category)
-                    ? 'bg-black text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    selectedCategories.includes(category)
+                      ? "bg-black text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                   }`}
                 >
                   {category}
                 </button>
-                ))}
-              </div>
+              ))}
             </div>
+          </div>
         </div>
       </aside>
 
@@ -131,13 +139,15 @@ export default function ProductFilter({
                       id: product.prod_id.toString(),
                       name: product.prod_name,
                       image: product.prod_image,
-                      priceCents: Math.round(product.prod_price * 100), // Convert dollars to cents for display
+                      priceCents: Math.round(product.prod_price * 100),
                       rating: {
-                        stars: product.rating_stars,
-                        count: product.rating_count,
+                        stars: product.rating_stars || 0,
+                        count: product.rating_count || 0,
                       },
-                      keywords: product.prod_keywords,
+                      keywords: product.prod_keywords || [],
+                      onEdit: () => onEdit && onEdit(product.prod_id),
                     }}
+                    isEditMode={isEditMode}
                   />
                 </div>
               ))

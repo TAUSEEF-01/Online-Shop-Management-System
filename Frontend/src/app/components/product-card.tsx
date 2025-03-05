@@ -25,9 +25,16 @@ interface Product {
   rating: Rating;
   priceCents: number;
   keywords: string[];
+  onEdit?: () => void;
 }
 
-export default function ProductCard({ product }: { product: Product }) {
+export default function ProductCard({
+  product,
+  isEditMode = false,
+}: {
+  product: Product;
+  isEditMode?: boolean;
+}) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { incrementCart } = useCart();
@@ -113,14 +120,23 @@ export default function ProductCard({ product }: { product: Product }) {
         </CardContent>
 
         <CardFooter className="p-6 pt-0">
-          <Button
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg disabled:opacity-50"
-            onClick={addToCart}
-            disabled={isLoading}
-          >
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            {isLoading ? "Adding..." : "Add to Cart"}
-          </Button>
+          {isEditMode ? (
+            <Button
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg"
+              onClick={product.onEdit}
+            >
+              Edit Product
+            </Button>
+          ) : (
+            <Button
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg disabled:opacity-50"
+              onClick={addToCart}
+              disabled={isLoading}
+            >
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              {isLoading ? "Adding..." : "Add to Cart"}
+            </Button>
+          )}
         </CardFooter>
       </Card>
 
