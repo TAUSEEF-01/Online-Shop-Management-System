@@ -1,7 +1,9 @@
 "use client";
-import { useEffect, useState } from 'react';
+
+import { useEffect, useState } from "react";
 import { Card, Table, Title, Text, Button } from "@tremor/react";
-import { api } from '../../utils/api';
+import { api } from "../../utils/api";
+import { Users, Shield, ShieldOff } from "lucide-react";
 
 interface User {
   id: number;
@@ -29,53 +31,120 @@ export default function UsersPage() {
   const toggleAdminStatus = async (userId: number, isAdmin: boolean) => {
     try {
       await api.updateAdminStatus(userId, !isAdmin);
-      setUsers(users.map(user => user.id === userId ? { ...user, is_admin: !isAdmin } : user));
+      setUsers(
+        users.map((user) =>
+          user.id === userId ? { ...user, is_admin: !isAdmin } : user
+        )
+      );
     } catch (error) {
       console.error("Failed to update admin status:", error);
     }
   };
 
   return (
-    <main className="p-6 md:p-12 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 rounded-xl mx-auto max-w-7xl shadow-md">
-      <Title className="text-2xl font-semibold">All Users</Title>
-      <Text className="mt-2 text-gray-600">List of all registered users</Text>
-      <Card className="mt-6 shadow-lg">
-        <Table className="mt-6 border-t border-gray-200">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="px-4 py-2 text-left">ID</th>
-              <th className="px-4 py-2 text-left">Name</th>
-              <th className="px-4 py-2 text-left">Email</th>
-              <th className="px-4 py-2 text-left">Admin</th>
-              <th className="px-4 py-2 text-left">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id} className="hover:bg-gray-50">
-                <td className="px-4 py-2">{user.id}</td>
-                <td className="px-4 py-2">{user.name}</td>
-                <td className="px-4 py-2">{user.email}</td>
-                <td className="px-4 py-2">{user.is_admin ? "Yes" : "No"}</td>
-                <td className="px-4 py-2">
-                  <div className="flex space-x-2">
-                    <Button
-                      size="xs"
-                      variant="secondary"
-                      color={user.is_admin ? "red" : "green"}
-                      onClick={() => toggleAdminStatus(user.id, user.is_admin)}
-                      className="transition-all duration-200 hover:shadow-md rounded-full px-4 py-2"
-                    >
-                      {user.is_admin ? "Remove Admin" : "Make Admin"}
-                    </Button>
-                    
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </Card>
-    </main>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <main className="container mx-auto p-8">
+        <div className="mb-8 text-center">
+          <div className="inline-flex p-4 bg-blue-100 rounded-full mb-4">
+            <Users className="h-8 w-8 text-blue-600" />
+          </div>
+          <Title className="text-3xl font-bold text-gray-900">
+            User Management
+          </Title>
+          <Text className="mt-2 text-gray-600">
+            Manage user roles and permissions
+          </Text>
+        </div>
+
+        <Card className="overflow-hidden rounded-xl border border-gray-200 bg-white/80 backdrop-blur-sm shadow-xl">
+          <div className="overflow-x-auto">
+            <Table className="w-full">
+              <thead>
+                <tr className="bg-gradient-to-r from-blue-50 to-purple-50">
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    ID
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    Name
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    Email
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    Role
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {users.map((user) => (
+                  <tr
+                    key={user.id}
+                    className="transition-colors hover:bg-gray-50"
+                  >
+                    <td className="px-6 py-4 text-sm text-gray-900">
+                      #{user.id}
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center">
+                        <div className="h-8 w-8 flex-shrink-0 rounded-full bg-gradient-to-r from-blue-200 to-purple-200 flex items-center justify-center">
+                          <span className="text-sm font-medium text-blue-800">
+                            {user.name.charAt(0).toUpperCase()}
+                          </span>
+                        </div>
+                        <div className="ml-4">
+                          <div className="text-sm font-medium text-gray-900">
+                            {user.name}
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-600">
+                      {user.email}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
+                          user.is_admin
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-gray-100 text-gray-800"
+                        }`}
+                      >
+                        {user.is_admin ? "Admin" : "User"}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <Button
+                        size="xs"
+                        variant="secondary"
+                        color={user.is_admin ? "red" : "blue"}
+                        onClick={() =>
+                          toggleAdminStatus(user.id, user.is_admin)
+                        }
+                        className="inline-flex items-center px-4 py-2 rounded-full transition-all duration-200 hover:shadow-lg"
+                      >
+                        {user.is_admin ? (
+                          <>
+                            <ShieldOff className="w-4 h-4 mr-2" />
+                            Remove Admin
+                          </>
+                        ) : (
+                          <>
+                            <Shield className="w-4 h-4 mr-2" />
+                            Make Admin
+                          </>
+                        )}
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          </div>
+        </Card>
+      </main>
+    </div>
   );
 }
