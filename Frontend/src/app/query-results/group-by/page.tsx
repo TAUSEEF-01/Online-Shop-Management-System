@@ -25,7 +25,7 @@ export default function QueryExecutionPage() {
           SELECT user_id, COUNT(*) AS order_count 
           FROM orders 
           GROUP BY user_id;
-        `);
+        `); 
         if (response.success) {
           setResults(response.data);
           setFilteredResults(response.data);
