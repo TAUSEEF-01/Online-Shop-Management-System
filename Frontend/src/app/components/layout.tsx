@@ -73,32 +73,32 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <nav className="hidden md:flex items-center justify-center space-x-8 flex-1 mx-8">
             <Link
               href="/"
-              className={`text-white hover:text-blue-200 uppercase font-medium text-sm tracking-wider border-b-2 ${
-              window.location.pathname === "/" ? "border-white" : "border-transparent"
+              className={`text-black hover:text-blue-600 uppercase font-medium text-sm tracking-wider border-b-2 ${
+              window.location.pathname === "/" ? "border-black" : "border-transparent"
               }`}
             >
               Home
             </Link>
             <Link
               href="/Home"
-              className={`text-white hover:text-blue-200 uppercase font-medium text-sm tracking-wider border-b-2 ${
-              window.location.pathname === "/Home" ? "border-white" : "border-transparent"
+              className={`text-black hover:text-blue-600 uppercase font-medium text-sm tracking-wider border-b-2 ${
+              window.location.pathname === "/Home" ? "border-black" : "border-transparent"
               }`}
             >
               Collection
             </Link>
             <Link
               href="/about"
-              className={`text-white hover:text-blue-200 uppercase font-medium text-sm tracking-wider border-b-2 ${
-              window.location.pathname === "/about" ? "border-white" : "border-transparent"
+              className={`text-black hover:text-blue-600 uppercase font-medium text-sm tracking-wider border-b-2 ${
+              window.location.pathname === "/about" ? "border-black" : "border-transparent"
               }`}
             >
               About
             </Link>
             <Link
               href="/contact"
-              className={`text-white hover:text-blue-200 uppercase font-medium text-sm tracking-wider border-b-2 ${
-              window.location.pathname === "/contact" ? "border-white" : "border-transparent"
+              className={`text-black hover:text-blue-600 uppercase font-medium text-sm tracking-wider border-b-2 ${
+              window.location.pathname === "/contact" ? "border-black" : "border-transparent"
               }`}
             >
               Contact
@@ -108,7 +108,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <nav className="flex items-center space-x-6">
             <div className="relative inline-block">
               <Link href="/cart" className="relative inline-flex items-center">
-                <ShoppingCart className="h-6 w-6 text-white hover:text-blue-200 transition-all" />
+                <ShoppingCart className="h-6 w-6 text-black hover:text-blue-600 transition-all" />
                 {cartCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
                     {cartCount}
@@ -119,7 +119,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             <div className="relative">
               <User
-                className="h-6 w-6 text-white hover:text-blue-200 transition-all cursor-pointer"
+                className="h-6 w-6 text-black hover:text-blue-600 transition-all cursor-pointer"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               />
               <div

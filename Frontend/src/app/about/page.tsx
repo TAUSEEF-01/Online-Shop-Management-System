@@ -88,7 +88,7 @@ export default function About() {
           ))}
         </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-12 text-center mb-10">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-500 rounded-2xl p-12 text-center mb-10">
           <h2 className="text-3xl font-bold text-white mb-6">Stay Connected</h2>
           <div className="max-w-md mx-auto">
             <div className="flex flex-col sm:flex-row gap-4">

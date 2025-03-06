@@ -187,7 +187,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             <div className="relative">
               <User
-                className="h-6 w-6 text-white hover:text-blue-200 transition-all cursor-pointer"
+                className="h-6 w-6 text-black hover:text-blue-600 transition-all cursor-pointer"
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
               />
               <div

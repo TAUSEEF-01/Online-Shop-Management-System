@@ -2,7 +2,8 @@
 
 /* Custom header styles */
 header {
-    background: linear-gradient(90deg, rgb(190, 203, 237) 0%, rgb(222, 222, 241) 100%);
+    /* background: linear-gradient(90deg, rgb(190, 203, 237) 0%, rgb(222, 222, 241) 100%); */
+    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(235, 229, 229) 100%);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
   
