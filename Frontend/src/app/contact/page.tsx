@@ -65,13 +65,13 @@ export default function Contact() {
               </div>
             </div>
 
-            <button className="bg-blue-600 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+            <button className="bg-blue-500 text-white px-8 py-4 rounded-full font-semibold hover:bg-blue-700 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
               Send Message
             </button>
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-600 to-blue-800 rounded-2xl p-12 text-center">
+        <div className="bg-gradient-to-r from-blue-500 to-blue-500 rounded-2xl p-12 text-center">
           <h2 className="text-3xl font-bold text-white mb-6">Stay Updated</h2>
           <div className="max-w-md mx-auto">
             <div className="flex flex-col sm:flex-row gap-4">
