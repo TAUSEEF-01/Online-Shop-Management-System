@@ -188,12 +188,14 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-white p-6 rounded-xl shadow-lg">
               <Link href="/query-results/natural-join">
                 <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Natural Join
+                  Order and User details
+                  {/* Natural Join */}
                 </button>
               </Link>
               <Link href="/query-results/cross-product">
                 <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Cross Product
+                  Order details and Bill details 
+                  {/* cross product */}
                 </button>
               </Link>
               <Link href="/query-results/outer-join">

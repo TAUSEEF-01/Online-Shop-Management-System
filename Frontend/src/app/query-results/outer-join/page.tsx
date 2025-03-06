@@ -1,76 +1,7 @@
-// "use client";
-// import { useEffect, useState } from "react";
-// import { Card, Table, Title, Text } from "@tremor/react";
-// import { api } from "../../../utils/api";
-// import ProtectedRoute from "../../components/protected-route";
-
-// interface OuterJoinResult {
-//   order_id: number;
-//   user_id: number;
-//   order_date: string;
-//   order_status: string;
-//   user_name: string;
-// }
-
-// export default function OuterJoinResultsPage() {
-//   const [outerJoinResults, setOuterJoinResults] = useState<OuterJoinResult[]>([]);
-
-//   useEffect(() => {
-//     const fetchOuterJoinResults = async () => {
-//       try {
-//         console.log("Fetching outer join results...");
-//         const response = await api.get('/outer-join');
-//         const rows = response?.results || [];
-//         setOuterJoinResults(rows);
-//       } catch (error) {
-//         console.error("Error fetching outer join results:", error);
-//       }
-//     };
-
-//     fetchOuterJoinResults();
-//   }, []);
-
-//   return (
-//     <ProtectedRoute>
-//       <main className="p-6 md:p-12 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 rounded-xl mx-auto max-w-7xl shadow-md">
-//         <Title className="text-2xl font-semibold">Outer Join Results</Title>
-//         <Text className="mt-2 text-gray-600">Results of the outer join query</Text>
-//         <Card className="mt-6 shadow-lg">
-//           <Table className="mt-6 border-t border-gray-200">
-//             <thead className="bg-gray-100">
-//               <tr>
-//                 <th className="px-4 py-2 text-left">Order ID</th>
-//                 <th className="px-4 py-2 text-left">User ID</th>
-//                 <th className="px-4 py-2 text-left">Order Date</th>
-//                 <th className="px-4 py-2 text-left">Order Status</th>
-//                 <th className="px-4 py-2 text-left">User Name</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {outerJoinResults.map((result, index) => (
-//                 <tr key={index} className="hover:bg-gray-50">
-//                   <td className="px-4 py-2">{result.order_id}</td>
-//                   <td className="px-4 py-2">{result.user_id}</td>
-//                   <td className="px-4 py-2">{result.order_date}</td>
-//                   <td className="px-4 py-2">{result.order_status}</td>
-//                   <td className="px-4 py-2">{result.user_name}</td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </Table>
-//         </Card>
-//       </main>
-//     </ProtectedRoute>
-//   );
-// }
-
-
-
-
-'use client';
-import { useEffect, useState } from 'react';
-import { api, QueryResult } from '../../../utils/api';
-import { Filter, Search, AlertTriangle } from 'lucide-react';
+"use client";
+import { useEffect, useState } from "react";
+import { api, QueryResult } from "../../../utils/api";
+import { Filter, Search, AlertTriangle, Database } from "lucide-react";
 
 export default function QueryExecutionPage() {
   const [results, setResults] = useState<any[] | null>(null);
@@ -80,13 +11,13 @@ export default function QueryExecutionPage() {
 
   // Update filtering states
   const [filters, setFilters] = useState({
-    order_id: '',
-    user_id: '',
-    order_date: '',
-    total_amt_min: '',
-    total_amt_max: '',
-    order_status: '',
-    user_name: ''
+    order_id: "",
+    user_id: "",
+    order_date: "",
+    total_amt_min: "",
+    total_amt_max: "",
+    order_status: "",
+    user_name: "",
   });
 
   useEffect(() => {
@@ -104,10 +35,10 @@ export default function QueryExecutionPage() {
           setResults(response.data);
           setFilteredResults(response.data);
         } else {
-          setError(response.error || 'Query execution failed');
+          setError(response.error || "Query execution failed");
         }
       } catch (err: any) {
-        setError(err.message || 'An error occurred while executing the query');
+        setError(err.message || "An error occurred while executing the query");
         setResults(null);
         setFilteredResults(null);
       } finally {
@@ -121,7 +52,7 @@ export default function QueryExecutionPage() {
   useEffect(() => {
     if (!results) return;
 
-    const filtered = results.filter(row => {
+    const filtered = results.filter((row) => {
       const orderIdMatch = filters.order_id
         ? String(row.order_id).includes(filters.order_id)
         : true;
@@ -134,19 +65,32 @@ export default function QueryExecutionPage() {
         ? String(row.order_date).includes(filters.order_date)
         : true;
 
-      const totalAmtMatch = 
-        (!filters.total_amt_min || parseFloat(row.total_amt) >= parseFloat(filters.total_amt_min)) &&
-        (!filters.total_amt_max || parseFloat(row.total_amt) <= parseFloat(filters.total_amt_max));
+      const totalAmtMatch =
+        (!filters.total_amt_min ||
+          parseFloat(row.total_amt) >= parseFloat(filters.total_amt_min)) &&
+        (!filters.total_amt_max ||
+          parseFloat(row.total_amt) <= parseFloat(filters.total_amt_max));
 
       const statusMatch = filters.order_status
-        ? String(row.order_status).toLowerCase().includes(filters.order_status.toLowerCase())
+        ? String(row.order_status)
+            .toLowerCase()
+            .includes(filters.order_status.toLowerCase())
         : true;
 
       const userNameMatch = filters.user_name
-        ? String(row.user_name).toLowerCase().includes(filters.user_name.toLowerCase())
+        ? String(row.user_name)
+            .toLowerCase()
+            .includes(filters.user_name.toLowerCase())
         : true;
 
-      return orderIdMatch && userIdMatch && orderDateMatch && totalAmtMatch && statusMatch && userNameMatch;
+      return (
+        orderIdMatch &&
+        userIdMatch &&
+        orderDateMatch &&
+        totalAmtMatch &&
+        statusMatch &&
+        userNameMatch
+      );
     });
 
     setFilteredResults(filtered);
@@ -154,94 +98,134 @@ export default function QueryExecutionPage() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="w-full mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
-        <div className="p-6">
-          {/* Update filter inputs */}
-          <div className="mb-4 grid grid-cols-3 gap-4">
-            <div className="relative">
-              <input
-                type="text"
-                name="order_id"
-                placeholder="Search Order ID"
-                value={filters.order_id}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-purple-50 to-gray-100 p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2 animate-fade-in">
+            Outer Join Query Results
+          </h1>
+          <p className="text-gray-600">
+            Viewing all records including non-matching ones
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+          {/* Filters Section */}
+          <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-gray-50">
+            <div className="flex items-center gap-2 mb-4">
+              <Database className="text-purple-600" size={24} />
+              <h2 className="text-xl font-semibold text-gray-800">
+                Filter Results
+              </h2>
             </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="user_id"
-                placeholder="Search User ID"
-                value={filters.user_id}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="order_date"
-                placeholder="Search Order Date"
-                value={filters.order_date}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="total_amt_min"
-                placeholder="Min Total Amount"
-                value={filters.total_amt_min}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="total_amt_max"
-                placeholder="Max Total Amount"
-                value={filters.total_amt_max}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="order_status"
-                placeholder="Search Status"
-                value={filters.order_status}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="user_name"
-                placeholder="Search User Name"
-                value={filters.user_name}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
+
+            <div className="mb-4 grid grid-cols-3 gap-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  name="order_id"
+                  placeholder="Search Order ID"
+                  value={filters.order_id}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Search
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="user_id"
+                  placeholder="Search User ID"
+                  value={filters.user_id}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Search
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="order_date"
+                  placeholder="Search Order Date"
+                  value={filters.order_date}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Search
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="total_amt_min"
+                  placeholder="Min Total Amount"
+                  value={filters.total_amt_min}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="total_amt_max"
+                  placeholder="Max Total Amount"
+                  value={filters.total_amt_max}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="order_status"
+                  placeholder="Search Status"
+                  value={filters.order_status}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Search
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="user_name"
+                  placeholder="Search User Name"
+                  value={filters.user_name}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Search
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
             </div>
           </div>
 
@@ -254,7 +238,7 @@ export default function QueryExecutionPage() {
 
           {/* Results Display */}
           {filteredResults && (
-            <div className="mt-6 bg-gray-100 rounded-lg p-4">
+            <div className="bg-gray-100 rounded-lg p-4">
               <h2 className="text-xl font-semibold mb-4">
                 Results of the outer join query
               </h2>
@@ -264,7 +248,10 @@ export default function QueryExecutionPage() {
                     <tr>
                       {filteredResults.length > 0 &&
                         Object.keys(filteredResults[0]).map((header) => (
-                          <th key={header} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th
+                            key={header}
+                            className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
                             {header}
                           </th>
                         ))}
@@ -272,10 +259,15 @@ export default function QueryExecutionPage() {
                   </thead>
                   <tbody>
                     {filteredResults.map((row, i) => (
-                      <tr key={i} className="hover:bg-gray-50 transition-colors duration-200">
+                      <tr
+                        key={i}
+                        className="hover:bg-gray-50 transition-colors duration-200"
+                      >
                         {Object.values(row).map((value: any, j) => (
                           <td key={j} className="px-4 py-3 text-sm">
-                            {typeof value === 'object' ? JSON.stringify(value) : String(value)}
+                            {typeof value === "object"
+                              ? JSON.stringify(value)
+                              : String(value)}
                           </td>
                         ))}
                       </tr>
