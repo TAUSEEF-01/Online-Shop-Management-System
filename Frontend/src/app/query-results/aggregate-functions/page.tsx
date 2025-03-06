@@ -1,64 +1,8 @@
-// "use client";
-// import { useEffect, useState } from "react";
-// import { Card, Table, Title, Text } from "@tremor/react";
-// import { api } from "../../../utils/api";
-// import ProtectedRoute from "../../components/protected-route";
-
-// interface AggregateFunctionsResult {
-//   avg_price: number;
-//   total_price: number;
-// }
-
-// export default function AggregateFunctionsResultsPage() {
-//   const [aggregateFunctionsResults, setAggregateFunctionsResults] = useState<AggregateFunctionsResult[]>([]);
-
-//   useEffect(() => {
-//     const fetchAggregateFunctionsResults = async () => {
-//       try {
-//         console.log("Fetching aggregate functions results...");
-//         const response = await api.get('/aggregate-functions');
-//         const rows = response?.results || [];
-//         setAggregateFunctionsResults(rows);
-//       } catch (error) {
-//         console.error("Error fetching aggregate functions results:", error);
-//       }
-//     };
-
-//     fetchAggregateFunctionsResults();
-//   }, []);
-
-//   return (
-//     <ProtectedRoute>
-//       <main className="p-6 md:p-12 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 rounded-xl mx-auto max-w-7xl shadow-md">
-//         <Title className="text-2xl font-semibold">Aggregate Functions Results</Title>
-//         <Text className="mt-2 text-gray-600">Results of the aggregate functions query</Text>
-//         <Card className="mt-6 shadow-lg">
-//           <Table className="mt-6 border-t border-gray-200">
-//             <thead className="bg-gray-100">
-//               <tr>
-//                 <th className="px-4 py-2 text-left">Average Price</th>
-//                 <th className="px-4 py-2 text-left">Total Price</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {aggregateFunctionsResults.map((result, index) => (
-//                 <tr key={index} className="hover:bg-gray-50">
-//                   <td className="px-4 py-2">{result.avg_price}</td>
-//                   <td className="px-4 py-2">{result.total_price}</td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </Table>
-//         </Card>
-//       </main>
-//     </ProtectedRoute>
-//   );
-// }
-
-'use client';
-import { useEffect, useState } from 'react';
-import { api, QueryResult } from '../../../utils/api';
-import { Filter, Search, AlertTriangle } from 'lucide-react';
+"use client";
+import { useEffect, useState } from "react";
+import { api, QueryResult } from "../../../utils/api";
+import { Filter, AlertTriangle, Database } from "lucide-react";
+import { motion } from "framer-motion";
 
 export default function QueryExecutionPage() {
   const [results, setResults] = useState<any[] | null>(null);
@@ -68,10 +12,10 @@ export default function QueryExecutionPage() {
 
   // Filtering states
   const [filters, setFilters] = useState({
-    avg_price_min: '',
-    avg_price_max: '',
-    total_price_min: '',
-    total_price_max: ''
+    avg_price_min: "",
+    avg_price_max: "",
+    total_price_min: "",
+    total_price_max: "",
   });
 
   useEffect(() => {
@@ -88,10 +32,10 @@ export default function QueryExecutionPage() {
           setResults(response.data);
           setFilteredResults(response.data);
         } else {
-          setError(response.error || 'Query execution failed');
+          setError(response.error || "Query execution failed");
         }
       } catch (err: any) {
-        setError(err.message || 'An error occurred while executing the query');
+        setError(err.message || "An error occurred while executing the query");
         setResults(null);
         setFilteredResults(null);
       } finally {
@@ -105,14 +49,18 @@ export default function QueryExecutionPage() {
   useEffect(() => {
     if (!results) return;
 
-    const filtered = results.filter(row => {
+    const filtered = results.filter((row) => {
       const avgPriceMatch =
-        (!filters.avg_price_min || parseFloat(row.avg_price) >= parseFloat(filters.avg_price_min)) &&
-        (!filters.avg_price_max || parseFloat(row.avg_price) <= parseFloat(filters.avg_price_max));
+        (!filters.avg_price_min ||
+          parseFloat(row.avg_price) >= parseFloat(filters.avg_price_min)) &&
+        (!filters.avg_price_max ||
+          parseFloat(row.avg_price) <= parseFloat(filters.avg_price_max));
 
       const totalPriceMatch =
-        (!filters.total_price_min || parseFloat(row.total_price) >= parseFloat(filters.total_price_min)) &&
-        (!filters.total_price_max || parseFloat(row.total_price) <= parseFloat(filters.total_price_max));
+        (!filters.total_price_min ||
+          parseFloat(row.total_price) >= parseFloat(filters.total_price_min)) &&
+        (!filters.total_price_max ||
+          parseFloat(row.total_price) <= parseFloat(filters.total_price_max));
 
       return avgPriceMatch && totalPriceMatch;
     });
@@ -122,111 +70,134 @@ export default function QueryExecutionPage() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="w-full mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
-        <div className="p-6">
-          {/* Filters */}
-          <div className="mb-4 grid grid-cols-4 gap-4">
-            <div className="relative">
-              <input
-                type="number"
-                name="avg_price_min"
-                placeholder="Min Avg Price"
-                value={filters.avg_price_min}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-                min="0"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2 animate-fade-in">
+            Aggregate Functions Analysis
+          </h1>
+          <p className="text-gray-600">
+            View aggregated product price statistics
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+          {/* Filters Section */}
+          <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-gray-50">
+            <div className="flex items-center gap-2 mb-4">
+              <Database className="text-blue-600" size={24} />
+              <h2 className="text-xl font-semibold text-gray-800">
+                Filter Results
+              </h2>
             </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="avg_price_max"
-                placeholder="Max Avg Price"
-                value={filters.avg_price_max}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-                min="0"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="total_price_min"
-                placeholder="Min Total Price"
-                value={filters.total_price_min}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-                min="0"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="total_price_max"
-                placeholder="Max Total Price"
-                value={filters.total_price_max}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-                min="0"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {Object.entries(filters).map(([key, value]) => (
+                <div key={key} className="relative">
+                  <input
+                    type="number"
+                    name={key}
+                    placeholder={key.split("_").join(" ").toUpperCase()}
+                    value={value}
+                    onChange={handleFilterChange}
+                    className="w-full p-2 pl-8 border rounded-lg"
+                    min="0"
+                  />
+                  <Filter
+                    className="absolute left-2 top-3 text-gray-400"
+                    size={18}
+                  />
+                </div>
+              ))}
             </div>
           </div>
 
-          {error && (
-            <div className="mt-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg flex items-center">
-              <AlertTriangle className="mr-3 text-red-500" size={24} />
-              <span>{error}</span>
-            </div>
-          )}
-
-          {/* Results Display */}
-          {filteredResults && (
-            <div className="mt-6 bg-gray-100 rounded-lg p-4">
-              <h2 className="text-xl font-semibold mb-4">
-                Results of the Aggregate function query
-              </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                  <thead className="bg-gray-200">
-                    <tr>
-                      {filteredResults.length > 0 &&
-                        Object.keys(filteredResults[0]).map((header) => (
-                          <th key={header} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {header}
-                          </th>
-                        ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredResults.map((row, i) => (
-                      <tr key={i} className="hover:bg-gray-50 transition-colors duration-200">
-                        {Object.values(row).map((value: any, j) => (
-                          <td key={j} className="px-4 py-3 text-sm">
-                            {typeof value === 'object' ? JSON.stringify(value) : String(value)}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          {/* Results Section */}
+          <div className="p-6">
+            {isLoading ? (
+              <div className="flex flex-col justify-center items-center h-40 gap-4">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                <p className="text-gray-600">Loading results...</p>
               </div>
-              <p className="mt-4 text-sm text-gray-500 text-right">
-                Total rows: {filteredResults.length}
-              </p>
-            </div>
-          )}
+            ) : error ? (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg flex items-center"
+              >
+                <AlertTriangle className="mr-3 text-red-500" size={24} />
+                <span>{error}</span>
+              </motion.div>
+            ) : (
+              filteredResults && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 bg-white rounded-xl p-6 shadow-lg border border-gray-100"
+                >
+                  <h2 className="text-xl font-semibold mb-6 text-gray-800">
+                    Aggregate Analysis Results
+                  </h2>
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="bg-gradient-to-r from-blue-50 to-indigo-50">
+                          {filteredResults.length > 0 &&
+                            Object.keys(filteredResults[0]).map((header) => (
+                              <th
+                                key={header}
+                                className="px-6 py-4 text-left text-sm font-semibold text-gray-600 uppercase tracking-wider"
+                              >
+                                {header.split("_").join(" ")}
+                              </th>
+                            ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredResults.map((row, i) => (
+                          <motion.tr
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: i * 0.1 }}
+                            key={i}
+                            className="border-b border-gray-100 hover:bg-blue-50/50 transition-colors duration-200"
+                          >
+                            {Object.values(row).map((value: any, j) => (
+                              <td
+                                key={j}
+                                className="px-6 py-4 text-sm text-gray-700"
+                              >
+                                {typeof value === "number"
+                                  ? value.toLocaleString("en-US", {
+                                      minimumFractionDigits: 2,
+                                      maximumFractionDigits: 2,
+                                    })
+                                  : String(value)}
+                              </td>
+                            ))}
+                          </motion.tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="mt-6 text-sm text-gray-500 flex justify-between items-center">
+                    <p>Showing {filteredResults.length} results</p>
+                    {isLoading && (
+                      <p className="text-blue-500">Refreshing data...</p>
+                    )}
+                  </div>
+                </motion.div>
+              )
+            )}
+          </div>
         </div>
       </div>
     </div>
