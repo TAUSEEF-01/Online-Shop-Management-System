@@ -31,6 +31,15 @@ export default function Cart() {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userAddress, setUserAddress] = useState("");
+  const [addressError, setAddressError] = useState("");
+  const [addressInputs, setAddressInputs] = useState({
+    street: "",
+    city: "",
+    // state: "",
+    // zipcode: "",
+    country: "",
+  });
   const router = useRouter();
   const { refreshCartCount } = useCart();
 
@@ -111,9 +120,24 @@ export default function Cart() {
   const totalDiscount = subtotal - discountedTotal;
   const finalTotal = discountedTotal + shippingFee;
 
-  
+  const handleAddressChange = (field: string, value: string) => {
+    setAddressInputs((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+    setAddressError("");
+  };
 
   const proceedToCheckout = async () => {
+    // Validate all address fields
+    if (!Object.values(addressInputs).every((value) => value.trim())) {
+      setAddressError("Please fill in all address fields");
+      return;
+    }
+
+    // Format address as a single string
+    const formattedAddress = `${addressInputs.street}, ${addressInputs.city},  ${addressInputs.country}`;
+
     try {
       const userId = await api.getCurrentUserId();
       const username = await api.getCurrentUserName(userId);
@@ -128,7 +152,7 @@ export default function Cart() {
 
       const orderResponse = await api.createOrder({
         user_id: userId,
-        user_address: "123 Main St",
+        user_address: formattedAddress,
         total_amt: finalTotal,
         order_status: "in process",
         order_details: orderDetails,
@@ -223,82 +247,84 @@ export default function Cart() {
               <div className="grid grid-cols-1 gap-8 md:grid-cols-12">
                 <div className="md:col-span-8 space-y-6">
                   {cartItems.map((item) => (
-                  <div
-                    key={item.cart_id}
-                    className="bg-white rounded-xl shadow-sm p-6 transition-all duration-300 hover:shadow-md"
-                  >
-                    <div className="flex flex-col md:flex-row items-start gap-6">
-                    <div className="w-28 h-28 relative rounded-lg overflow-hidden">
-                      <Image
-                      src={item.prod_image || "/placeholder.svg"}
-                      alt={item.prod_name}
-                      layout="fill"
-                      objectFit="cover"
-                      className="transition-transform duration-500 hover:scale-110"
-                      />
-                    </div>
+                    <div
+                      key={item.cart_id}
+                      className="bg-white rounded-xl shadow-sm p-6 transition-all duration-300 hover:shadow-md"
+                    >
+                      <div className="flex flex-col md:flex-row items-start gap-6">
+                        <div className="w-28 h-28 relative rounded-lg overflow-hidden">
+                          <Image
+                            src={item.prod_image || "/placeholder.svg"}
+                            alt={item.prod_name}
+                            layout="fill"
+                            objectFit="cover"
+                            className="transition-transform duration-500 hover:scale-110"
+                          />
+                        </div>
 
-                    <div className="flex-grow space-y-2">
-                      <h3 className="font-semibold text-xl text-gray-800">
-                      {item.prod_name}
-                      </h3>
-                      <div className="flex items-center gap-2">
-                      <p className="text-2xl font-bold text-blue-600">
-                        {formatPrice(item.prod_price * (1 - item.prod_discount / 100))}
-                      </p>
-                      {item.prod_discount > 0 && (
-                        <>
-                        <p className="text-lg text-gray-400 line-through">
-                          {formatPrice(item.prod_price)}
-                        </p>
-                        <span className="text-green-600 font-semibold">
-                          {item.prod_discount}% OFF
-                        </span>
-                        </>
-                      )}
+                        <div className="flex-grow space-y-2">
+                          <h3 className="font-semibold text-xl text-gray-800">
+                            {item.prod_name}
+                          </h3>
+                          <div className="flex items-center gap-2">
+                            <p className="text-2xl font-bold text-blue-600">
+                              {formatPrice(
+                                item.prod_price * (1 - item.prod_discount / 100)
+                              )}
+                            </p>
+                            {item.prod_discount > 0 && (
+                              <>
+                                <p className="text-lg text-gray-400 line-through">
+                                  {formatPrice(item.prod_price)}
+                                </p>
+                                <span className="text-green-600 font-semibold">
+                                  {item.prod_discount}% OFF
+                                </span>
+                              </>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center border border-gray-200 rounded-full overflow-hidden">
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.cart_id, item.quantity - 1)
+                              }
+                              className="px-3 py-2 hover:bg-gray-100 transition-colors"
+                            >
+                              <Minus className="h-4 w-4" />
+                            </button>
+                            <input
+                              type="number"
+                              min="1"
+                              value={item.quantity}
+                              onChange={(e) =>
+                                updateQuantity(
+                                  item.cart_id,
+                                  parseInt(e.target.value)
+                                )
+                              }
+                              className="w-12 text-center border-x border-gray-200 py-2"
+                            />
+                            <button
+                              onClick={() =>
+                                updateQuantity(item.cart_id, item.quantity + 1)
+                              }
+                              className="px-3 py-2 hover:bg-gray-100 transition-colors"
+                            >
+                              <Plus className="h-4 w-4" />
+                            </button>
+                          </div>
+                          <button
+                            onClick={() => removeFromCart(item.cart_id)}
+                            className="p-2 hover:text-red-500 transition-colors"
+                          >
+                            <Trash2 className="h-5 w-5" />
+                          </button>
+                        </div>
                       </div>
                     </div>
-
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center border border-gray-200 rounded-full overflow-hidden">
-                      <button
-                        onClick={() =>
-                        updateQuantity(item.cart_id, item.quantity - 1)
-                        }
-                        className="px-3 py-2 hover:bg-gray-100 transition-colors"
-                      >
-                        <Minus className="h-4 w-4" />
-                      </button>
-                      <input
-                        type="number"
-                        min="1"
-                        value={item.quantity}
-                        onChange={(e) =>
-                        updateQuantity(
-                          item.cart_id,
-                          parseInt(e.target.value)
-                        )
-                        }
-                        className="w-12 text-center border-x border-gray-200 py-2"
-                      />
-                      <button
-                        onClick={() =>
-                        updateQuantity(item.cart_id, item.quantity + 1)
-                        }
-                        className="px-3 py-2 hover:bg-gray-100 transition-colors"
-                      >
-                        <Plus className="h-4 w-4" />
-                      </button>
-                      </div>
-                      <button
-                      onClick={() => removeFromCart(item.cart_id)}
-                      className="p-2 hover:text-red-500 transition-colors"
-                      >
-                      <Trash2 className="h-5 w-5" />
-                      </button>
-                    </div>
-                    </div>
-                  </div>
                   ))}
                 </div>
 
@@ -343,6 +369,68 @@ export default function Cart() {
                           </p>
                         )}
                       </div>
+                    </div>
+
+                    <div className="border-t border-gray-100 mt-6 pt-6">
+                      <h3 className="font-semibold text-gray-800 mb-4">
+                        Delivery Address
+                      </h3>
+                      <div className="space-y-4">
+                        <input
+                          className="border border-gray-300 rounded-2xl py-1.5 px-3.5 w-full"
+                          type="text"
+                          placeholder="Street Address"
+                          value={addressInputs.street}
+                          onChange={(e) =>
+                            handleAddressChange("street", e.target.value)
+                          }
+                        />
+                        <div className="flex gap-3">
+                          <input
+                            className="border border-gray-300 rounded-2xl py-1.5 px-3.5 w-full"
+                            type="text"
+                            placeholder="City"
+                            value={addressInputs.city}
+                            onChange={(e) =>
+                              handleAddressChange("city", e.target.value)
+                            }
+                          />
+                          {/* <input
+                            className="border border-gray-300 rounded-2xl py-1.5 px-3.5 w-full"
+                            type="text"
+                            placeholder="State"
+                            value={addressInputs.state}
+                            onChange={(e) =>
+                              handleAddressChange("state", e.target.value)
+                            }
+                          /> */}
+                        </div>
+                        <div className="flex gap-3">
+                          {/* <input
+                            className="border border-gray-300 rounded-2xl py-1.5 px-3.5 w-full"
+                            type="text"
+                            placeholder="Zipcode"
+                            value={addressInputs.zipcode}
+                            onChange={(e) =>
+                              handleAddressChange("zipcode", e.target.value)
+                            }
+                          /> */}
+                          <input
+                            className="border border-gray-300 rounded-2xl py-1.5 px-3.5 w-full"
+                            type="text"
+                            placeholder="Country"
+                            value={addressInputs.country}
+                            onChange={(e) =>
+                              handleAddressChange("country", e.target.value)
+                            }
+                          />
+                        </div>
+                      </div>
+                      {addressError && (
+                        <p className="text-red-500 text-sm mt-2">
+                          {addressError}
+                        </p>
+                      )}
                     </div>
 
                     <Button
