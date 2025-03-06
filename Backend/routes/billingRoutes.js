@@ -5,45 +5,69 @@ const pool = require("../database");
 // Create a new bill
 router.post("/create", async (req, res) => {
   try {
-    const { user_id, order_id, user_name, products, order_total_price, bill_total_price, pay_status } = req.body;
+    const {
+      user_id,
+      order_id,
+      user_name,
+      products,
+      order_total_price,
+      bill_total_price,
+      pay_status,
+    } = req.body;
 
     console.log("Creating bill with data:", req.body);
 
     const client = await pool.connect();
     try {
-      await client.query('BEGIN');
+      await client.query("BEGIN");
 
       const billQuery = `
         INSERT INTO bill_detail (bill_date, user_id, order_id, user_name, order_total_price, bill_total_price, pay_status)
         VALUES (CURRENT_DATE, $1, $2, $3, $4, $5, $6) RETURNING bill_id
       `;
-      const billResult = await client.query(billQuery, [user_id, order_id, user_name, order_total_price, bill_total_price, pay_status]);
+      const billResult = await client.query(billQuery, [
+        user_id,
+        order_id,
+        user_name,
+        order_total_price,
+        bill_total_price,
+        pay_status,
+      ]);
       const billId = billResult.rows[0].bill_id;
 
-      const productQueries = products.map(product => {
-        return client.query(`
+      const productQueries = products.map((product) => {
+        return client.query(
+          `
           INSERT INTO bill_product (bill_id, prod_id, prod_qty, prod_price, prod_total_price)
           VALUES ($1, $2, $3, $4, $5)
-        `, [billId, product.prod_id, product.prod_qty, product.prod_price, product.prod_total_price]);
+        `,
+          [
+            billId,
+            product.prod_id,
+            product.prod_qty,
+            product.prod_price,
+            product.prod_total_price,
+          ]
+        );
       });
 
       await Promise.all(productQueries);
 
-      await client.query('COMMIT');
+      await client.query("COMMIT");
 
       console.log("Bill created successfully with ID:", billId);
 
       res.status(201).json({
         status: "success",
         data: { bill_id: billId },
-        message: "Bill created successfully"
+        message: "Bill created successfully",
       });
     } catch (err) {
-      await client.query('ROLLBACK');
+      await client.query("ROLLBACK");
       console.error("Error creating bill:", err.message);
       res.status(500).json({
         status: "error",
-        message: "Server error while creating bill"
+        message: "Server error while creating bill",
       });
     } finally {
       client.release();
@@ -52,7 +76,7 @@ router.post("/create", async (req, res) => {
     console.error("Error creating bill:", err.message);
     res.status(500).json({
       status: "error",
-      message: "Server error while creating bill"
+      message: "Server error while creating bill",
     });
   }
 });
@@ -65,24 +89,22 @@ router.get("/payment-done", async (req, res) => {
     res.status(200).json({
       status: "success",
       data: paidBillDetails.rows,
-      message: "Fetched all bill details successfully"
+      message: "Fetched all bill details successfully",
     });
   } catch (err) {
     console.error("Error fetching bill details:", err.message);
     res.status(500).json({
       status: "error",
-      message: "Server error while fetching bill details"
+      message: "Server error while fetching bill details",
     });
   }
 });
-
-
 
 router.get("/natural-join", async (req, res) => {
   try {
     // console.log("Route params:", req.params);
     // console.log("Query params:", req.query);
-    
+
     const query = `
       SELECT * 
       FROM order_detail NATURAL JOIN product;
@@ -95,14 +117,15 @@ router.get("/natural-join", async (req, res) => {
       status: "success",
       results,
       // data: results.rows,
-      message: "Fetched natural join data successfully"
+      message: "Fetched natural join data successfully",
     }); // Ensure `results` is JSON serializable
   } catch (error) {
     console.error("Error fetching natural join data:", error);
-    res.status(500).json({ message: "Failed to fetch data", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to fetch data", error: error.message });
   }
 });
-
 
 // // Get bill details by order ID
 // router.get("/details/:order_id", async (req, res) => {
@@ -122,8 +145,6 @@ router.get("/natural-join", async (req, res) => {
 //     });
 //   }
 // });
-
-
 
 // Get bill details by order ID, including product details
 router.get("/details/:order_id", async (req, res) => {
@@ -197,7 +218,10 @@ router.get("/details/:order_id", async (req, res) => {
       message: `Fetched bill details for order ID ${order_id} successfully`,
     });
   } catch (err) {
-    console.error(`Error fetching bill details for order ID ${order_id}:`, err.message);
+    console.error(
+      `Error fetching bill details for order ID ${order_id}:`,
+      err.message
+    );
     res.status(500).json({
       status: "error",
       message: `Server error while fetching bill details for order ID ${order_id}`,
@@ -235,7 +259,7 @@ router.get("/user/:user_id", async (req, res) => {
 
     // Restructure the response to group products under each bill
     const billingData = billings.rows.reduce((result, row) => {
-      let bill = result.find(b => b.bill_id === row.bill_id);
+      let bill = result.find((b) => b.bill_id === row.bill_id);
       if (!bill) {
         bill = {
           bill_id: row.bill_id,
@@ -266,7 +290,10 @@ router.get("/user/:user_id", async (req, res) => {
       message: `Fetched billing details for user ID ${user_id} successfully`,
     });
   } catch (err) {
-    console.error(`Error fetching billing details for user ID ${user_id}:`, err.message);
+    console.error(
+      `Error fetching billing details for user ID ${user_id}:`,
+      err.message
+    );
     res.status(500).json({
       status: "error",
       message: `Server error while fetching billing details for user ID ${user_id}`,
@@ -295,6 +322,66 @@ router.put("/updatePaymentStatus", async (req, res) => {
     res.status(500).json({
       status: "error",
       message: "Server error while updating payment status",
+    });
+  }
+});
+
+// Get daily sales details
+router.get("/daily-sales", async (req, res) => {
+  try {
+    const query = `
+      SELECT 
+        bill_date as date,
+        COUNT(*) as items,
+        SUM(bill_total_price) as amount
+      FROM bill_detail
+      WHERE pay_status = 'paid'
+      GROUP BY bill_date
+      ORDER BY bill_date DESC
+      LIMIT 7;
+    `;
+    const result = await pool.query(query);
+
+    res.status(200).json({
+      status: "success",
+      data: result.rows.map((row) => ({
+        date: row.date.toISOString().split("T")[0],
+        items: parseInt(row.items),
+        amount: parseFloat(row.amount),
+      })),
+      message: "Daily sales data retrieved successfully",
+    });
+  } catch (error) {
+    console.error("Error fetching daily sales data:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to fetch daily sales data",
+    });
+  }
+});
+
+// Get total amount from paid bills
+router.get("/total-paid-amount", async (req, res) => {
+  try {
+    const query = `
+      SELECT SUM(bill_total_price) as total_paid_amount
+      FROM bill_detail 
+      WHERE pay_status = 'paid';
+    `;
+    const result = await pool.query(query);
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        total: parseFloat(result.rows[0].total_paid_amount) || 0,
+      },
+      message: "Total paid amount retrieved successfully",
+    });
+  } catch (error) {
+    console.error("Error fetching total paid amount:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to fetch total paid amount",
     });
   }
 });

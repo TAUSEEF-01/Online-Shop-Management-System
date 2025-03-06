@@ -594,7 +594,7 @@ export default function QueryExecutionPage() {
                       <tr key={i} className="hover:bg-gray-50 transition-colors duration-200">
                         {Object.values(row).map((value, j) => (
                           <td key={j} className="px-4 py-3 text-sm">
-                            {typeof value === 'object' ? JSON.stringify(value) : value}
+                            {typeof value === 'object' ? JSON.stringify(value) : String(value)}
                           </td>
                         ))}
                       </tr>
