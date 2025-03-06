@@ -67,9 +67,9 @@ export default function ProductCard({
 
   return (
     <>
-      <Card className="h-[32rem] flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white rounded-lg overflow-hidden">
+      <Card className="h-[28rem] flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white rounded-lg overflow-hidden">
         <CardHeader className="p-0 relative group">
-          <div className="relative h-52 w-full overflow-hidden">
+          <div className="relative h-48 w-full overflow-hidden">
             {/* {product.discount > 0 && (
               <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
                 {product.discount}% OFF
@@ -84,11 +84,11 @@ export default function ProductCard({
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
           </div>
-            {product.discount > 0 && (
+          {product.discount > 0 && (
             <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-md text-sm font-medium">
               {product.discount}% OFF
             </div>
-            )}
+          )}
           <Button
             className="absolute top-2 right-2 bg-white/80 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white"
             onClick={() => setIsModalOpen(true)}
@@ -97,12 +97,10 @@ export default function ProductCard({
           </Button>
         </CardHeader>
 
-        <CardContent className="p-6 flex-1">
-          <CardTitle className="text-lg font-semibold mb-3 line-clamp-2 h-14 text-gray-800">
+        <CardContent className="p-4 flex-1">
+          <CardTitle className="text-lg font-semibold mb-2 line-clamp-2 h-12 text-gray-800">
             {product.name}
           </CardTitle>
-
-          
 
           <div className="flex items-center mb-3">
             {[...Array(5)].map((_, i) => (
@@ -136,7 +134,7 @@ export default function ProductCard({
           </div>
         </CardContent>
 
-        <CardFooter className="p-6 pt-0">
+        <CardFooter className="p-4 pt-0">
           {isEditMode ? (
             <Button
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg flex items-center justify-center gap-2"
