@@ -49,14 +49,6 @@ export interface BillData {
   pay_status: string;
 }
 
-// export interface OrderDetail {
-//   order_id: number;
-//   prod_id: number;
-//   prod_qty: number;
-//   prod_price: number;
-//   prod_total_price: number;
-// }
-
 export interface UpdateProductData {
   prod_id: number;
   prod_name: string;
@@ -78,11 +70,9 @@ export interface OrderItemDetail {
 
 export interface OrderData {
   user_id: number;
-  // order_date: string;
   user_address: string;
   total_amt: number;
   order_status: string;
-  // order_details: OrderDetail[];
   order_details: OrderItemDetail[];
 }
 
@@ -146,18 +136,6 @@ const api = {
   },
 
   signup: async (data: SignupData) => {
-    // const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-    //   ...defaultOptions,
-    //   method: "POST",
-    //   body: JSON.stringify(data),
-    // });
-
-    // if (!response.ok) {
-    //   throw new Error((await response.json()).message);
-    // }
-
-    // return response.json();
-
     const response = await fetch(`${API_BASE_URL}/auth/signup`, {
       ...defaultOptions,
       method: "POST",
@@ -188,7 +166,6 @@ const api = {
     return response.json();
   },
 
-  // Add to cart
   addToCart: async (prod_id: number, user_id: number) => {
     console.log("Adding to cart:", { prod_id, user_id });
     const response = await fetch(`${API_BASE_URL}/cart/add`, {
@@ -200,7 +177,6 @@ const api = {
     return handleResponse(response);
   },
 
-  // Add to cart with cart_id
   addToCartWithCartId: async (cartId: number, prod_id: number) => {
     const response = await fetch(`${API_BASE_URL}/cart/addToCart/${cartId}`, {
       ...defaultOptions,
@@ -210,7 +186,6 @@ const api = {
     return handleResponse(response);
   },
 
-  // Get cart items
   getCartItems: async (userId: number) => {
     try {
       const response = await fetch(`${API_BASE_URL}/cart/items/${userId}`, {
@@ -224,7 +199,6 @@ const api = {
     }
   },
 
-  // Remove from cart
   removeFromCart: async (cartId: number) => {
     const response = await fetch(`${API_BASE_URL}/cart/remove/${cartId}`, {
       ...defaultOptions,
@@ -272,24 +246,6 @@ const api = {
     return handleResponse(response);
   },
 
-  // checkAuth: async () => {
-  //   try {
-  //     const response = await fetch(`${API_BASE_URL}/auth/status`, {
-  //       ...defaultOptions,
-  //       method: 'GET',
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error('Authentication check failed');
-  //     }
-
-  //     return await response.json();
-  //   } catch (error) {
-  //     console.error('Auth check error:', error);
-  //     return { authenticated: false };
-  //   }
-  // },
-
   checkAuth: async () => {
     try {
       console.log("Checking authentication status", defaultOptions);
@@ -305,10 +261,10 @@ const api = {
 
       const data = await response.json();
       console.log("Auth check response:", data);
-      return data.isAuthenticated; // Ensure it matches the backend response
+      return data.isAuthenticated;
     } catch (error) {
       console.error("Auth check error:", error);
-      return false; // Default to false if an error occurs
+      return false;
     }
   },
 
@@ -362,15 +318,6 @@ const api = {
     });
     return handleResponse(response);
   },
-
-  // createOrderDetails: async (data: OrderDetail) => {
-  //   const response = await fetch(`${API_BASE_URL}/orders/create`, {
-  //     ...defaultOptions,
-  //     method: 'POST',
-  //     body: JSON.stringify(data),
-  //   });
-  //   return handleResponse(response);
-  // },
 
   updatePaymentStatus: async (billId: number, newStatus: string) => {
     const response = await fetch(
@@ -513,6 +460,26 @@ const api = {
       ...defaultOptions,
       method: "GET",
     });
+    return handleResponse(response);
+  },
+
+  getAllOrders: async () => {
+    const response = await fetch(`${API_BASE_URL}/orders/all`, {
+      ...defaultOptions,
+      method: "GET",
+    });
+    return handleResponse(response);
+  },
+
+  updateOrderStatus: async (orderId: number, order_status: string) => {
+    const response = await fetch(
+      `${API_BASE_URL}/orders/update-status/${orderId}`,
+      {
+        ...defaultOptions,
+        method: "PUT",
+        body: JSON.stringify({ order_status }),
+      }
+    );
     return handleResponse(response);
   },
 };

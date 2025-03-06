@@ -141,6 +141,25 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </Link>
+
+            {/* Add new button for updating order status */}
+            <Link href="/update-order-status">
+              <div className="group hover:scale-105 transition-all duration-200">
+                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl border border-green-100 flex items-center space-x-4">
+                  <div className="bg-green-100 p-3 rounded-full">
+                    <Database className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800">
+                      Update Order Status
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      Change the status of orders
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Link>
           </div>
 
           {/* Stats Cards */}
@@ -194,7 +213,7 @@ export default function AdminDashboard() {
               </Link>
               <Link href="/query-results/cross-product">
                 <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Order details and Bill details 
+                  Order details and Bill details
                   {/* cross product */}
                 </button>
               </Link>
