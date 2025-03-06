@@ -1,79 +1,7 @@
-// "use client";
-// import { useEffect, useState } from "react";
-// import { Card, Table, Title, Text } from "@tremor/react";
-// import { api } from "../../../utils/api";
-// import ProtectedRoute from "../../components/protected-route";
-
-// interface CrossProductResult {
-//   user_id: number;
-//   user_name: string;
-//   user_email: string;
-//   order_id: number;
-//   order_date: string;
-//   order_status: string;
-// }
-
-// export default function CrossProductResultsPage() {
-//   const [crossProductResults, setCrossProductResults] = useState<CrossProductResult[]>([]);
-
-//   useEffect(() => {
-//     const fetchCrossProductResults = async () => {
-//       try {
-//         console.log("Fetching cross-product results...");
-//         const response = await api.get('/cross-product');
-//         const rows = response?.results || [];
-//         setCrossProductResults(rows);
-//       } catch (error) {
-//         console.error("Error fetching cross-product results:", error);
-//       }
-//     };
-
-//     fetchCrossProductResults();
-//   }, []);
-
-//   return (
-//     <ProtectedRoute>
-//       <main className="p-6 md:p-12 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 rounded-xl mx-auto max-w-7xl shadow-md">
-//         <Title className="text-2xl font-semibold">Cross Product Results</Title>
-//         <Text className="mt-2 text-gray-600">Results of the cross product query</Text>
-//         <Card className="mt-6 shadow-lg">
-//           <Table className="mt-6 border-t border-gray-200">
-//             <thead className="bg-gray-100">
-//               <tr>
-//                 <th className="px-4 py-2 text-left">User ID</th>
-//                 <th className="px-4 py-2 text-left">User Name</th>
-//                 <th className="px-4 py-2 text-left">User Email</th>
-//                 <th className="px-4 py-2 text-left">Order ID</th>
-//                 <th className="px-4 py-2 text-left">Order Date</th>
-//                 <th className="px-4 py-2 text-left">Order Status</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {crossProductResults.map((result, index) => (
-//                 <tr key={index} className="hover:bg-gray-50">
-//                   <td className="px-4 py-2">{result.user_id}</td>
-//                   <td className="px-4 py-2">{result.user_name}</td>
-//                   <td className="px-4 py-2">{result.user_email}</td>
-//                   <td className="px-4 py-2">{result.order_id}</td>
-//                   <td className="px-4 py-2">{result.order_date}</td>
-//                   <td className="px-4 py-2">{result.order_status}</td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </Table>
-//         </Card>
-//       </main>
-//     </ProtectedRoute>
-//   );
-// }
-
-
-
-
-'use client';
-import { useEffect, useState } from 'react';
-import { api, QueryResult } from '../../../utils/api';
-import { Filter, Search, AlertTriangle } from 'lucide-react';
+"use client";
+import { useEffect, useState } from "react";
+import { api, QueryResult } from "../../../utils/api";
+import { Filter, Search, AlertTriangle, Database } from "lucide-react";
 
 export default function QueryExecutionPage() {
   const [results, setResults] = useState<any[] | null>(null);
@@ -83,14 +11,14 @@ export default function QueryExecutionPage() {
 
   // Update filtering states
   const [filters, setFilters] = useState({
-    order_id: '',
-    order_date: '',
-    user_id: '',
-    user_address: '',
-    total_amt_min: '',
-    total_amt_max: '',
-    order_status: '',
-    user_name: ''
+    order_id: "",
+    order_date: "",
+    user_id: "",
+    user_address: "",
+    total_amt_min: "",
+    total_amt_max: "",
+    order_status: "",
+    user_name: "",
   });
 
   useEffect(() => {
@@ -99,17 +27,19 @@ export default function QueryExecutionPage() {
       setError(null);
       try {
         const response: QueryResult = await api.executeRawQuery(`
-      SELECT * 
-      FROM users, orders;
-    `);
+          SELECT *
+          FROM order_detail o, bill_detail b
+          where o.order_id = b.order_id;
+        `);
+
         if (response.success) {
           setResults(response.data);
           setFilteredResults(response.data);
         } else {
-          setError(response.error || 'Query execution failed');
+          setError(response.error || "Query execution failed");
         }
       } catch (err: any) {
-        setError(err.message || 'An error occurred while executing the query');
+        setError(err.message || "An error occurred while executing the query");
         setResults(null);
         setFilteredResults(null);
       } finally {
@@ -123,7 +53,7 @@ export default function QueryExecutionPage() {
   useEffect(() => {
     if (!results) return;
 
-    const filtered = results.filter(row => {
+    const filtered = results.filter((row) => {
       const orderIdMatch = filters.order_id
         ? String(row.order_id).includes(filters.order_id)
         : true;
@@ -137,23 +67,38 @@ export default function QueryExecutionPage() {
         : true;
 
       const userAddressMatch = filters.user_address
-        ? String(row.user_address).toLowerCase().includes(filters.user_address.toLowerCase())
+        ? String(row.user_address)
+            .toLowerCase()
+            .includes(filters.user_address.toLowerCase())
         : true;
 
-      const totalAmtMatch = 
-        (!filters.total_amt_min || parseFloat(row.total_amt) >= parseFloat(filters.total_amt_min)) &&
-        (!filters.total_amt_max || parseFloat(row.total_amt) <= parseFloat(filters.total_amt_max));
+      const totalAmtMatch =
+        (!filters.total_amt_min ||
+          parseFloat(row.total_amt) >= parseFloat(filters.total_amt_min)) &&
+        (!filters.total_amt_max ||
+          parseFloat(row.total_amt) <= parseFloat(filters.total_amt_max));
 
       const statusMatch = filters.order_status
-        ? String(row.order_status).toLowerCase().includes(filters.order_status.toLowerCase())
+        ? String(row.order_status)
+            .toLowerCase()
+            .includes(filters.order_status.toLowerCase())
         : true;
 
       const userNameMatch = filters.user_name
-        ? String(row.user_name).toLowerCase().includes(filters.user_name.toLowerCase())
+        ? String(row.user_name)
+            .toLowerCase()
+            .includes(filters.user_name.toLowerCase())
         : true;
 
-      return orderIdMatch && orderDateMatch && userIdMatch && userAddressMatch && 
-             totalAmtMatch && statusMatch && userNameMatch;
+      return (
+        orderIdMatch &&
+        orderDateMatch &&
+        userIdMatch &&
+        userAddressMatch &&
+        totalAmtMatch &&
+        statusMatch &&
+        userNameMatch
+      );
     });
 
     setFilteredResults(filtered);
@@ -161,151 +106,125 @@ export default function QueryExecutionPage() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="w-full mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
-        <div className="p-6">
-          {/* Update filter inputs */}
-          <div className="mb-4 grid grid-cols-3 gap-4">
-            <div className="relative">
-              <input
-                type="text"
-                name="order_id"
-                placeholder="Search Order ID"
-                value={filters.order_id}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Cross Product Query Results
+          </h1>
+          <p className="text-gray-600">
+            Viewing combined data from orders and bill details
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          {/* Filters Section */}
+          <div className="p-6 border-b border-gray-200 bg-gray-50">
+            <div className="flex items-center gap-2 mb-4">
+              <Database className="text-indigo-600" size={24} />
+              <h2 className="text-xl font-semibold text-gray-800">
+                Filter Results
+              </h2>
             </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="order_date"
-                placeholder="Search Order Date"
-                value={filters.order_date}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="user_id"
-                placeholder="Search User ID"
-                value={filters.user_id}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="user_address"
-                placeholder="Search User Address"
-                value={filters.user_address}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="total_amt_min"
-                placeholder="Min Total Amount"
-                value={filters.total_amt_min}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="total_amt_max"
-                placeholder="Max Total Amount"
-                value={filters.total_amt_max}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="order_status"
-                placeholder="Search Status"
-                value={filters.order_status}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="user_name"
-                placeholder="Search User Name"
-                value={filters.user_name}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {Object.entries(filters).map(([key, value]) => (
+                <div key={key} className="relative group">
+                  <input
+                    type={key.includes("amt") ? "number" : "text"}
+                    name={key}
+                    placeholder={`Search ${key
+                      .split("_")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}`}
+                    value={value}
+                    onChange={handleFilterChange}
+                    className="w-full p-3 pl-10 border border-gray-200 rounded-lg bg-white 
+                             transition-all duration-200 ease-in-out
+                             focus:ring-2 focus:ring-indigo-500 focus:border-transparent
+                             hover:border-indigo-300"
+                  />
+                  <Search
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 
+                                   group-hover:text-indigo-500 transition-colors duration-200"
+                    size={18}
+                  />
+                </div>
+              ))}
             </div>
           </div>
 
-          {error && (
-            <div className="mt-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 rounded-lg flex items-center">
-              <AlertTriangle className="mr-3 text-red-500" size={24} />
-              <span>{error}</span>
-            </div>
-          )}
-
-          {/* Results Display */}
-          {filteredResults && (
-            <div className="mt-6 bg-gray-100 rounded-lg p-4">
-              <h2 className="text-xl font-semibold mb-4">
-                Results of the cross product query
-              </h2>
-              <div className="overflow-x-auto">
-                <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                  <thead className="bg-gray-200">
-                    <tr>
-                      {filteredResults.length > 0 &&
-                        Object.keys(filteredResults[0]).map((header) => (
-                          <th key={header} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                            {header}
-                          </th>
-                        ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredResults.map((row, i) => (
-                      <tr key={i} className="hover:bg-gray-50 transition-colors duration-200">
-                        {Object.values(row).map((value: any, j) => (
-                          <td key={j} className="px-4 py-3 text-sm">
-                            {typeof value === 'object' ? JSON.stringify(value) : String(value)}
-                          </td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+          {/* Results Section */}
+          <div className="p-6">
+            {isLoading ? (
+              <div className="flex justify-center items-center h-40">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
               </div>
-              <p className="mt-4 text-sm text-gray-500 text-right">
-                Total rows: {filteredResults.length}
-              </p>
-            </div>
-          )}
+            ) : error ? (
+              <div
+                className="mt-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 
+                            rounded-lg flex items-center animate-fadeIn"
+              >
+                <AlertTriangle className="mr-3 text-red-500" size={24} />
+                <span>{error}</span>
+              </div>
+            ) : (
+              filteredResults && (
+                <div className="animate-fadeIn">
+                  <div className="overflow-x-auto">
+                    <table className="w-full">
+                      <thead>
+                        <tr className="bg-gray-50 border-b border-gray-200">
+                          {filteredResults.length > 0 &&
+                            Object.keys(filteredResults[0]).map((header) => (
+                              <th
+                                key={header}
+                                className="px-6 py-4 text-left text-xs font-semibold text-gray-600 
+                                         uppercase tracking-wider"
+                              >
+                                {header.split("_").join(" ")}
+                              </th>
+                            ))}
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-200">
+                        {filteredResults.map((row, i) => (
+                          <tr
+                            key={i}
+                            className="hover:bg-gray-50 transition-colors duration-200"
+                          >
+                            {Object.values(row).map((value: any, j) => (
+                              <td
+                                key={j}
+                                className="px-6 py-4 text-sm text-gray-700 whitespace-nowrap"
+                              >
+                                {typeof value === "object"
+                                  ? JSON.stringify(value)
+                                  : String(value)}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  <div className="mt-4 flex justify-between items-center text-sm text-gray-600">
+                    <span>Showing {filteredResults.length} results</span>
+                    <span>{new Date().toLocaleDateString()}</span>
+                  </div>
+                </div>
+              )
+            )}
+          </div>
         </div>
       </div>
     </div>

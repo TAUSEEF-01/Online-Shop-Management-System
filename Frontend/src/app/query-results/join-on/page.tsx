@@ -1,7 +1,7 @@
-'use client';
-import { useEffect, useState } from 'react';
-import { api, QueryResult } from '../../../utils/api';
-import { Filter, Search, AlertTriangle } from 'lucide-react';
+"use client";
+import { useEffect, useState } from "react";
+import { api, QueryResult } from "../../../utils/api";
+import { Filter, Search, AlertTriangle, Database } from "lucide-react";
 
 export default function QueryExecutionPage() {
   const [results, setResults] = useState<any[] | null>(null);
@@ -11,18 +11,18 @@ export default function QueryExecutionPage() {
 
   // Filtering states
   const [filters, setFilters] = useState({
-    order_id: '',
-    prod_id: '',
-    prod_qty_min: '',
-    prod_qty_max: '',
-    prod_price_min: '',
-    prod_price_max: '',
-    total_price_min: '',
-    total_price_max: '',
-    prod_name: '',
-    rating_min: '',
-    rating_max: '',
-    prod_keywords: ''
+    order_id: "",
+    prod_id: "",
+    prod_qty_min: "",
+    prod_qty_max: "",
+    prod_price_min: "",
+    prod_price_max: "",
+    total_price_min: "",
+    total_price_max: "",
+    prod_name: "",
+    rating_min: "",
+    rating_max: "",
+    prod_keywords: "",
   });
 
   useEffect(() => {
@@ -40,10 +40,10 @@ export default function QueryExecutionPage() {
           setResults(response.data);
           setFilteredResults(response.data);
         } else {
-          setError(response.error || 'Query execution failed');
+          setError(response.error || "Query execution failed");
         }
       } catch (err: any) {
-        setError(err.message || 'An error occurred while executing the query');
+        setError(err.message || "An error occurred while executing the query");
         setResults(null);
         setFilteredResults(null);
       } finally {
@@ -57,7 +57,7 @@ export default function QueryExecutionPage() {
   useEffect(() => {
     if (!results) return;
 
-    const filtered = results.filter(row => {
+    const filtered = results.filter((row) => {
       const orderIdMatch = filters.order_id
         ? String(row.order_id).includes(filters.order_id)
         : true;
@@ -66,32 +66,54 @@ export default function QueryExecutionPage() {
         ? String(row.prod_id).includes(filters.prod_id)
         : true;
 
-      const prodQtyMatch = 
-        (!filters.prod_qty_min || parseFloat(row.prod_qty) >= parseFloat(filters.prod_qty_min)) &&
-        (!filters.prod_qty_max || parseFloat(row.prod_qty) <= parseFloat(filters.prod_qty_max));
+      const prodQtyMatch =
+        (!filters.prod_qty_min ||
+          parseFloat(row.prod_qty) >= parseFloat(filters.prod_qty_min)) &&
+        (!filters.prod_qty_max ||
+          parseFloat(row.prod_qty) <= parseFloat(filters.prod_qty_max));
 
-      const prodPriceMatch = 
-        (!filters.prod_price_min || parseFloat(row.prod_price) >= parseFloat(filters.prod_price_min)) &&
-        (!filters.prod_price_max || parseFloat(row.prod_price) <= parseFloat(filters.prod_price_max));
+      const prodPriceMatch =
+        (!filters.prod_price_min ||
+          parseFloat(row.prod_price) >= parseFloat(filters.prod_price_min)) &&
+        (!filters.prod_price_max ||
+          parseFloat(row.prod_price) <= parseFloat(filters.prod_price_max));
 
-      const totalPriceMatch = 
-        (!filters.total_price_min || parseFloat(row.prod_total_price) >= parseFloat(filters.total_price_min)) &&
-        (!filters.total_price_max || parseFloat(row.prod_total_price) <= parseFloat(filters.total_price_max));
+      const totalPriceMatch =
+        (!filters.total_price_min ||
+          parseFloat(row.prod_total_price) >=
+            parseFloat(filters.total_price_min)) &&
+        (!filters.total_price_max ||
+          parseFloat(row.prod_total_price) <=
+            parseFloat(filters.total_price_max));
 
       const prodNameMatch = filters.prod_name
-        ? String(row.prod_name).toLowerCase().includes(filters.prod_name.toLowerCase())
+        ? String(row.prod_name)
+            .toLowerCase()
+            .includes(filters.prod_name.toLowerCase())
         : true;
 
-      const ratingMatch = 
-        (!filters.rating_min || parseFloat(row.rating_stars) >= parseFloat(filters.rating_min)) &&
-        (!filters.rating_max || parseFloat(row.rating_stars) <= parseFloat(filters.rating_max));
+      const ratingMatch =
+        (!filters.rating_min ||
+          parseFloat(row.rating_stars) >= parseFloat(filters.rating_min)) &&
+        (!filters.rating_max ||
+          parseFloat(row.rating_stars) <= parseFloat(filters.rating_max));
 
       const keywordsMatch = filters.prod_keywords
-        ? String(row.prod_keywords).toLowerCase().includes(filters.prod_keywords.toLowerCase())
+        ? String(row.prod_keywords)
+            .toLowerCase()
+            .includes(filters.prod_keywords.toLowerCase())
         : true;
 
-      return orderIdMatch && prodIdMatch && prodQtyMatch && prodPriceMatch && 
-             totalPriceMatch && prodNameMatch && ratingMatch && keywordsMatch;
+      return (
+        orderIdMatch &&
+        prodIdMatch &&
+        prodQtyMatch &&
+        prodPriceMatch &&
+        totalPriceMatch &&
+        prodNameMatch &&
+        ratingMatch &&
+        keywordsMatch
+      );
     });
 
     setFilteredResults(filtered);
@@ -99,153 +121,208 @@ export default function QueryExecutionPage() {
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="w-full mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
-        <div className="p-6">
-          {/* Filters */}
-          <div className="mb-4 grid grid-cols-3 gap-4">
-            <div className="relative">
-              <input
-                type="text"
-                name="order_id"
-                placeholder="Search Order ID"
-                value={filters.order_id}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-green-50 to-gray-100 p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header Section */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-800 mb-2 animate-fade-in">
+            Join ON Query Results
+          </h1>
+          <p className="text-gray-600">
+            Viewing combined data based on specific conditions
+          </p>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
+          {/* Filters Section */}
+          <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-green-50 to-gray-50">
+            <div className="flex items-center gap-2 mb-4">
+              <Database className="text-green-600" size={24} />
+              <h2 className="text-xl font-semibold text-gray-800">
+                Filter Results
+              </h2>
             </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="prod_id"
-                placeholder="Search Product ID"
-                value={filters.prod_id}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="prod_qty_min"
-                placeholder="Min Quantity"
-                value={filters.prod_qty_min}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="prod_qty_max"
-                placeholder="Max Quantity"
-                value={filters.prod_qty_max}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="prod_price_min"
-                placeholder="Min Price"
-                value={filters.prod_price_min}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="prod_price_max"
-                placeholder="Max Price"
-                value={filters.prod_price_max}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="total_price_min"
-                placeholder="Min Total Price"
-                value={filters.total_price_min}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="total_price_max"
-                placeholder="Max Total Price"
-                value={filters.total_price_max}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="prod_name"
-                placeholder="Search Product Name"
-                value={filters.prod_name}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="rating_min"
-                placeholder="Min Rating"
-                value={filters.rating_min}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-                min="0"
-                max="5"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="number"
-                name="rating_max"
-                placeholder="Max Rating"
-                value={filters.rating_max}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-                min="0"
-                max="5"
-              />
-              <Filter className="absolute left-2 top-3 text-gray-400" size={18} />
-            </div>
-            <div className="relative">
-              <input
-                type="text"
-                name="prod_keywords"
-                placeholder="Search Keywords"
-                value={filters.prod_keywords}
-                onChange={handleFilterChange}
-                className="w-full p-2 pl-8 border rounded-lg"
-              />
-              <Search className="absolute left-2 top-3 text-gray-400" size={18} />
+
+            <div className="mb-4 grid grid-cols-3 gap-4">
+              <div className="relative">
+                <input
+                  type="text"
+                  name="order_id"
+                  placeholder="Search Order ID"
+                  value={filters.order_id}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Search
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="prod_id"
+                  placeholder="Search Product ID"
+                  value={filters.prod_id}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Search
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="prod_qty_min"
+                  placeholder="Min Quantity"
+                  value={filters.prod_qty_min}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="prod_qty_max"
+                  placeholder="Max Quantity"
+                  value={filters.prod_qty_max}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="prod_price_min"
+                  placeholder="Min Price"
+                  value={filters.prod_price_min}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="prod_price_max"
+                  placeholder="Max Price"
+                  value={filters.prod_price_max}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="total_price_min"
+                  placeholder="Min Total Price"
+                  value={filters.total_price_min}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="total_price_max"
+                  placeholder="Max Total Price"
+                  value={filters.total_price_max}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="prod_name"
+                  placeholder="Search Product Name"
+                  value={filters.prod_name}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Search
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="rating_min"
+                  placeholder="Min Rating"
+                  value={filters.rating_min}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                  min="0"
+                  max="5"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="number"
+                  name="rating_max"
+                  placeholder="Max Rating"
+                  value={filters.rating_max}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                  min="0"
+                  max="5"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  type="text"
+                  name="prod_keywords"
+                  placeholder="Search Keywords"
+                  value={filters.prod_keywords}
+                  onChange={handleFilterChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Search
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
             </div>
           </div>
 
@@ -258,7 +335,7 @@ export default function QueryExecutionPage() {
 
           {/* Results Display */}
           {filteredResults && (
-            <div className="mt-6 bg-gray-100 rounded-lg p-4">
+            <div className="bg-gray-100 rounded-lg p-4">
               <h2 className="text-xl font-semibold mb-4">
                 Results of the join on query
               </h2>
@@ -268,7 +345,10 @@ export default function QueryExecutionPage() {
                     <tr>
                       {filteredResults.length > 0 &&
                         Object.keys(filteredResults[0]).map((header) => (
-                          <th key={header} className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                          <th
+                            key={header}
+                            className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                          >
                             {header}
                           </th>
                         ))}
@@ -276,10 +356,15 @@ export default function QueryExecutionPage() {
                   </thead>
                   <tbody>
                     {filteredResults.map((row, i) => (
-                      <tr key={i} className="hover:bg-gray-50 transition-colors duration-200">
+                      <tr
+                        key={i}
+                        className="hover:bg-gray-50 transition-colors duration-200"
+                      >
                         {Object.values(row).map((value: any, j) => (
                           <td key={j} className="px-4 py-3 text-sm">
-                            {typeof value === 'object' ? JSON.stringify(value) : String(value)}
+                            {typeof value === "object"
+                              ? JSON.stringify(value)
+                              : String(value)}
                           </td>
                         ))}
                       </tr>
