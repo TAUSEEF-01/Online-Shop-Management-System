@@ -1,4 +1,4 @@
-# E-Commerce Platform with Database Management System
+# 🛒 E-Commerce Platform with Database Management System
 
 A full-stack e-commerce platform developed as part of the Database Management System course at the Department of Computer Science and Engineering, University of Dhaka.
 
@@ -19,17 +19,18 @@ A full-stack e-commerce platform developed as part of the Database Management Sy
 
 ## 🛠️ Tech Stack
 
-- **Frontend**:
+### Frontend
 
-  - Next.js 14 (React)
-  - TypeScript
-  - Tailwind CSS
-  - Tremor (for charts and analytics)
-  - Lucide Icons
+- Next.js 14 (React)
+- TypeScript
+- Tailwind CSS
+- Tremor (for charts and analytics)
+- Lucide Icons
 
-- **Backend**:
-  - Node.js
-  - PostgreSQL Database
+### Backend
+
+- Node.js
+- PostgreSQL Database
 
 ## 💽 Database Features
 
@@ -61,7 +62,7 @@ Demonstrates various SQL concepts including:
 3. **Set up environment variables**
    Create a `.env.local` file with:
 
-   ```
+   ```bash
    DATABASE_URL=your_database_connection_string
    ```
 
