@@ -2,6 +2,9 @@
 
 A full-stack e-commerce platform developed as part of the Database Management System course at the Department of Computer Science and Engineering, University of Dhaka.
 
+
+---
+
 ## 🌟 Features
 
 - **User Authentication**: Secure login and registration system
@@ -17,6 +20,8 @@ A full-stack e-commerce platform developed as part of the Database Management Sy
   - Database query demonstrations
 - **Responsive Design**: Works seamlessly on desktop and mobile devices
 
+---
+
 ## 🛠️ Tech Stack
 
 ### Frontend
@@ -27,10 +32,14 @@ A full-stack e-commerce platform developed as part of the Database Management Sy
 - Tremor (for charts and analytics)
 - Lucide Icons
 
+
 ### Backend
 
 - Node.js
+- Express.js
 - PostgreSQL Database
+
+---
 
 ## 💽 Database Features
 
@@ -43,6 +52,33 @@ Demonstrates various SQL concepts including:
 - Aggregate Functions
 - Group By and Having Clauses
 - String Operations
+
+---
+
+## 🌐 Site Features
+
+- **Homepage**:
+  - Hero section with promotional content
+  - Featured products display
+  - Category-based product browsing
+- **Product Page**:
+  - Detailed product descriptions
+  - High-quality images with zoom functionality
+  - Customer reviews and ratings
+- **Cart and Checkout**:
+  - Add to cart functionality
+  - Secure checkout process
+  - Order summary and confirmation
+- **Contact Page**:
+  - Contact form for customer inquiries
+  - Team member information
+  - Project details
+- **About Page**:
+  - Information about the project and team
+  - Mission statement
+  - Reasons to choose us
+
+---
 
 ## 🚀 Getting Started
 
@@ -72,18 +108,33 @@ Demonstrates various SQL concepts including:
    npm run dev
    ```
 
+
 5. **Open [http://localhost:3000](http://localhost:3000)**
+
+---
 
 ## 👥 Team Members
 
 - Md. Tauseef - Ur - Rahman
 - Faiaz Mahmud Ifti
 
+---
+
 ## 📞 Contact
 
 For any queries:
 
 - Email: mdtauseef.rahmang01@gmail.com
+
+---
+
+## 🙏 Acknowledgments
+
+This project is submitted as part of the coursework for **Database Management System Lab** at **University of Dhaka**.
+
+🌟 If you find this project interesting or helpful, please consider giving it a star on GitHub! Your support motivates us to keep improving. 😊
+
+---
 
 ## 📄 License
 
