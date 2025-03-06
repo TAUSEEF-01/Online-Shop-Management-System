@@ -25,6 +25,7 @@ interface Product {
   rating: Rating;
   priceCents: number;
   keywords: string[];
+  discount: number; // Add discount field
   onEdit?: () => void;
 }
 
@@ -34,7 +35,11 @@ interface Props {
   onEdit?: () => void;
 }
 
-export default function ProductCard({ product, isEditMode = false, onEdit }: Props) {
+export default function ProductCard({
+  product,
+  isEditMode = false,
+  onEdit,
+}: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { incrementCart } = useCart();
@@ -65,6 +70,11 @@ export default function ProductCard({ product, isEditMode = false, onEdit }: Pro
       <Card className="h-[32rem] flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white rounded-lg overflow-hidden">
         <CardHeader className="p-0 relative group">
           <div className="relative h-52 w-full overflow-hidden">
+            {/* {product.discount > 0 && (
+              <div className="absolute top-2 left-2 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                {product.discount}% OFF
+              </div>
+            )} */}
             <Image
               src={product.image || "/placeholder.svg"}
               alt={product.name}
@@ -74,6 +84,11 @@ export default function ProductCard({ product, isEditMode = false, onEdit }: Pro
             />
             <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300" />
           </div>
+            {product.discount > 0 && (
+            <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-md text-sm font-medium">
+              {product.discount}% OFF
+            </div>
+            )}
           <Button
             className="absolute top-2 right-2 bg-white/80 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white"
             onClick={() => setIsModalOpen(true)}
@@ -86,6 +101,8 @@ export default function ProductCard({ product, isEditMode = false, onEdit }: Pro
           <CardTitle className="text-lg font-semibold mb-3 line-clamp-2 h-14 text-gray-800">
             {product.name}
           </CardTitle>
+
+          
 
           <div className="flex items-center mb-3">
             {[...Array(5)].map((_, i) => (

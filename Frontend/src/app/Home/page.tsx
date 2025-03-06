@@ -50,6 +50,7 @@ export default function Home() {
       try {
         const result = await api.getAllProducts();
         if (result.status === "success" && Array.isArray(result.data)) {
+          console.log("Products fetched successfully:", result.data);
           setProducts(result.data);
         } else {
           console.error("Invalid response format:", result);
