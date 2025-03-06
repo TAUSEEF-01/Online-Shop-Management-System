@@ -145,6 +145,7 @@ export default function ProductFilter({
                         count: product.rating_count,
                       },
                       keywords: product.prod_keywords,
+                      discount: product.prod_discount || 0, // Add discount with fallback to 0
                     }}
                     isEditMode={isEditMode}
                     onEdit={() => onEdit?.(product.prod_id)}
