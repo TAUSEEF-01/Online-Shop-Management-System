@@ -280,11 +280,11 @@ export default function AdminDashboard() {
                   </div>
                 ) : salesData.length > 0 ? (
                   <BarChart
-                    className="mt-6 h-[400px]"
+                    className="mt-6 h-[400px] bg-blue-50 rounded-lg p-4"
                     data={salesData}
                     index="date"
                     categories={["amount"]}
-                    colors={["cyan"]}
+                    colors={["blue"]}
                     valueFormatter={dataFormatter}
                     yAxisWidth={60}
                     showLegend

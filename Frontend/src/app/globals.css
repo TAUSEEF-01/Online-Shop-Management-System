@@ -70,3 +70,55 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+/* Renamed classes for featured products animation */
+.featured-item {
+  opacity: 0;
+  filter: blur(4px);
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity, filter;
+}
+
+.featured-item.appear {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+/* Renamed stagger effect */
+.featured-item:nth-child(2) {
+  transition-delay: 0.15s;
+}
+.featured-item:nth-child(3) {
+  transition-delay: 0.3s;
+}
+.featured-item:nth-child(4) {
+  transition-delay: 0.45s;
+}
+
+/* Renamed section animations */
+.section-fade-up {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.section-fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Renamed benefit card animations */
+.feature-card {
+  opacity: 0;
+  transform: scale(0.95);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity;
+}
+
+.feature-card.visible {
+  opacity: 1;
+  transform: scale(1);
+}

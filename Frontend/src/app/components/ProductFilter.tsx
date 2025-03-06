@@ -139,15 +139,15 @@ export default function ProductFilter({
                       id: product.prod_id.toString(),
                       name: product.prod_name,
                       image: product.prod_image,
-                      priceCents: Math.round(product.prod_price * 100),
+                      priceCents: Math.round(product.prod_price * 100), // Convert dollars to cents for display
                       rating: {
-                        stars: product.rating_stars || 0,
-                        count: product.rating_count || 0,
+                        stars: product.rating_stars,
+                        count: product.rating_count,
                       },
-                      keywords: product.prod_keywords || [],
-                      onEdit: () => onEdit && onEdit(product.prod_id),
+                      keywords: product.prod_keywords,
                     }}
                     isEditMode={isEditMode}
+                    onEdit={() => onEdit?.(product.prod_id)}
                   />
                 </div>
               ))
