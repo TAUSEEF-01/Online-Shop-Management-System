@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Star, ShoppingCart, Eye } from "lucide-react";
+import { Star, ShoppingCart, Eye, PencilRuler } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import {
   Card,
@@ -28,13 +28,13 @@ interface Product {
   onEdit?: () => void;
 }
 
-export default function ProductCard({
-  product,
-  isEditMode = false,
-}: {
+interface Props {
   product: Product;
   isEditMode?: boolean;
-}) {
+  onEdit?: () => void;
+}
+
+export default function ProductCard({ product, isEditMode = false, onEdit }: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { incrementCart } = useCart();
@@ -122,18 +122,19 @@ export default function ProductCard({
         <CardFooter className="p-6 pt-0">
           {isEditMode ? (
             <Button
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg"
-              onClick={product.onEdit}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg flex items-center justify-center gap-2"
+              onClick={onEdit}
             >
+              <PencilRuler className="h-4 w-4" />
               Edit Product
             </Button>
           ) : (
             <Button
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg disabled:opacity-50"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2.5 rounded-full transition-all duration-300 transform hover:shadow-lg disabled:opacity-50 flex items-center justify-center gap-2"
               onClick={addToCart}
               disabled={isLoading}
             >
-              <ShoppingCart className="mr-2 h-4 w-4" />
+              <ShoppingCart className="h-4 w-4" />
               {isLoading ? "Adding..." : "Add to Cart"}
             </Button>
           )}

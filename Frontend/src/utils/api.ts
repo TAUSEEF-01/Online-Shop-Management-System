@@ -491,6 +491,30 @@ const api = {
     });
     return handleResponse(response);
   },
+
+  getTotalProducts: async () => {
+    const response = await fetch(`${API_BASE_URL}/products/total-products`, {
+      ...defaultOptions,
+      method: "GET",
+    });
+    return handleResponse(response);
+  },
+
+  getTotalPaidAmount: async () => {
+    const response = await fetch(`${API_BASE_URL}/billing/total-paid-amount`, {
+      ...defaultOptions,
+      method: "GET",
+    });
+    return handleResponse(response);
+  },
+
+  getDailySales: async () => {
+    const response = await fetch(`${API_BASE_URL}/billing/daily-sales`, {
+      ...defaultOptions,
+      method: "GET",
+    });
+    return handleResponse(response);
+  },
 };
 
 export { api };

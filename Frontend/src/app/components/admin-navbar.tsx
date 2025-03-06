@@ -180,43 +180,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 Live
               </span>
             </div>
-            {/* <Link
-              href="/"
-              className="text-gray-700 hover:text-gray-900 uppercase font-medium text-sm tracking-wider"
-            >
-              Home
-            </Link>
-            <Link
-              href="/Home"
-              className="text-gray-700 hover:text-gray-900 uppercase font-medium text-sm tracking-wider border-b-2 border-gray-700"
-            >
-              Collection
-            </Link>
-            <Link
-              href="/about"
-              className="text-gray-700 hover:text-gray-900 uppercase font-medium text-sm tracking-wider"
-            >
-              About
-            </Link>
-            <Link
-              href="/contact"
-              className="text-gray-700 hover:text-gray-900 uppercase font-medium text-sm tracking-wider"
-            >
-              Contact
-            </Link> */}
+            
           </nav>
 
           <nav className="flex items-center space-x-6 mr-3">
-            {/* <div className="relative inline-block">
-              <Link href="/cart" className="relative inline-flex items-center">
-                <ShoppingCart className="h-6 w-6 text-white hover:text-blue-200 transition-all" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
-            </div> */}
 
             <div className="relative">
               <User
@@ -228,13 +195,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   isMenuOpen ? "block" : "hidden"
                 }`}
               >
-                {/* {isAdmin && (
-                  <Link href="/admin">
-                    <button className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Admin Dashboard
-                    </button>
-                  </Link>
-                )} */}
                 <Link
                   href="/profile"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
