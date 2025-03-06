@@ -70,32 +70,40 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Image src={logo} alt="Logo" className="w-16 h-16" />
           </Link>
 
-          <nav className="hidden md:flex items-center justify-center space-x-8 flex-1 mx-8">
+            <nav className="hidden md:flex items-center justify-center space-x-8 flex-1 mx-8">
             <Link
               href="/"
-              className="text-gray-700 hover:text-gray-900 uppercase font-medium text-sm tracking-wider"
+              className={`text-white hover:text-blue-200 uppercase font-medium text-sm tracking-wider border-b-2 ${
+              window.location.pathname === "/" ? "border-white" : "border-transparent"
+              }`}
             >
               Home
             </Link>
             <Link
               href="/Home"
-              className="text-gray-700 hover:text-gray-900 uppercase font-medium text-sm tracking-wider border-b-2 border-gray-700"
+              className={`text-white hover:text-blue-200 uppercase font-medium text-sm tracking-wider border-b-2 ${
+              window.location.pathname === "/Home" ? "border-white" : "border-transparent"
+              }`}
             >
               Collection
             </Link>
             <Link
               href="/about"
-              className="text-gray-700 hover:text-gray-900 uppercase font-medium text-sm tracking-wider"
+              className={`text-white hover:text-blue-200 uppercase font-medium text-sm tracking-wider border-b-2 ${
+              window.location.pathname === "/about" ? "border-white" : "border-transparent"
+              }`}
             >
               About
             </Link>
             <Link
               href="/contact"
-              className="text-gray-700 hover:text-gray-900 uppercase font-medium text-sm tracking-wider"
+              className={`text-white hover:text-blue-200 uppercase font-medium text-sm tracking-wider border-b-2 ${
+              window.location.pathname === "/contact" ? "border-white" : "border-transparent"
+              }`}
             >
               Contact
             </Link>
-          </nav>
+            </nav>
 
           <nav className="flex items-center space-x-6">
             <div className="relative inline-block">
@@ -143,7 +151,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
       </header>
-      <main className="flex-1 container mx-auto py-8">{children}</main>
+      <main className="flex-1 container mx-auto">{children}</main>
       <footer className="bg-gray-100 py-4">
         <div className="container mx-auto text-center text-sm text-gray-600">
           © 2025 My Store. All rights reserved.
