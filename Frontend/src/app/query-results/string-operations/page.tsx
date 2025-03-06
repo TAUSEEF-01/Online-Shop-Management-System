@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { api, QueryResult } from "../../../utils/api";
-import { Filter, Search, AlertTriangle } from "lucide-react";
+import { Filter, Search, AlertTriangle, Database } from "lucide-react";
 
 export default function QueryExecutionPage() {
   const [results, setResults] = useState<any[] | null>(null);
@@ -91,7 +91,15 @@ export default function QueryExecutionPage() {
 
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
           {/* Filter Section */}
+          
           <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-cyan-50 to-gray-50">
+          <div className="flex items-center gap-2 mb-4">
+              <Database className="text-blue-600" size={24} />
+              <h2 className="text-xl font-semibold text-gray-800">
+                Filter Results
+              </h2>
+            </div>
+            
             <div className="mb-4 grid grid-cols-3 gap-4">
               <div className="relative">
                 <input
