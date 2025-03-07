@@ -111,15 +111,15 @@ export default function HomePage() {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add(
-            entry.target.classList.contains('featured-item')
-              ? 'appear'
-              : 'visible'
+            entry.target.classList.contains("featured-item")
+              ? "appear"
+              : "visible"
           );
         } else {
           entry.target.classList.remove(
-            entry.target.classList.contains('featured-item')
-              ? 'appear'
-              : 'visible'
+            entry.target.classList.contains("featured-item")
+              ? "appear"
+              : "visible"
           );
         }
       });
@@ -127,12 +127,12 @@ export default function HomePage() {
 
     const observer = new IntersectionObserver(observerCallback, {
       threshold: 0.1,
-      rootMargin: '50px',
+      rootMargin: "50px",
     });
 
     // Updated selectors
     document
-      .querySelectorAll('.featured-item, .section-fade-up, .feature-card')
+      .querySelectorAll(".featured-item, .section-fade-up, .feature-card")
       .forEach((element) => observer.observe(element));
 
     return () => observer.disconnect();
@@ -168,13 +168,24 @@ export default function HomePage() {
 
           <div className="md:w-1/2 flex justify-center md:justify-end">
             <div className="relative">
+            <div className="relative md:w-full max-w-[1200px]">
+              <div className="absolute inset-0 bg-blue-600/10 rounded-lg transform translate-x-3 translate-y-3 ml-4"></div>
               <Image
+                className="relative w-full rounded-lg shadow-2xl transform transition-transform duration-500 hover:scale-105"
+                src={logo}
+                alt="Featured Collection"
+                width={900}
+                height={900}
+              />
+              </div>
+  
+              {/* <Image
                 src={logo}
                 alt="Featured Collection"
                 width={300}
                 height={300}
                 className="rounded-lg shadow-lg object-cover"
-              />
+              /> */}
               <div className="absolute -bottom-4 -right-4 bg-white p-4 rounded-lg shadow-md">
                 <p className="text-sm font-semibold">New Spring Collection</p>
                 <p className="text-xs text-gray-500">Limited time offer</p>

@@ -298,7 +298,9 @@ export default function AdminDashboard() {
             </Title>
               <div className="grid grid-cols-1 gap-4">
                 <div className="flex items-center justify-between">
-                  <Text>Order and User details (Natural Join)</Text>
+                  <Text>Order and User details
+                     {/* (Natural Join) */}
+                     </Text>
                   <Link href="/query-results/natural-join">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
                       View Query
@@ -307,7 +309,9 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Text>Order details and Bill details (Cross Product)</Text>
+                  <Text>Order details and Bill details
+                     {/* (Cross Product) */}
+                     </Text>
                   <Link href="/query-results/cross-product">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
                       View Query
