@@ -254,10 +254,10 @@ export default function QueryExecutionPage() {
             ) : (
               filteredResults && (
                 <div className="animate-fade-in">
-                  <div className="mt-6 bg-gray-100 rounded-lg p-4">
-                    <h2 className="text-xl font-semibold mb-4">
+                  {/* <div className="mt-6 bg-gray-100 rounded-lg p-4"> */}
+                    {/* <h2 className="text-xl font-semibold mb-4">
                       Nested Query Results
-                    </h2>
+                    </h2> */}
                     <div className="overflow-x-auto">
                       <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
                         <thead className="bg-gray-200">
@@ -296,7 +296,7 @@ export default function QueryExecutionPage() {
                       <p>{new Date().toLocaleDateString()}</p>
                     </div>
                   </div>
-                </div>
+                // </div>
               )
             )}
           </div>
