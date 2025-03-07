@@ -65,7 +65,7 @@
 --     order_id SERIAL PRIMARY KEY,
 --     order_date DATE NOT NULL,
 --     user_id INT REFERENCES customer(user_id) NOT NULL,
---     user_address VARCHAR(50) NOT NULL,
+--     delivery_address VARCHAR(50) NOT NULL,
 --     total_amt INT NOT NULL,
 --     order_status VARCHAR(20) CHECK (order_status IN ('delivered', 'in process')) NOT NULL
 --     -- user_id INT REFERENCES user(user_id) NOT NULL
@@ -186,7 +186,7 @@
 --     order_id SERIAL PRIMARY KEY,
 --     order_date DATE NOT NULL,
 --     user_id INT REFERENCES users(user_id) NOT NULL,
---     user_address VARCHAR(50) NOT NULL,
+--     delivery_address VARCHAR(50) NOT NULL,
 --     total_amt INT NOT NULL,
 --     order_status VARCHAR(20) CHECK (order_status IN ('delivered', 'in process')) NOT NULL
 -- ); 
@@ -335,7 +335,7 @@ CREATE TABLE IF NOT EXISTS orders (
     order_id SERIAL PRIMARY KEY,
     order_date DATE NOT NULL,
     user_id INT REFERENCES users(user_id) NOT NULL,
-    user_address VARCHAR(50) NOT NULL,
+    delivery_address VARCHAR(50) NOT NULL,
     total_amt INT NOT NULL,
     order_status VARCHAR(20) CHECK (order_status IN ('delivered', 'in process')) NOT NULL
 ); 
@@ -430,3 +430,30 @@ AFTER UPDATE ON users
 FOR EACH ROW
 WHEN (OLD.user_name IS DISTINCT FROM NEW.user_name)
 EXECUTE FUNCTION update_bill_detail_user_name();
+
+
+
+ALTER TABLE orders 
+RENAME COLUMN delivery_address TO delivery_address;
+
+
+
+CREATE VIEW order_summary AS
+SELECT 
+    o.order_id,
+    o.order_date,
+    u.user_id,
+    u.user_name,
+    u.user_email,
+    o.delivery_address,
+    od.prod_id,
+    p.prod_name,
+    od.prod_qty,
+    od.prod_price,
+    od.prod_total_price,
+    o.total_amt,
+    o.order_status
+FROM orders o
+JOIN users u ON o.user_id = u.user_id
+JOIN order_detail od ON o.order_id = od.order_id
+JOIN product p ON od.prod_id = p.prod_id;

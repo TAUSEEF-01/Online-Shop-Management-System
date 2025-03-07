@@ -21,11 +21,12 @@ export default function QueryExecutionPage() {
       setError(null);
       try {
         const response: QueryResult = await api.executeRawQuery(`
-          SELECT avg_price 
-          FROM (
-              SELECT AVG(prod_price) AS avg_price 
+          SELECT prod_id, prod_name, prod_price, rating_stars, rating_count
+          FROM product
+          WHERE prod_price > (
+              SELECT AVG(prod_price) 
               FROM product
-          ) AS avg_result;
+          ); 
         `);
         if (response.success) {
           setResults(response.data);

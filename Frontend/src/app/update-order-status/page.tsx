@@ -9,7 +9,7 @@ interface Order {
   order_id: number;
   order_date: string;
   user_id: number;
-  user_address: string;
+  delivery_address: string;
   total_amt: number;
   order_status: string;
 }
@@ -94,7 +94,7 @@ export default function UpdateOrderStatus() {
                       <td className="py-2 px-4 border-b">{order.order_date}</td>
                       <td className="py-2 px-4 border-b">{order.user_id}</td>
                       <td className="py-2 px-4 border-b">
-                        {order.user_address}
+                        {order.delivery_address}
                       </td>
                       <td className="py-2 px-4 border-b">${order.total_amt}</td>
                       <td className="py-2 px-4 border-b">
@@ -110,7 +110,10 @@ export default function UpdateOrderStatus() {
                           }
                           className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-1 px-3 rounded-md shadow transition-all hover:shadow-md"
                         >
-                          Change to {order.order_status === "delivered" ? "in process" : "delivered"}
+                          Change to{" "}
+                          {order.order_status === "delivered"
+                            ? "in process"
+                            : "delivered"}
                         </button>
                       </td>
                     </tr>

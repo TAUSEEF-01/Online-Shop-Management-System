@@ -5,14 +5,14 @@ const pool = require("../database");
 // // Create a new order
 // router.post("/create", async (req, res) => {
 //   try {
-//     const { user_id, user_address, total_amt, order_status, order_details } = req.body;
+//     const { user_id, delivery_address, total_amt, order_status, order_details } = req.body;
 
 //     console.log("Creating order with data:", req.body);
 
 //     const newOrder = await pool.query(
-//       `INSERT INTO orders (order_date, user_id, user_address, total_amt, order_status)
+//       `INSERT INTO orders (order_date, user_id, delivery_address, total_amt, order_status)
 //        VALUES (CURRENT_DATE, $1, $2, $3, $4) RETURNING *`,
-//       [user_id, user_address, total_amt, order_status]
+//       [user_id, delivery_address, total_amt, order_status]
 //     );
 
 //     console.log("New order created:", newOrder.rows[0]);
@@ -45,8 +45,13 @@ const pool = require("../database");
 
 router.post("/create", async (req, res) => {
   try {
-    const { user_id, user_address, total_amt, order_status, order_details } =
-      req.body;
+    const {
+      user_id,
+      delivery_address,
+      total_amt,
+      order_status,
+      order_details,
+    } = req.body;
 
     // Validate order_details
     if (!Array.isArray(order_details) || order_details.length === 0) {
@@ -60,9 +65,9 @@ router.post("/create", async (req, res) => {
 
     // Insert order into the orders table
     const newOrder = await pool.query(
-      `INSERT INTO orders (order_date, user_id, user_address, total_amt, order_status)
+      `INSERT INTO orders (order_date, user_id, delivery_address, total_amt, order_status)
        VALUES (CURRENT_DATE, $1, $2, $3, $4) RETURNING *`,
-      [user_id, user_address, total_amt, order_status]
+      [user_id, delivery_address, total_amt, order_status]
     );
 
     console.log("New order created:", newOrder.rows[0]);

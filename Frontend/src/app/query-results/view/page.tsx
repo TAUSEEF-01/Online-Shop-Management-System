@@ -8,6 +8,7 @@ export default function QueryExecutionPage() {
   const [filteredResults, setFilteredResults] = useState<any[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [userId, setUserId] = useState<string>("1");
 
   // Filtering states
   const [filters, setFilters] = useState({
@@ -19,44 +20,30 @@ export default function QueryExecutionPage() {
     rating_stars: "",
   });
 
-  useEffect(() => {
-    const handleExecuteQuery = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        // const response: QueryResult = await api.executeRawQuery(`
-        //   SELECT * FROM order_detail NATURAL JOIN product;
-        // `);
+  const handleExecuteQuery = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response: QueryResult = await api.executeRawQuery(`
+        SELECT * FROM order_summary WHERE user_id = ${userId};
+      `);
 
-        const response: QueryResult = await api.executeRawQuery(`
-          SELECT 
-              order_id,
-              users.user_id, 
-              users.user_name, 
-              users.user_email, 
-              users.user_contact_no, 
-              orders.delivery_address, 
-              orders.total_amt, 
-              orders.order_status
-          FROM orders
-          NATURAL JOIN users;
-
-        `);
-
-        if (response.success) {
-          setResults(response.data);
-          setFilteredResults(response.data);
-        } else {
-          setError(response.error || "Query execution failed");
-        }
-      } catch (err: any) {
-        setError(err.message || "An error occurred while executing the query");
-        setResults(null);
-        setFilteredResults(null);
-      } finally {
-        setIsLoading(false);
+      if (response.success) {
+        setResults(response.data);
+        setFilteredResults(response.data);
+      } else {
+        setError(response.error || "Query execution failed");
       }
-    };
+    } catch (err: any) {
+      setError(err.message || "An error occurred while executing the query");
+      setResults(null);
+      setFilteredResults(null);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
     handleExecuteQuery();
   }, []);
 
@@ -107,7 +94,7 @@ export default function QueryExecutionPage() {
         {/* Header Section */}
         <div className="mb-8 text-center">
           <h1 className="text-3xl font-bold text-gray-800 mb-2 animate-fade-in">
-            Natural Join Query Results
+            Query Results using View
           </h1>
           <p className="text-gray-600">
             Viewing combined data with matching records
@@ -115,8 +102,38 @@ export default function QueryExecutionPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
-          {/* Filters Section */}
+          {/* Add User ID Input Section */}
           <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-gray-50">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Database className="text-blue-600" size={24} />
+                <h2 className="text-xl font-semibold text-gray-800">
+                  User Orders
+                </h2>
+              </div>
+              <div className="flex items-center space-x-4">
+                <label className="text-gray-700 font-medium">User ID:</label>
+                <input
+                  type="number"
+                  value={userId}
+                  onChange={(e) => setUserId(e.target.value)}
+                  className="w-32 p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                  placeholder="Enter ID"
+                  min="1"
+                />
+                <button
+                  onClick={handleExecuteQuery}
+                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all duration-200 shadow-md hover:shadow-lg flex items-center gap-2"
+                >
+                  <Database size={18} />
+                  Fetch Orders
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Filters Section */}
+          {/* <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-gray-50">
             <div className="flex items-center gap-2 mb-4">
               <Database className="text-blue-600" size={24} />
               <h2 className="text-xl font-semibold text-gray-800">
@@ -124,7 +141,7 @@ export default function QueryExecutionPage() {
               </h2>
             </div>
 
-            {/* Rest of your filters code remains the same */}
+
             <div className="mb-4 grid grid-cols-3 gap-4">
               <div className="relative">
                 <input
@@ -213,7 +230,7 @@ export default function QueryExecutionPage() {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* Results Section with enhanced styling */}
           <div className="p-6">
@@ -230,10 +247,6 @@ export default function QueryExecutionPage() {
             ) : (
               filteredResults && (
                 <div className="animate-fade-in">
-                  {/* <div className="mt-6 bg-gray-100 rounded-lg p-4"> */}
-                  {/* <h2 className="text-xl font-semibold mb-4">
-                      Results of the natural join query
-                    </h2> */}
                   <div className="overflow-x-auto">
                     <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
                       <thead className="bg-gray-200">
@@ -271,7 +284,6 @@ export default function QueryExecutionPage() {
                     Total rows: {filteredResults.length}
                   </p>
                 </div>
-                // </div>
               )
             )}
           </div>

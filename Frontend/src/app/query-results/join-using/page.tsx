@@ -1,7 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { api, QueryResult } from "../../../utils/api";
-import { Filter, Search, AlertTriangle, FileSearch, Database } from "lucide-react";
+import {
+  Filter,
+  Search,
+  AlertTriangle,
+  FileSearch,
+  Database,
+} from "lucide-react";
 
 export default function QueryExecutionPage() {
   const [results, setResults] = useState<any[] | null>(null);
@@ -14,7 +20,7 @@ export default function QueryExecutionPage() {
     order_id: "",
     order_date: "",
     user_id: "",
-    user_address: "",
+    delivery_address: "",
     total_amt_min: "",
     total_amt_max: "",
     order_status: "",
@@ -34,7 +40,7 @@ export default function QueryExecutionPage() {
               users.user_name, 
               users.user_email, 
               users.user_contact_no, 
-              orders.user_address, 
+              orders.delivery_address, 
               orders.total_amt, 
               orders.order_status
           FROM orders
@@ -75,10 +81,10 @@ export default function QueryExecutionPage() {
         ? String(row.user_id).includes(filters.user_id)
         : true;
 
-      const userAddressMatch = filters.user_address
-        ? String(row.user_address)
+      const userAddressMatch = filters.delivery_address
+        ? String(row.delivery_address)
             .toLowerCase()
-            .includes(filters.user_address.toLowerCase())
+            .includes(filters.delivery_address.toLowerCase())
         : true;
 
       const totalAmtMatch =
@@ -145,7 +151,7 @@ export default function QueryExecutionPage() {
           {/* Filters Section */}
           <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-amber-50 to-gray-50">
             <div className="flex items-center gap-2 mb-4">
-            <Database className="text-blue-600" size={24} />
+              <Database className="text-blue-600" size={24} />
               <h2 className="text-xl font-semibold text-gray-800">
                 Filter Results
               </h2>

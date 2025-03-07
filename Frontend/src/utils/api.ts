@@ -70,7 +70,7 @@ export interface OrderItemDetail {
 
 export interface OrderData {
   user_id: number;
-  user_address: string;
+  delivery_address: string;
   total_amt: number;
   order_status: string;
   order_details: OrderItemDetail[];
