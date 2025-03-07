@@ -21,20 +21,50 @@ export default function QueryExecutionPage() {
     rating_count_max: "",
   });
 
+  // Add a state for the order threshold
+  const [orderThreshold, setOrderThreshold] = useState<number>(0);
+
   useEffect(() => {
     const handleExecuteQuery = async () => {
       setIsLoading(true);
       setError(null);
       try {
+        // const response: QueryResult = await api.executeRawQuery(`
+        //   SELECT user_id, user_name, user_email
+        //   FROM users u
+        //   WHERE u.user_id = ANY (
+        //       SELECT user_id 
+        //       FROM bill_detail 
+        //       GROUP BY user_id 
+        //       HAVING COUNT(order_id) > ${orderThreshold}
+        //   );
+        // `);
+
+
+        // const response: QueryResult = await api.executeRawQuery(`
+        //     SELECT user_id, user_name, user_email
+        //     FROM users u
+        //     WHERE u.user_id = ANY (
+        //         SELECT user_id from bill_detail
+        //         group by user_id
+        //         HAVING COUNT(order_id) > ${orderThreshold}
+        //     );
+        // `);
+
+
         const response: QueryResult = await api.executeRawQuery(`
-          SELECT prod_id, prod_name,  prod_price, rating_stars, rating_count
-          FROM product 
-          WHERE prod_price > ANY (
-            SELECT prod_price 
-            FROM product 
-            WHERE rating_count > 150
+          SELECT u.user_id, u.user_name, u.user_email, 
+          (SELECT COUNT(*) FROM bill_detail b WHERE b.user_id = u.user_id) AS order_count
+          FROM users u
+          WHERE u.user_id = ANY (
+              SELECT user_id 
+              FROM bill_detail
+              GROUP BY user_id
+              HAVING COUNT(order_id) > ${orderThreshold}
           );
-        `);
+
+      `);
+
         if (response.success) {
           setResults(response.data);
           setFilteredResults(response.data);
@@ -50,7 +80,7 @@ export default function QueryExecutionPage() {
       }
     };
     handleExecuteQuery();
-  }, []);
+  }, [orderThreshold]);
 
   // Apply filters
   useEffect(() => {
@@ -107,6 +137,10 @@ export default function QueryExecutionPage() {
     }));
   };
 
+  const handleOrderThresholdChange = (e) => {
+    setOrderThreshold(Number(e.target.value));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-gray-100 p-8">
       <div className="max-w-7xl mx-auto">
@@ -132,7 +166,7 @@ export default function QueryExecutionPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {/* Text search filters */}
-              <div className="relative col-span-2">
+              {/* <div className="relative col-span-2">
                 <input
                   type="text"
                   name="prod_name"
@@ -145,10 +179,24 @@ export default function QueryExecutionPage() {
                   className="absolute left-2 top-3 text-gray-400"
                   size={18}
                 />
-              </div>
+              </div> */}
 
               {/* Numeric filters */}
               <div className="relative">
+                <input
+                  type="number"
+                  name="order_threshold"
+                  placeholder="Order Threshold"
+                  value={orderThreshold}
+                  onChange={handleOrderThresholdChange}
+                  className="w-full p-2 pl-8 border rounded-lg"
+                />
+                <Filter
+                  className="absolute left-2 top-3 text-gray-400"
+                  size={18}
+                />
+              </div>
+              {/* <div className="relative">
                 <input
                   type="number"
                   name="prod_price_min"
@@ -235,7 +283,7 @@ export default function QueryExecutionPage() {
                   className="absolute left-2 top-3 text-gray-400"
                   size={18}
                 />
-              </div>
+              </div> */}
             </div>
           </div>
 
@@ -254,49 +302,44 @@ export default function QueryExecutionPage() {
             ) : (
               filteredResults && (
                 <div className="animate-fade-in">
-                  {/* <div className="mt-6 bg-gray-100 rounded-lg p-4"> */}
-                    {/* <h2 className="text-xl font-semibold mb-4">
-                      Nested Query Results
-                    </h2> */}
-                    <div className="overflow-x-auto">
-                      <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                        <thead className="bg-gray-200">
-                          <tr>
-                            {filteredResults.length > 0 &&
-                              Object.keys(filteredResults[0]).map((header) => (
-                                <th
-                                  key={header}
-                                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  {header}
-                                </th>
-                              ))}
+                  <div className="overflow-x-auto">
+                    <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
+                      <thead className="bg-gray-200">
+                        <tr>
+                          {filteredResults.length > 0 &&
+                            Object.keys(filteredResults[0]).map((header) => (
+                              <th
+                                key={header}
+                                className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                {header}
+                              </th>
+                            ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredResults.map((row, i) => (
+                          <tr
+                            key={i}
+                            className="hover:bg-gray-50 transition-colors duration-200"
+                          >
+                            {Object.values(row).map((value: any, j) => (
+                              <td key={j} className="px-4 py-3 text-sm">
+                                {typeof value === "object"
+                                  ? JSON.stringify(value)
+                                  : String(value)}
+                              </td>
+                            ))}
                           </tr>
-                        </thead>
-                        <tbody>
-                          {filteredResults.map((row, i) => (
-                            <tr
-                              key={i}
-                              className="hover:bg-gray-50 transition-colors duration-200"
-                            >
-                              {Object.values(row).map((value: any, j) => (
-                                <td key={j} className="px-4 py-3 text-sm">
-                                  {typeof value === "object"
-                                    ? JSON.stringify(value)
-                                    : String(value)}
-                                </td>
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    <div className="mt-4 text-sm text-gray-500 flex justify-between items-center">
-                      <p>Showing {filteredResults.length} results</p>
-                      <p>{new Date().toLocaleDateString()}</p>
-                    </div>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
-                // </div>
+                  <div className="mt-4 text-sm text-gray-500 flex justify-between items-center">
+                    <p>Showing {filteredResults.length} results</p>
+                    <p>{new Date().toLocaleDateString()}</p>
+                  </div>
+                </div>
               )
             )}
           </div>
