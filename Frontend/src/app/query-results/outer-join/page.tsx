@@ -239,9 +239,9 @@ export default function QueryExecutionPage() {
           {/* Results Display */}
           {filteredResults && (
             <div className="bg-gray-100 rounded-lg p-4">
-              <h2 className="text-xl font-semibold mb-4">
+              {/* <h2 className="text-xl font-semibold mb-4">
                 Results of the outer join query
-              </h2>
+              </h2> */}
               <div className="overflow-x-auto">
                 <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
                   <thead className="bg-gray-200">

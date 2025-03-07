@@ -143,9 +143,9 @@ export default function QueryExecutionPage() {
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-6 bg-white rounded-xl p-6 shadow-lg border border-gray-100"
                 >
-                  <h2 className="text-xl font-semibold mb-6 text-gray-800">
+                  {/* <h2 className="text-xl font-semibold mb-6 text-gray-800">
                     Aggregate Analysis Results
-                  </h2>
+                  </h2> */}
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>

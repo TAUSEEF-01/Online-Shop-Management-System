@@ -140,9 +140,9 @@ export default function QueryExecutionPage() {
             ) : (
               filteredResults && (
                 <div className="mt-6 bg-white rounded-xl p-6 shadow-lg border border-gray-100">
-                  <h2 className="text-xl font-semibold mb-6 text-gray-800">
+                  {/* <h2 className="text-xl font-semibold mb-6 text-gray-800">
                     Users with High Order Frequency
-                  </h2>
+                  </h2> */}
                   <div className="overflow-x-auto">
                     <table className="w-full">
                       <thead>
