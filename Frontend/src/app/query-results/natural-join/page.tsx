@@ -30,13 +30,12 @@ export default function QueryExecutionPage() {
 
         const response: QueryResult = await api.executeRawQuery(`
           SELECT 
-          order_id,
+              order_id,
               users.user_id, 
-              
               users.user_name, 
               users.user_email, 
               users.user_contact_no, 
-              orders.user_address, 
+              orders.delivery_address, 
               orders.total_amt, 
               orders.order_status
           FROM orders
@@ -232,46 +231,46 @@ export default function QueryExecutionPage() {
               filteredResults && (
                 <div className="animate-fade-in">
                   {/* <div className="mt-6 bg-gray-100 rounded-lg p-4"> */}
-                    {/* <h2 className="text-xl font-semibold mb-4">
+                  {/* <h2 className="text-xl font-semibold mb-4">
                       Results of the natural join query
                     </h2> */}
-                    <div className="overflow-x-auto">
-                      <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
-                        <thead className="bg-gray-200">
-                          <tr>
-                            {filteredResults.length > 0 &&
-                              Object.keys(filteredResults[0]).map((header) => (
-                                <th
-                                  key={header}
-                                  className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                                >
-                                  {header}
-                                </th>
-                              ))}
+                  <div className="overflow-x-auto">
+                    <table className="w-full bg-white shadow-md rounded-lg overflow-hidden">
+                      <thead className="bg-gray-200">
+                        <tr>
+                          {filteredResults.length > 0 &&
+                            Object.keys(filteredResults[0]).map((header) => (
+                              <th
+                                key={header}
+                                className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              >
+                                {header}
+                              </th>
+                            ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filteredResults.map((row, i) => (
+                          <tr
+                            key={i}
+                            className="hover:bg-gray-50 transition-colors duration-200"
+                          >
+                            {Object.values(row).map((value: any, j) => (
+                              <td key={j} className="px-4 py-3 text-sm">
+                                {typeof value === "object"
+                                  ? JSON.stringify(value)
+                                  : String(value)}
+                              </td>
+                            ))}
                           </tr>
-                        </thead>
-                        <tbody>
-                          {filteredResults.map((row, i) => (
-                            <tr
-                              key={i}
-                              className="hover:bg-gray-50 transition-colors duration-200"
-                            >
-                              {Object.values(row).map((value: any, j) => (
-                                <td key={j} className="px-4 py-3 text-sm">
-                                  {typeof value === "object"
-                                    ? JSON.stringify(value)
-                                    : String(value)}
-                                </td>
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                    <p className="mt-4 text-sm text-gray-500 text-right">
-                      Total rows: {filteredResults.length}
-                    </p>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
+                  <p className="mt-4 text-sm text-gray-500 text-right">
+                    Total rows: {filteredResults.length}
+                  </p>
+                </div>
                 // </div>
               )
             )}

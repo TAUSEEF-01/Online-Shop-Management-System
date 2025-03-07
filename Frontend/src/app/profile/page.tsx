@@ -162,7 +162,7 @@ export default function Profile() {
           {/* User Profile Card */}
           <div className="max-w-4xl mx-auto mb-8">
             <div className="bg-white rounded-2xl shadow-xl border border-blue-100 overflow-hidden">
-              <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
+              <div className="bg-gradient-to-r from-blue-500 to-blue-500 p-6 text-white">
                 <div className="flex items-center gap-4">
                   <div className="bg-white p-3 rounded-full">
                     <User className="w-8 h-8 text-blue-600" />

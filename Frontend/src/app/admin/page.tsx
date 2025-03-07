@@ -297,8 +297,38 @@ export default function AdminDashboard() {
               Database Operations
             </Title>
               <div className="grid grid-cols-1 gap-4">
+              <div className="flex items-center justify-between">
+                  <Text>Details of Users Payment status</Text>
+                  <Link href="/query-results/payment-done">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+
+              <div className="flex items-center justify-between">
+                  <Text>Users who didn't give any orders</Text>
+                  <Link href="/query-results/outer-join">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+
                 <div className="flex items-center justify-between">
-                  <Text>Order and User details
+                  <Text>Details of a user's number of orders</Text>
+                  <Link href="/query-results/nested-any">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+
+                <div className="flex items-center justify-between">
+                  <Text>Order and User details (Natural Join)
                      {/* (Natural Join) */}
                      </Text>
                   <Link href="/query-results/natural-join">
@@ -309,7 +339,7 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Text>Order details and Bill details
+                  <Text>Order details and Bill details (Cross Product)
                      {/* (Cross Product) */}
                      </Text>
                   <Link href="/query-results/cross-product">
@@ -319,17 +349,10 @@ export default function AdminDashboard() {
                   </Link>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <Text>Details using Outer Join</Text>
-                  <Link href="/query-results/outer-join">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                      View Query
-                    </button>
-                  </Link>
-                </div>
+                
 
                 <div className="flex items-center justify-between">
-                  <Text>Details using Join Using</Text>
+                  <Text>Order and User details (Join Using) </Text>
                   <Link href="/query-results/join-using">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
                       View Query
@@ -338,25 +361,30 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="flex items-center justify-between">
+                  <Text>Order Summary of users (View)</Text>
+                  <Link href="/query-results/view">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                {/* <div className="flex items-center justify-between">
                   <Text>Details using Join On</Text>
                   <Link href="/query-results/join-on">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
                       View Query
                     </button>
                   </Link>
-                </div>
+                </div> */}
+
+
+                
+
+                
 
                 <div className="flex items-center justify-between">
-                  <Text>Details using Nested Any</Text>
-                  <Link href="/query-results/nested-any">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                      View Query
-                    </button>
-                  </Link>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <Text>Details using Nested From</Text>
+                  <Text>Products with prices higher than average</Text>
                   <Link href="/query-results/nested-from">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
                       View Query
@@ -364,7 +392,7 @@ export default function AdminDashboard() {
                   </Link>
                 </div>
 
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between">
                   <Text>Details using Order By</Text>
                   <Link href="/query-results/order-by">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
@@ -380,16 +408,16 @@ export default function AdminDashboard() {
                       View Query
                     </button>
                   </Link>
-                </div>
+                </div> */}
 
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between">
                   <Text>Details using Having</Text>
                   <Link href="/query-results/having">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
                       View Query
                     </button>
                   </Link>
-                </div>
+                </div> */}
 
                 <div className="flex items-center justify-between">
                   <Text>Details using With Clause</Text>
@@ -409,23 +437,16 @@ export default function AdminDashboard() {
                   </Link>
                 </div>
 
-                <div className="flex items-center justify-between">
+                {/* <div className="flex items-center justify-between">
                   <Text>Details using Aggregate Functions</Text>
                   <Link href="/query-results/aggregate-functions">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
                       View Query
                     </button>
                   </Link>
-                </div>
+                </div> */}
 
-                <div className="flex items-center justify-between">
-                  <Text>Details of Payment Done</Text>
-                  <Link href="/query-results/payment-done">
-                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                      View Query
-                    </button>
-                  </Link>
-                </div>
+                
 
                 <div className="flex items-center justify-between">
                   <Text>Details using Any Query</Text>

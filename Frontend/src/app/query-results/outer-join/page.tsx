@@ -25,12 +25,23 @@ export default function QueryExecutionPage() {
       setIsLoading(true);
       setError(null);
       try {
-        const response: QueryResult = await api.executeRawQuery(`
-      SELECT o.*, u.user_name 
-      FROM orders o 
-      FULL OUTER JOIN users u 
-      ON o.user_id = u.user_id;
+    //     const response: QueryResult = await api.executeRawQuery(`
+    //   SELECT o.*, u.user_name 
+    //   FROM orders o 
+    //   FULL OUTER JOIN users u 
+    //   ON o.user_id = u.user_id;
+    // `);
+
+
+    const response: QueryResult = await api.executeRawQuery(`
+      SELECT u.user_id, u.user_name, u.user_email, u.user_contact_no
+      FROM users u
+      LEFT JOIN orders o ON u.user_id = o.user_id
+      WHERE o.user_id IS NULL;
+
     `);
+
+
         if (response.success) {
           setResults(response.data);
           setFilteredResults(response.data);
@@ -53,29 +64,29 @@ export default function QueryExecutionPage() {
     if (!results) return;
 
     const filtered = results.filter((row) => {
-      const orderIdMatch = filters.order_id
-        ? String(row.order_id).includes(filters.order_id)
-        : true;
+      // const orderIdMatch = filters.order_id
+      //   ? String(row.order_id).includes(filters.order_id)
+      //   : true;
 
       const userIdMatch = filters.user_id
         ? String(row.user_id).includes(filters.user_id)
         : true;
 
-      const orderDateMatch = filters.order_date
-        ? String(row.order_date).includes(filters.order_date)
-        : true;
+      // const orderDateMatch = filters.order_date
+      //   ? String(row.order_date).includes(filters.order_date)
+      //   : true;
 
-      const totalAmtMatch =
-        (!filters.total_amt_min ||
-          parseFloat(row.total_amt) >= parseFloat(filters.total_amt_min)) &&
-        (!filters.total_amt_max ||
-          parseFloat(row.total_amt) <= parseFloat(filters.total_amt_max));
+      // const totalAmtMatch =
+      //   (!filters.total_amt_min ||
+      //     parseFloat(row.total_amt) >= parseFloat(filters.total_amt_min)) &&
+      //   (!filters.total_amt_max ||
+      //     parseFloat(row.total_amt) <= parseFloat(filters.total_amt_max));
 
-      const statusMatch = filters.order_status
-        ? String(row.order_status)
-            .toLowerCase()
-            .includes(filters.order_status.toLowerCase())
-        : true;
+      // const statusMatch = filters.order_status
+      //   ? String(row.order_status)
+      //       .toLowerCase()
+      //       .includes(filters.order_status.toLowerCase())
+      //   : true;
 
       const userNameMatch = filters.user_name
         ? String(row.user_name)
@@ -84,11 +95,11 @@ export default function QueryExecutionPage() {
         : true;
 
       return (
-        orderIdMatch &&
+        // orderIdMatch &&
         userIdMatch &&
-        orderDateMatch &&
-        totalAmtMatch &&
-        statusMatch &&
+        // orderDateMatch &&
+        // totalAmtMatch &&
+        // statusMatch &&
         userNameMatch
       );
     });
@@ -113,7 +124,7 @@ export default function QueryExecutionPage() {
             Outer Join Query Results
           </h1>
           <p className="text-gray-600">
-            Viewing all records including non-matching ones
+          Users who didn't give any orders
           </p>
         </div>
 
@@ -128,7 +139,7 @@ export default function QueryExecutionPage() {
             </div>
 
             <div className="mb-4 grid grid-cols-3 gap-4">
-              <div className="relative">
+              {/* <div className="relative">
                 <input
                   type="text"
                   name="order_id"
@@ -141,7 +152,7 @@ export default function QueryExecutionPage() {
                   className="absolute left-2 top-3 text-gray-400"
                   size={18}
                 />
-              </div>
+              </div> */}
               <div className="relative">
                 <input
                   type="text"
@@ -156,7 +167,7 @@ export default function QueryExecutionPage() {
                   size={18}
                 />
               </div>
-              <div className="relative">
+              {/* <div className="relative">
                 <input
                   type="text"
                   name="order_date"
@@ -211,7 +222,7 @@ export default function QueryExecutionPage() {
                   className="absolute left-2 top-3 text-gray-400"
                   size={18}
                 />
-              </div>
+              </div> */}
               <div className="relative">
                 <input
                   type="text"

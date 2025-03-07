@@ -14,7 +14,7 @@ export default function QueryExecutionPage() {
     order_id: "",
     order_date: "",
     user_id: "",
-    user_address: "",
+    delivery_address: "",
     total_amt_min: "",
     total_amt_max: "",
     order_status: "",
@@ -66,10 +66,10 @@ export default function QueryExecutionPage() {
         ? String(row.user_id).includes(filters.user_id)
         : true;
 
-      const userAddressMatch = filters.user_address
-        ? String(row.user_address)
+      const userAddressMatch = filters.delivery_address
+        ? String(row.delivery_address)
             .toLowerCase()
-            .includes(filters.user_address.toLowerCase())
+            .includes(filters.delivery_address.toLowerCase())
         : true;
 
       const totalAmtMatch =
@@ -182,9 +182,9 @@ export default function QueryExecutionPage() {
               <div className="relative">
                 <input
                   type="text"
-                  name="user_address"
+                  name="delivery_address"
                   placeholder="Search User Address"
-                  value={filters.user_address}
+                  value={filters.delivery_address}
                   onChange={handleFilterChange}
                   className="w-full p-2 pl-8 border rounded-lg"
                 />

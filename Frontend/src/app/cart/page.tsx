@@ -152,7 +152,7 @@ export default function Cart() {
 
       const orderResponse = await api.createOrder({
         user_id: userId,
-        user_address: formattedAddress,
+        delivery_address: formattedAddress,
         total_amt: finalTotal,
         order_status: "in process",
         order_details: orderDetails,
