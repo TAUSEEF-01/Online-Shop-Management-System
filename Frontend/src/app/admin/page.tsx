@@ -199,91 +199,6 @@ export default function AdminDashboard() {
             </Card>
           </div>
 
-          {/* Database Queries Section */}
-          <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">
-              Database Operations
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 bg-white p-6 rounded-xl shadow-lg">
-              <Link href="/query-results/natural-join">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Order and User details
-                  {/* Natural Join */}
-                </button>
-              </Link>
-              <Link href="/query-results/cross-product">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Order details and Bill details
-                  {/* cross product */}
-                </button>
-              </Link>
-              <Link href="/query-results/outer-join">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Outer Join
-                </button>
-              </Link>
-              <Link href="/query-results/join-using">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Join Using
-                </button>
-              </Link>
-              <Link href="/query-results/join-on">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Join On
-                </button>
-              </Link>
-              <Link href="/query-results/nested-any">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Nested Any
-                </button>
-              </Link>
-              <Link href="/query-results/nested-from">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Nested From
-                </button>
-              </Link>
-              <Link href="/query-results/order-by">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Order By
-                </button>
-              </Link>
-              <Link href="/query-results/group-by">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Group By
-                </button>
-              </Link>
-              <Link href="/query-results/having">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Having
-                </button>
-              </Link>
-              <Link href="/query-results/with-clause">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  With Clause
-                </button>
-              </Link>
-              <Link href="/query-results/string-operations">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  String Operations
-                </button>
-              </Link>
-              <Link href="/query-results/aggregate-functions">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Aggregate Functions
-                </button>
-              </Link>
-              <Link href="/query-results/payment-done">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Payment Done
-                </button>
-              </Link>
-              <Link href="/query-results/any-query">
-                <button className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
-                  Any Query
-                </button>
-              </Link>
-            </div>
-          </div>
 
           {/* Charts and Tables */}
           <div className="space-y-8">
@@ -371,6 +286,156 @@ export default function AdminDashboard() {
               </div>
             </Card>
           </div>
+
+
+          {/* Database Queries Section */}
+          
+          <div className="mt-8">
+            
+            <div className="bg-white p-6 rounded-xl shadow-lg mt-8">
+            <Title className="text-2xl font-bold text-gray-800 mb-4 text-blue-500">
+              Database Operations
+            </Title>
+              <div className="grid grid-cols-1 gap-4">
+                <div className="flex items-center justify-between">
+                  <Text>Order and User details (Natural Join)</Text>
+                  <Link href="/query-results/natural-join">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Order details and Bill details (Cross Product)</Text>
+                  <Link href="/query-results/cross-product">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Outer Join</Text>
+                  <Link href="/query-results/outer-join">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Join Using</Text>
+                  <Link href="/query-results/join-using">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Join On</Text>
+                  <Link href="/query-results/join-on">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Nested Any</Text>
+                  <Link href="/query-results/nested-any">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Nested From</Text>
+                  <Link href="/query-results/nested-from">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Order By</Text>
+                  <Link href="/query-results/order-by">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Group By</Text>
+                  <Link href="/query-results/group-by">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Having</Text>
+                  <Link href="/query-results/having">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using With Clause</Text>
+                  <Link href="/query-results/with-clause">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using String Operations</Text>
+                  <Link href="/query-results/string-operations">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Aggregate Functions</Text>
+                  <Link href="/query-results/aggregate-functions">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details of Payment Done</Text>
+                  <Link href="/query-results/payment-done">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <Text>Details using Any Query</Text>
+                  <Link href="/query-results/any-query">
+                    <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
+                      View Query
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
         </main>
       </AdminLayout>
     </ProtectedRoute>
