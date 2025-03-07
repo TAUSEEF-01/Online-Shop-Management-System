@@ -1,22 +1,25 @@
 const express = require("express");
 const cors = require("cors");
-const session = require('express-session');
-const MemoryStore = require('memorystore')(session);
+const session = require("express-session");
+const MemoryStore = require("memorystore")(session);
 const customerRoutes = require("./routes/customerRoutes");
 const productRoutes = require("./routes/productRoutes");
 const authRoutes = require("./routes/authRoutes");
 const cartRoutes = require("./routes/cartRoutes");
 const billingRoutes = require("./routes/billingRoutes");
 const orderRoutes = require("./routes/orderRoutes");
+const workerRoutes = require("./routes/workerRoutes");
 const app = express();
 
 // Configure CORS before other middleware
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // // Configure express-session with MemoryStore
 // app.use(session({
@@ -36,7 +39,6 @@ app.use(cors({
 //   }
 // }));
 
-
 // app.use(session({
 //   store: new MemoryStore({
 //       checkPeriod: 86400000 // Prune expired entries every 24h
@@ -51,20 +53,22 @@ app.use(cors({
 //   }
 // }));
 
-app.use(session({
-  store: new MemoryStore({
-      checkPeriod: 86400000 // Prune expired entries every 24h
-  }),
-  secret: 'abc@123',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
+app.use(
+  session({
+    store: new MemoryStore({
+      checkPeriod: 86400000, // Prune expired entries every 24h
+    }),
+    secret: "abc@123",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
       maxAge: 86400000, // 1 day
       httpOnly: true,
-      secure: false,  // Set to `true` if using HTTPS
-      path: '/' // Ensure path matches the one in `res.clearCookie`
-  }
-}));
+      secure: false, // Set to `true` if using HTTPS
+      path: "/", // Ensure path matches the one in `res.clearCookie`
+    },
+  })
+);
 
 // // Modify session debug middleware to be more detailed
 // app.use((req, res, next) => {
@@ -78,25 +82,22 @@ app.use(session({
 //   next();
 // });
 
-
 app.use((req, res, next) => {
-  console.log('Session Debug:', {
-      sessionID: req.sessionID,
-      session: req.session,
-      userId: req.session?.user?.id || null,
-      isAuthenticated: !!req.session?.user,
-      cookies: req.headers.cookie
+  console.log("Session Debug:", {
+    sessionID: req.sessionID,
+    session: req.session,
+    userId: req.session?.user?.id || null,
+    isAuthenticated: !!req.session?.user,
+    cookies: req.headers.cookie,
   });
   next();
 });
-
 
 app.use(express.json());
 
 app.get("/test", (req, res) => {
   res.send("Hello World");
 });
-
 
 // Add new route for raw SQL queries
 app.post("/execute-query", async (req, res) => {
@@ -108,30 +109,31 @@ app.post("/execute-query", async (req, res) => {
     res.json({
       success: true,
       data: result.rows,
-      rowCount: result.rowCount
+      rowCount: result.rowCount,
     });
   } catch (error) {
     res.status(400).json({
       success: false,
-      error: error.message
+      error: error.message,
     });
   }
 });
 
 // Routes without /api prefix
 app.use("/auth", authRoutes);
-app.use("/products", productRoutes);  // Changed from /api/products to /products
+app.use("/products", productRoutes); // Changed from /api/products to /products
 app.use("/customers", customerRoutes);
 app.use("/cart", cartRoutes);
 app.use("/billing", billingRoutes);
 app.use("/orders", orderRoutes);
+app.use("/workers", workerRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
     status: "error",
-    message: "Something went wrong!"
+    message: "Something went wrong!",
   });
 });
 

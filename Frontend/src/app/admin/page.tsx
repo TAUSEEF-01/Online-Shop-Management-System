@@ -160,6 +160,40 @@ export default function AdminDashboard() {
                 </div>
               </div>
             </Link>
+
+
+            <Link href="/add-worker">
+              <div className="group hover:scale-105 transition-all duration-200">
+              <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl border border-blue-100 flex items-center space-x-4">
+                <div className="bg-blue-100 p-3 rounded-full">
+                <PencilRuler className="w-6 h-6 text-blue-600" />
+                </div>
+                <div>
+                <h3 className="font-semibold text-gray-800">
+                  Create a New Worker Profile
+                </h3>
+                <p className="text-sm text-gray-500">Create a new worker profile</p>
+                </div>
+              </div>
+              </div>
+            </Link>
+
+
+            <Link href="/worker">
+              <div className="group hover:scale-105 transition-all duration-200">
+                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl border border-blue-100 flex items-center space-x-4">
+                  <div className="bg-blue-100 p-3 rounded-full">
+                    <Users className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800">
+                      Manage Workers
+                    </h3>
+                    <p className="text-sm text-gray-500">View all workers</p>
+                  </div>
+                </div>
+              </div>
+            </Link>
           </div>
 
           {/* Stats Cards */}
@@ -456,6 +490,11 @@ export default function AdminDashboard() {
                     </button>
                   </Link>
                 </div>
+
+
+
+
+                    
               </div>
             </div>
           </div>

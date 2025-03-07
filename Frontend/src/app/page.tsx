@@ -154,7 +154,7 @@ export default function HomePage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link href="/Home">
-                <button className="bg-black hover:bg-gray-800 text-white font-medium py-3 px-8 rounded-md transition duration-300 flex items-center gap-2">
+                <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-8 rounded-md transition duration-300 flex items-center gap-2">
                   Shop Now <ArrowRight size={18} />
                 </button>
               </Link>
@@ -204,7 +204,7 @@ export default function HomePage() {
             </h2>
             <Link
               href="/Home"
-              className="text-gray-600 hover:text-black flex items-center gap-1 text-sm font-medium"
+              className="text-gray-600 hover:text-blue-500 flex items-center gap-1 text-base font-bold"
             >
               View All Products <ChevronRight size={16} />
             </Link>
@@ -217,7 +217,7 @@ export default function HomePage() {
                 onClick={() => setActiveCategory(category.id)}
                 className={`py-2 px-4 rounded-full whitespace-nowrap ${
                   activeCategory === category.id
-                    ? "bg-black text-white"
+                    ? "bg-blue-500 text-white"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 }`}
               >
@@ -288,7 +288,7 @@ export default function HomePage() {
                     ))}
                   </div>
                   <div className="flex justify-between items-center">
-                    <p className="font-bold text-gray-900">{product.price}</p>
+                    <p className="font-bold text-blue-600">{product.price}</p>
                     {/* <button className="bg-black text-white px-3 py-1 rounded-md text-sm hover:bg-gray-800 transition-colors">
                       Add to Cart
                     </button> */}

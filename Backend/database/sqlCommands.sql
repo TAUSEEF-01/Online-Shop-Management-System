@@ -314,7 +314,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS worker (
     worker_id SERIAL PRIMARY KEY,
     worker_name VARCHAR(50) NOT NULL,
-    worker_email VARCHAR(50) NOT NULL,
+    worker_email VARCHAR(50) UNIQUE  NOT NULL,
     worker_contact_no VARCHAR(20) NOT NULL,
     worker_salary DOUBLE PRECISION NOT NULL
 );
