@@ -83,6 +83,21 @@ export interface QueryResult {
   error?: string;
 }
 
+export interface Worker {
+  worker_id: number;
+  worker_name: string;
+  worker_email: string;
+  worker_contact_no: string;
+  worker_salary: number;
+}
+
+export interface CreateWorkerData {
+  worker_name: string;
+  worker_email: string;
+  worker_contact_no: string;
+  worker_salary: number;
+}
+
 const handleResponse = async (response: Response) => {
   try {
     const contentType = response.headers.get("content-type");
@@ -478,6 +493,26 @@ const api = {
         ...defaultOptions,
         method: "PUT",
         body: JSON.stringify({ order_status }),
+      }
+    );
+    return handleResponse(response);
+  },
+
+  createWorker: async (data: CreateWorkerData) => {
+    const response = await fetch(`${API_BASE_URL}/workers/create`, {
+      ...defaultOptions,
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    return handleResponse(response);
+  },
+
+  getAllWorkers: async () => {
+    const response = await fetch(
+      `${API_BASE_URL}/workers/get-all-workers-info`,
+      {
+        ...defaultOptions,
+        method: "GET",
       }
     );
     return handleResponse(response);
