@@ -25,12 +25,23 @@ export default function QueryExecutionPage() {
       setIsLoading(true);
       setError(null);
       try {
-        const response: QueryResult = await api.executeRawQuery(`
-      SELECT o.*, u.user_name 
-      FROM orders o 
-      FULL OUTER JOIN users u 
-      ON o.user_id = u.user_id;
+    //     const response: QueryResult = await api.executeRawQuery(`
+    //   SELECT o.*, u.user_name 
+    //   FROM orders o 
+    //   FULL OUTER JOIN users u 
+    //   ON o.user_id = u.user_id;
+    // `);
+
+
+    const response: QueryResult = await api.executeRawQuery(`
+      SELECT u.*
+      FROM users u
+      LEFT JOIN orders o ON u.user_id = o.user_id
+      WHERE o.user_id IS NULL;
+
     `);
+
+
         if (response.success) {
           setResults(response.data);
           setFilteredResults(response.data);

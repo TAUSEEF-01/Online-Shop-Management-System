@@ -156,7 +156,7 @@
 CREATE TABLE IF NOT EXISTS users (
     user_id SERIAL PRIMARY KEY,
     user_name VARCHAR(50) NOT NULL,
-    user_email VARCHAR(50) NOT NULL,
+    user_email VARCHAR(50) UNIQUE NOT NULL,
     user_password VARCHAR(255) NOT NULL,
     user_contact_no VARCHAR(20) NOT NULL,
     is_admin BOOLEAN NOT NULL
@@ -262,16 +262,16 @@ CREATE TABLE IF NOT EXISTS bill_detail (
 
 
 
-CREATE TABLE IF NOT EXISTS payment (
-    pm_id SERIAL PRIMARY KEY,
-    pay_mode VARCHAR(20) NOT NULL,
-    pay_date TIMESTAMP NOT NULL,
-    pay_disc FLOAT,
-    pay_amount DOUBLE PRECISION NOT NULL,
-    bill_id INT REFERENCES bill_detail(bill_id) NOT NULL,
-    order_id INT REFERENCES orders(order_id) NOT NULL,
-    user_id INT REFERENCES users(user_id) NOT NULL
-);
+-- CREATE TABLE IF NOT EXISTS payment (
+--     pm_id SERIAL PRIMARY KEY,
+--     pay_mode VARCHAR(20) NOT NULL,
+--     pay_date TIMESTAMP NOT NULL,
+--     pay_disc FLOAT,
+--     pay_amount DOUBLE PRECISION NOT NULL,
+--     bill_id INT REFERENCES bill_detail(bill_id) NOT NULL,
+--     order_id INT REFERENCES orders(order_id) NOT NULL,
+--     user_id INT REFERENCES users(user_id) NOT NULL
+-- );
 
 
 

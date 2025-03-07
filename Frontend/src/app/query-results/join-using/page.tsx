@@ -28,8 +28,16 @@ export default function QueryExecutionPage() {
       setError(null);
       try {
         const response: QueryResult = await api.executeRawQuery(`
-          SELECT * 
-          FROM orders 
+          SELECT 
+              order_id,
+              users.user_id, 
+              users.user_name, 
+              users.user_email, 
+              users.user_contact_no, 
+              orders.user_address, 
+              orders.total_amt, 
+              orders.order_status
+          FROM orders
           JOIN users 
           USING(user_id);
         `);

@@ -30,9 +30,8 @@ export default function QueryExecutionPage() {
 
         const response: QueryResult = await api.executeRawQuery(`
           SELECT 
-          order_id,
+              order_id,
               users.user_id, 
-              
               users.user_name, 
               users.user_email, 
               users.user_contact_no, 
