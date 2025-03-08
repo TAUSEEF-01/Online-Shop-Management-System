@@ -171,7 +171,28 @@ router.post("/return", async (req, res) => {
     if (!order_id || !user_id || !prod_id || !return_amount) {
       return res.status(400).json({
         status: "error",
-        message: "Missing required fields",
+        message: `Missing required fields: ${[
+          !order_id && "order_id",
+          !user_id && "user_id",
+          !prod_id && "prod_id",
+          !return_amount && "return_amount",
+        ]
+          .filter(Boolean)
+          .join(", ")}`,
+      });
+    }
+
+    // Check if return already exists
+    const existingReturn = await pool.query(
+      `SELECT * FROM order_return 
+       WHERE order_id = $1 AND prod_id = $2`,
+      [order_id, prod_id]
+    );
+
+    if (existingReturn.rows.length > 0) {
+      return res.status(400).json({
+        status: "error",
+        message: "This product has already been returned for this order",
       });
     }
 
@@ -187,10 +208,10 @@ router.post("/return", async (req, res) => {
       message: "Order return created successfully",
     });
   } catch (err) {
-    console.error("Error creating order return:", err.message);
+    console.error("Error creating order return:", err);
     res.status(500).json({
       status: "error",
-      message: "Server error while creating order return",
+      message: err.message || "Server error while creating order return",
     });
   }
 });
@@ -234,11 +255,19 @@ router.get("/details/bill/:billId", async (req, res) => {
     const { billId } = req.params;
 
     const orderDetails = await pool.query(
-      `SELECT o.order_id, od.prod_id, o.total_amt as total_amount
+      `SELECT o.order_id, 
+              o.total_amt as total_amount,
+              json_agg(json_build_object(
+                'prod_id', od.prod_id,
+                'prod_qty', od.prod_qty,
+                'prod_price', od.prod_price,
+                'prod_total_price', od.prod_total_price
+              )) as products
        FROM orders o
        JOIN bill_detail b ON b.order_id = o.order_id
        JOIN order_detail od ON o.order_id = od.order_id
-       WHERE b.bill_id = $1`,
+       WHERE b.bill_id = $1
+       GROUP BY o.order_id, o.total_amt`,
       [billId]
     );
 

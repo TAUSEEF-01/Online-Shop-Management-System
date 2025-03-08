@@ -3,10 +3,17 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { api } from "@/utils/api";
 
+interface OrderProduct {
+  prod_id: number;
+  prod_qty: number;
+  prod_price: number;
+  prod_total_price: number;
+}
+
 interface OrderDetails {
   order_id: number;
-  prod_id: number;
   total_amount: number | null;
+  products: OrderProduct[];
 }
 
 export default function OrderReturn() {
@@ -15,8 +22,11 @@ export default function OrderReturn() {
   const [billId, setBillId] = useState("");
   const [orderDetails, setOrderDetails] = useState<OrderDetails | null>(null);
   const [returnAmount, setReturnAmount] = useState("");
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState<string | JSX.Element>("");
   const [isConfirming, setIsConfirming] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<OrderProduct | null>(
+    null
+  );
 
   const checkAndFetchOrderDetails = async (
     e?: React.FormEvent | null,
@@ -37,10 +47,17 @@ export default function OrderReturn() {
         const returnCheck = await api.checkOrderReturn(orderData.data.order_id);
 
         if (returnCheck.isReturned) {
-          setMessage("This order has already been returned");
-          setTimeout(() => {
-            window.location.href = "/profile";
-          }, 2000);
+          setMessage(
+            <div>
+              <p>This order has already been returned</p>
+              <button
+                onClick={() => (window.location.href = "/profile")}
+                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                Go to Profile
+              </button>
+            </div>
+          );
           return;
         }
 
@@ -85,8 +102,11 @@ export default function OrderReturn() {
   const handleProceedToConfirm = (e: React.FormEvent) => {
     e.preventDefault();
     if (!orderDetails) return;
+    // Calculate return amount for the entire order
     const calculatedAmount = calculateReturnAmount(orderDetails.total_amount);
     setReturnAmount(calculatedAmount.toFixed(2));
+    // Set the first product as the selected product for the entire order return
+    setSelectedProduct(orderDetails.products[0]);
     setIsConfirming(true);
   };
 
@@ -96,23 +116,28 @@ export default function OrderReturn() {
     try {
       const returnData = {
         order_id: orderDetails.order_id,
-        prod_id: orderDetails.prod_id,
+        prod_id: orderDetails.products[0].prod_id, // Use first product's ID for the entire order
         return_amount: parseFloat(returnAmount),
         user_id: userId,
       };
 
+      console.log("Sending return data:", returnData);
+
       const response = await api.createOrderReturn(returnData);
       if (response.status === "success") {
         setMessage("Order return processed successfully");
-        // Redirect to profile page
-        window.location.href = `/profile`;
+        setTimeout(() => {
+          window.location.href = `/profile`;
+        }, 2000);
+      } else {
+        throw new Error(response.message || "Failed to process return");
       }
-      setOrderDetails(null);
-      setBillId("");
-      setReturnAmount("");
-      setIsConfirming(false);
     } catch (error) {
-      setMessage("Error processing return");
+      console.error("Return error:", error);
+      setMessage(
+        "Error processing return: " +
+          (error instanceof Error ? error.message : "Unknown error")
+      );
     }
   };
 
@@ -126,44 +151,59 @@ export default function OrderReturn() {
       <h1 className="text-2xl font-bold mb-4">Order Return</h1>
 
       {!orderDetails ? (
-        <form onSubmit={checkAndFetchOrderDetails} className="space-y-4">
-          <div>
-            <label className="block mb-2">Bill ID:</label>
-            <input
-              type="text"
-              value={billId}
-              onChange={(e) => setBillId(e.target.value)}
-              className="border p-2 rounded"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Fetch Order Details
-          </button>
-        </form>
+        <div className="flex items-center justify-center">
+          {/* <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+          <p className="ml-2">Fetching order details...</p> */}
+        </div>
       ) : !isConfirming ? (
         <div className="space-y-4">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4">Order Details</h2>
-            <div className="space-y-2">
-              <p>Order ID: {orderDetails.order_id}</p>
-              <p>Product ID: {orderDetails.prod_id}</p>
-              <p>Original Amount: ${safeToFixed(orderDetails.total_amount)}</p>
-              <p className="text-blue-600">
-                Return Amount (10% deducted): $
-                {safeToFixed(calculateReturnAmount(orderDetails.total_amount))}
-              </p>
-            </div>
-            <div className="mt-6 flex gap-4">
-              <button
-                onClick={handleProceedToConfirm}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-              >
-                Proceed to Return
-              </button>
+            <div className="space-y-4">
+              <div>
+                <p className="font-semibold">
+                  Order ID: {orderDetails?.order_id}
+                </p>
+                <p className="mt-2">
+                  Original Amount: ${safeToFixed(orderDetails?.total_amount)}
+                </p>
+                <p className="text-blue-600 mb-4">
+                  Return Amount (10% deducted): $
+                  {safeToFixed(
+                    calculateReturnAmount(orderDetails?.total_amount)
+                  )}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="font-semibold mb-2">Products in this Order:</h3>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  {orderDetails?.products.map((product) => (
+                    <div
+                      key={product.prod_id}
+                      className="mb-2 p-2 border-b last:border-0"
+                    >
+                      <div>
+                        <p>Product ID: {product.prod_id}</p>
+                        <div className="text-sm text-gray-600">
+                          <p>Quantity: {product.prod_qty}</p>
+                          <p>Price: ${safeToFixed(product.prod_price)}</p>
+                          <p>Total: ${safeToFixed(product.prod_total_price)}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <button
+                  onClick={handleProceedToConfirm}
+                  className="w-full bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                >
+                  Return Entire Order
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -199,12 +239,25 @@ export default function OrderReturn() {
       {message && (
         <div
           className={`mt-4 p-4 rounded-lg ${
-            message.includes("Error")
+            typeof message === "string" &&
+            message.toLowerCase().includes("error")
               ? "bg-red-100 text-red-700"
               : "bg-green-100 text-green-700"
           }`}
         >
-          {message}
+          {typeof message === "string" ? (
+            message
+          ) : (
+            <div className="flex flex-col items-center">
+              <p>This order has already been returned</p>
+              <button
+                onClick={() => (window.location.href = "/profile")}
+                className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                Go to Profile
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>
