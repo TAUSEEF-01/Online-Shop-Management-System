@@ -147,9 +147,6 @@
 //   );
 // }
 
-
-
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -158,7 +155,7 @@ import Layout from "../../components/layout";
 import { Button } from "@/app/components/ui/button";
 import { api } from "@/utils/api";
 import ProtectedRoute from "../../components/protected-route";
-import { User, Save, X } from 'lucide-react';
+import { User, Save, X } from "lucide-react";
 
 export default function EditProfile() {
   const router = useRouter();
@@ -166,7 +163,7 @@ export default function EditProfile() {
     user_name: "",
     user_email: "",
     user_password: "",
-    user_contact_no: ""
+    user_contact_no: "",
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -180,7 +177,7 @@ export default function EditProfile() {
             user_name: response.user.user_name,
             user_email: response.user.user_email,
             user_password: "",
-            user_contact_no: response.user.user_contact_no
+            user_contact_no: response.user.user_contact_no,
           });
         }
       } catch (err) {
@@ -246,33 +243,33 @@ export default function EditProfile() {
             <User className="w-8 h-8 mr-3" />
             <h1 className="text-2xl font-bold">Edit Profile</h1>
           </div>
-          
+
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             {[
-              { 
-                label: "Name", 
-                name: "user_name", 
-                type: "text", 
-                value: userInfo.user_name 
+              {
+                label: "Name",
+                name: "user_name",
+                type: "text",
+                value: userInfo.user_name,
               },
-              // { 
-              //   label: "Email", 
-              //   name: "user_email", 
-              //   type: "email", 
-              //   value: userInfo.user_email 
+              // {
+              //   label: "Email",
+              //   name: "user_email",
+              //   type: "email",
+              //   value: userInfo.user_email
               // },
-              { 
-                label: "Change Password", 
-                name: "user_password", 
-                type: "password", 
-                value: userInfo.user_password 
+              {
+                label: "Change Password",
+                name: "user_password",
+                type: "password",
+                value: userInfo.user_password,
               },
-              { 
-                label: "Contact Number", 
-                name: "user_contact_no", 
-                type: "text", 
-                value: userInfo.user_contact_no 
-              }
+              {
+                label: "Contact Number",
+                name: "user_contact_no",
+                type: "text",
+                value: userInfo.user_contact_no,
+              },
             ].map(({ label, name, type, value }) => (
               <div key={name}>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -288,17 +285,17 @@ export default function EditProfile() {
                 />
               </div>
             ))}
-            
+
             <div className="flex justify-end space-x-4 pt-4">
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 onClick={() => router.push("/profile")}
                 className="flex items-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50"
               >
                 <X className="w-5 h-5" /> Cancel
               </Button>
-              <Button 
-                type="submit" 
+              <Button
+                type="submit"
                 className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white"
               >
                 <Save className="w-5 h-5" /> Save Changes

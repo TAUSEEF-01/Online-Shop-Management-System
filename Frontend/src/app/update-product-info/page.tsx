@@ -87,25 +87,24 @@ const UpdateProductInfoPage = () => {
 
   return (
     <AdminLayout>
-    <div className="container mx-auto py-8">
-      <ProductFilter
-        categories={categories}
-        priceRange={priceRange}
-        setPriceRange={setPriceRange}
-        selectedCategories={selectedCategories}
-        setSelectedCategories={setSelectedCategories}
-        searchTerm={searchTerm}
-        setSearchTerm={setSearchTerm}
-        loading={loading}
-        filteredProducts={filteredProducts}
-        onSort={handleSort}
-        isEditMode={true}
-        onEdit={handleEditClick}
-      />
-    </div>
+      <div className="container mx-auto py-8">
+        <ProductFilter
+          categories={categories}
+          priceRange={priceRange}
+          setPriceRange={setPriceRange}
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          loading={loading}
+          filteredProducts={filteredProducts}
+          onSort={handleSort}
+          isEditMode={true}
+          onEdit={handleEditClick}
+        />
+      </div>
     </AdminLayout>
   );
-
 };
 
 export default UpdateProductInfoPage;

@@ -55,7 +55,6 @@ export default function Signup() {
         is_admin: false, // Add this line to set is_admin to false by default
       });
 
-
       console.log("Signup response:", response);
 
       if (response) {

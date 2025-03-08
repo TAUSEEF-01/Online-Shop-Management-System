@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import logo from "./logo.png";
 import { useCart } from "../context/CartContext";
+import ProtectedRoute from "./protected-route";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -70,11 +71,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Image src={logo} alt="Logo" className="w-16 h-16" />
           </Link>
 
-            <nav className="hidden md:flex items-center justify-center space-x-8 flex-1 mx-8">
+          <nav className="hidden md:flex items-center justify-center space-x-8 flex-1 mx-8">
             <Link
               href="/"
               className={`text-black hover:text-blue-600 uppercase font-medium text-sm tracking-wider border-b-2 ${
-              window.location.pathname === "/" ? "border-black" : "border-transparent"
+                window.location.pathname === "/"
+                  ? "border-black"
+                  : "border-transparent"
               }`}
             >
               Home
@@ -82,7 +85,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link
               href="/Home"
               className={`text-black hover:text-blue-600 uppercase font-medium text-sm tracking-wider border-b-2 ${
-              window.location.pathname === "/Home" ? "border-black" : "border-transparent"
+                window.location.pathname === "/Home"
+                  ? "border-black"
+                  : "border-transparent"
               }`}
             >
               Collection
@@ -90,7 +95,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link
               href="/about"
               className={`text-black hover:text-blue-600 uppercase font-medium text-sm tracking-wider border-b-2 ${
-              window.location.pathname === "/about" ? "border-black" : "border-transparent"
+                window.location.pathname === "/about"
+                  ? "border-black"
+                  : "border-transparent"
               }`}
             >
               About
@@ -98,12 +105,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Link
               href="/contact"
               className={`text-black hover:text-blue-600 uppercase font-medium text-sm tracking-wider border-b-2 ${
-              window.location.pathname === "/contact" ? "border-black" : "border-transparent"
+                window.location.pathname === "/contact"
+                  ? "border-black"
+                  : "border-transparent"
               }`}
             >
               Contact
             </Link>
-            </nav>
+          </nav>
 
           <nav className="flex items-center space-x-6">
             <div className="relative inline-block">

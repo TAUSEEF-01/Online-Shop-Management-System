@@ -22,27 +22,27 @@
 //   return <>{children}</>;
 // };
 
+"use client";
 
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { checkAuthStatus } from "@/utils/authUtils";
 
-
-
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { checkAuthStatus } from '@/utils/authUtils';
-
-export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
+export default function ProtectedRoute({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
       const isAuthenticated = await checkAuthStatus();
-      console.log('isAuthenticated:', isAuthenticated);
+      console.log("isAuthenticated:", isAuthenticated);
 
       if (!isAuthenticated) {
-        router.push('/login');
+        router.push("/login");
       }
 
       setLoading(false);
@@ -56,4 +56,4 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   }
 
   return <>{children}</>;
-};
+}
