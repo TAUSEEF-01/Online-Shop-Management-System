@@ -457,3 +457,131 @@ FROM orders o
 JOIN users u ON o.user_id = u.user_id
 JOIN order_detail od ON o.order_id = od.order_id
 JOIN product p ON od.prod_id = p.prod_id;
+
+
+
+
+
+
+
+
+
+
+
+SELECT * FROM order_summary WHERE user_id = 1;
+
+
+SELECT prod_name, 
+	LOWER(prod_name) AS lower_name, 
+	UPPER(prod_name) AS upper_name 
+FROM product;
+
+
+
+WITH high_rated_products AS (
+  SELECT prod_id, prod_name,  prod_price, rating_stars, rating_count
+  FROM product 
+  WHERE rating_stars >= 4
+)
+SELECT * 
+FROM high_rated_products;
+
+
+
+SELECT u.user_id, u.user_name, u.user_email, u.user_contact_no
+FROM users u
+LEFT JOIN orders o ON u.user_id = o.user_id
+WHERE o.user_id IS NULL;
+
+
+SELECT prod_id, prod_name, prod_quantity, prod_price, rating_stars, rating_count, prod_discount 
+FROM product 
+ORDER BY prod_price DESC;
+
+
+
+SELECT prod_id, prod_name, prod_price, rating_stars, rating_count
+FROM product
+WHERE prod_price > (
+  SELECT AVG(prod_price) 
+  FROM product
+);
+
+
+SELECT u.user_id, u.user_name, u.user_email, 
+(SELECT COUNT(*) FROM bill_detail b WHERE b.user_id = u.user_id) AS order_count
+FROM users u
+WHERE u.user_id = ANY (
+  SELECT user_id 
+  FROM bill_detail
+  GROUP BY user_id
+  HAVING COUNT(order_id) > 27
+);
+
+
+
+SELECT 
+  order_id,
+  users.user_id, 
+  users.user_name, 
+  users.user_email, 
+  users.user_contact_no, 
+  orders.delivery_address, 
+  orders.total_amt, 
+  orders.order_status
+FROM orders
+NATURAL JOIN users;
+
+
+
+
+
+
+SELECT 
+	order_id,
+	users.user_id, 
+	users.user_name, 
+	users.user_email, 
+	users.user_contact_no, 
+	orders.delivery_address, 
+	orders.total_amt, 
+	orders.order_status
+FROM orders
+JOIN users 
+USING(user_id);
+
+
+
+
+SELECT * 
+FROM order_detail od 
+JOIN product p 
+ON od.prod_id = p.prod_id;
+
+
+
+
+SELECT user_id, COUNT(*) AS order_count 
+FROM orders 
+GROUP BY user_id 
+HAVING COUNT(*) > 5;
+
+
+
+
+SELECT user_id, COUNT(*) AS order_count 
+FROM orders 
+GROUP BY user_id;
+
+
+
+
+SELECT *
+FROM order_detail o, bill_detail b
+where o.order_id = b.order_id;
+
+
+
+SELECT AVG(prod_price) AS avg_price, 
+SUM(prod_price) AS total_price 
+FROM product;
