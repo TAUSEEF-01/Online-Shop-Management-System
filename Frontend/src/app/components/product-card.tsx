@@ -71,6 +71,11 @@ export default function ProductCard({
     await addToCart();
   };
 
+  const handleImagePreview = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <Link href={`/product/${product.id}`}>
@@ -98,7 +103,7 @@ export default function ProductCard({
             )}
             <Button
               className="absolute top-2 right-2 bg-white/80 backdrop-blur-md p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-white"
-              onClick={() => setIsModalOpen(true)}
+              onClick={handleImagePreview}
             >
               <Eye className="h-5 w-5 text-gray-700" />
             </Button>
