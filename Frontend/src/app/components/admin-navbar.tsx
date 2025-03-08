@@ -90,17 +90,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
-
-
-
 "use client";
 
 import { useState, useEffect } from "react";
@@ -175,16 +164,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           <nav className="hidden md:flex items-center justify-center space-x-8 flex-1 mx-8">
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-indigo-700">Admin Dashboard</h1>
+              <h1 className="text-2xl font-bold text-indigo-700">
+                Admin Dashboard
+              </h1>
               <span className="ml-2 px-2 py-1 bg-green-500 text-white text-sm rounded-full">
                 Live
               </span>
             </div>
-            
           </nav>
 
           <nav className="flex items-center space-x-6 mr-3">
-
             <div className="relative">
               <User
                 className="h-6 w-6 text-black hover:text-blue-600 transition-all cursor-pointer"

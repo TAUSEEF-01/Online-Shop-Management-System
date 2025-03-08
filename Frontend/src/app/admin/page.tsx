@@ -161,23 +161,23 @@ export default function AdminDashboard() {
               </div>
             </Link>
 
-
             <Link href="/add-worker">
               <div className="group hover:scale-105 transition-all duration-200">
-              <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl border border-blue-100 flex items-center space-x-4">
-                <div className="bg-blue-100 p-3 rounded-full">
-                <PencilRuler className="w-6 h-6 text-blue-600" />
+                <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl border border-blue-100 flex items-center space-x-4">
+                  <div className="bg-blue-100 p-3 rounded-full">
+                    <PencilRuler className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800">
+                      Create a New Worker Profile
+                    </h3>
+                    <p className="text-sm text-gray-500">
+                      Create a new worker profile
+                    </p>
+                  </div>
                 </div>
-                <div>
-                <h3 className="font-semibold text-gray-800">
-                  Create a New Worker Profile
-                </h3>
-                <p className="text-sm text-gray-500">Create a new worker profile</p>
-                </div>
-              </div>
               </div>
             </Link>
-
 
             <Link href="/worker">
               <div className="group hover:scale-105 transition-all duration-200">
@@ -232,7 +232,6 @@ export default function AdminDashboard() {
               </Flex>
             </Card>
           </div>
-
 
           {/* Charts and Tables */}
           <div className="space-y-8">
@@ -321,17 +320,15 @@ export default function AdminDashboard() {
             </Card>
           </div>
 
-
           {/* Database Queries Section */}
-          
+
           <div className="mt-8">
-            
             <div className="bg-white p-6 rounded-xl shadow-lg mt-8">
-            <Title className="text-2xl font-bold text-gray-800 mb-4 text-blue-500">
-              Database Operations
-            </Title>
+              <Title className="text-2xl font-bold text-gray-800 mb-4 text-blue-500">
+                Database Operations
+              </Title>
               <div className="grid grid-cols-1 gap-4">
-              <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between">
                   <Text>Details of Users Payment status</Text>
                   <Link href="/query-results/payment-done">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
@@ -340,8 +337,7 @@ export default function AdminDashboard() {
                   </Link>
                 </div>
 
-
-              <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between">
                   <Text>Users who didn't give any orders</Text>
                   <Link href="/query-results/outer-join">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
@@ -349,7 +345,6 @@ export default function AdminDashboard() {
                     </button>
                   </Link>
                 </div>
-
 
                 <div className="flex items-center justify-between">
                   <Text>Details of a user's number of orders</Text>
@@ -360,11 +355,11 @@ export default function AdminDashboard() {
                   </Link>
                 </div>
 
-
                 <div className="flex items-center justify-between">
-                  <Text>Order and User details (Natural Join)
-                     {/* (Natural Join) */}
-                     </Text>
+                  <Text>
+                    Order and User details (Natural Join)
+                    {/* (Natural Join) */}
+                  </Text>
                   <Link href="/query-results/natural-join">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
                       View Query
@@ -373,17 +368,16 @@ export default function AdminDashboard() {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Text>Order details and Bill details (Cross Product)
-                     {/* (Cross Product) */}
-                     </Text>
+                  <Text>
+                    Order details and Bill details (Cross Product)
+                    {/* (Cross Product) */}
+                  </Text>
                   <Link href="/query-results/cross-product">
                     <button className="bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md shadow transition-all hover:shadow-md text-sm">
                       View Query
                     </button>
                   </Link>
                 </div>
-
-                
 
                 <div className="flex items-center justify-between">
                   <Text>Order and User details (Join Using) </Text>
@@ -411,11 +405,6 @@ export default function AdminDashboard() {
                     </button>
                   </Link>
                 </div> */}
-
-
-                
-
-                
 
                 <div className="flex items-center justify-between">
                   <Text>Products with prices higher than average</Text>
@@ -480,8 +469,6 @@ export default function AdminDashboard() {
                   </Link>
                 </div> */}
 
-                
-
                 <div className="flex items-center justify-between">
                   <Text>Details using Any Query</Text>
                   <Link href="/query-results/any-query">
@@ -490,16 +477,9 @@ export default function AdminDashboard() {
                     </button>
                   </Link>
                 </div>
-
-
-
-
-                    
               </div>
             </div>
           </div>
-
-          
         </main>
       </AdminLayout>
     </ProtectedRoute>

@@ -8,7 +8,7 @@ export default function AdminLayout({
   return (
     <div className="min-h-screen flex flex-col">
       <AdminNavbar>
-      <main className="flex-grow bg-gray-50">{children}</main>
+        <main className="flex-grow bg-gray-50">{children}</main>
       </AdminNavbar>
     </div>
   );

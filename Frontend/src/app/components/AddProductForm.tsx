@@ -313,14 +313,6 @@
 //   );
 // }
 
-
-
-
-
-
-
-
-
 "use client";
 
 import { useState } from "react";
@@ -467,7 +459,10 @@ export default function AddProductForm() {
           )}
 
           <div className="space-y-3">
-            <Label htmlFor="prod_name" className="flex items-center text-gray-700">
+            <Label
+              htmlFor="prod_name"
+              className="flex items-center text-gray-700"
+            >
               <Tag className="w-5 h-5 mr-2 text-blue-500" />
               Product Name
             </Label>
@@ -483,7 +478,10 @@ export default function AddProductForm() {
           </div>
 
           <div className="space-y-3">
-            <Label htmlFor="prod_image" className="flex items-center text-gray-700">
+            <Label
+              htmlFor="prod_image"
+              className="flex items-center text-gray-700"
+            >
               <ImageIcon className="w-5 h-5 mr-2 text-blue-500" />
               Image URL
             </Label>
@@ -502,7 +500,10 @@ export default function AddProductForm() {
 
           <div className="grid grid-cols-2 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="prod_quantity" className="flex items-center text-gray-700">
+              <Label
+                htmlFor="prod_quantity"
+                className="flex items-center text-gray-700"
+              >
                 <Package className="w-5 h-5 mr-2 text-blue-500" />
                 Quantity
               </Label>
@@ -522,7 +523,10 @@ export default function AddProductForm() {
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="prod_price" className="flex items-center text-gray-700">
+              <Label
+                htmlFor="prod_price"
+                className="flex items-center text-gray-700"
+              >
                 <Tag className="w-5 h-5 mr-2 text-blue-500" />
                 Price
               </Label>
@@ -545,7 +549,10 @@ export default function AddProductForm() {
 
           <div className="grid grid-cols-3 gap-6">
             <div className="space-y-3">
-              <Label htmlFor="rating_stars" className="flex items-center text-gray-700">
+              <Label
+                htmlFor="rating_stars"
+                className="flex items-center text-gray-700"
+              >
                 <Star className="w-5 h-5 mr-2 text-blue-500" />
                 Rating Stars
               </Label>
@@ -568,7 +575,10 @@ export default function AddProductForm() {
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="rating_count" className="flex items-center text-gray-700">
+              <Label
+                htmlFor="rating_count"
+                className="flex items-center text-gray-700"
+              >
                 <Star className="w-5 h-5 mr-2 text-blue-500" />
                 Rating Count
               </Label>
@@ -588,7 +598,10 @@ export default function AddProductForm() {
             </div>
 
             <div className="space-y-3">
-              <Label htmlFor="prod_discount" className="flex items-center text-gray-700">
+              <Label
+                htmlFor="prod_discount"
+                className="flex items-center text-gray-700"
+              >
                 <Percent className="w-5 h-5 mr-2 text-blue-500" />
                 Discount
               </Label>

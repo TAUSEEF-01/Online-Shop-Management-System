@@ -168,17 +168,17 @@ export default function HomePage() {
 
           <div className="md:w-1/2 flex justify-center md:justify-end">
             <div className="relative">
-            <div className="relative md:w-full max-w-[1200px]">
-              <div className="absolute inset-0 bg-blue-600/10 rounded-lg transform translate-x-3 translate-y-3 ml-4"></div>
-              <Image
-                className="relative w-full rounded-lg shadow-2xl transform transition-transform duration-500 hover:scale-105"
-                src={logo}
-                alt="Featured Collection"
-                width={900}
-                height={900}
-              />
+              <div className="relative md:w-full max-w-[1200px]">
+                <div className="absolute inset-0 bg-blue-600/10 rounded-lg transform translate-x-3 translate-y-3 ml-4"></div>
+                <Image
+                  className="relative w-full rounded-lg shadow-2xl transform transition-transform duration-500 hover:scale-105"
+                  src={logo}
+                  alt="Featured Collection"
+                  width={900}
+                  height={900}
+                />
               </div>
-  
+
               {/* <Image
                 src={logo}
                 alt="Featured Collection"
