@@ -33,13 +33,12 @@ export default function QueryExecutionPage() {
         //   SELECT user_id, user_name, user_email
         //   FROM users u
         //   WHERE u.user_id = ANY (
-        //       SELECT user_id 
-        //       FROM bill_detail 
-        //       GROUP BY user_id 
+        //       SELECT user_id
+        //       FROM bill_detail
+        //       GROUP BY user_id
         //       HAVING COUNT(order_id) > ${orderThreshold}
         //   );
         // `);
-
 
         // const response: QueryResult = await api.executeRawQuery(`
         //     SELECT user_id, user_name, user_email
@@ -50,7 +49,6 @@ export default function QueryExecutionPage() {
         //         HAVING COUNT(order_id) > ${orderThreshold}
         //     );
         // `);
-
 
         const response: QueryResult = await api.executeRawQuery(`
           SELECT u.user_id, u.user_name, u.user_email, 
@@ -149,9 +147,7 @@ export default function QueryExecutionPage() {
           <h1 className="text-3xl font-bold text-gray-800 mb-2 animate-fade-in">
             Nested ANY Query Results
           </h1>
-          <p className="text-gray-600">
-            Products with prices above specific thresholds
-          </p>
+          <p className="text-gray-600">Details of a user's number of orders</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl">
