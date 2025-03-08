@@ -32,9 +32,9 @@ export default function QueryExecutionPage() {
       try {
         const response: QueryResult = await api.executeRawQuery(`
           SELECT * 
-      FROM order_detail od 
-      JOIN product p 
-      ON od.prod_id = p.prod_id;
+          FROM order_detail od 
+          JOIN product p 
+          ON od.prod_id = p.prod_id;
         `);
         if (response.success) {
           setResults(response.data);
