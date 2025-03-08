@@ -125,6 +125,7 @@ Demonstrates various SQL concepts including:
 For any queries:
 
 - Email: mdtauseef.rahmang01@gmail.com
+- Email: faiazmahmudifti@gmail.com
 
 ---
 
