@@ -98,6 +98,13 @@ export interface CreateWorkerData {
   worker_salary: number;
 }
 
+export interface OrderReturnData {
+  order_id: number;
+  user_id: number;
+  prod_id: number;
+  return_amount: number;
+}
+
 const handleResponse = async (response: Response) => {
   try {
     const contentType = response.headers.get("content-type");
@@ -510,6 +517,45 @@ const api = {
   getAllWorkers: async () => {
     const response = await fetch(
       `${API_BASE_URL}/workers/get-all-workers-info`,
+      {
+        ...defaultOptions,
+        method: "GET",
+      }
+    );
+    return handleResponse(response);
+  },
+
+  createOrderReturn: async (data: OrderReturnData) => {
+    const response = await fetch(`${API_BASE_URL}/orders/return`, {
+      ...defaultOptions,
+      method: "POST",
+      body: JSON.stringify(data),
+    });
+    return handleResponse(response);
+  },
+
+  getOrderDetailsFromBill: async (billId: string) => {
+    const response = await fetch(
+      `${API_BASE_URL}/orders/details/bill/${billId}`,
+      {
+        ...defaultOptions,
+        method: "GET",
+      }
+    );
+    return handleResponse(response);
+  },
+
+  getOrderDetailsById: async (orderId: number) => {
+    const response = await fetch(`${API_BASE_URL}/orders/details/${orderId}`, {
+      ...defaultOptions,
+      method: "GET",
+    });
+    return handleResponse(response);
+  },
+
+  checkOrderReturn: async (orderId: number) => {
+    const response = await fetch(
+      `${API_BASE_URL}/orders/check-return/${orderId}`,
       {
         ...defaultOptions,
         method: "GET",

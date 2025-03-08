@@ -162,4 +162,126 @@ router.get("/all", async (req, res) => {
   }
 });
 
+// Add endpoint for creating order returns
+router.post("/return", async (req, res) => {
+  try {
+    const { order_id, user_id, prod_id, return_amount } = req.body;
+
+    // Validate required fields
+    if (!order_id || !user_id || !prod_id || !return_amount) {
+      return res.status(400).json({
+        status: "error",
+        message: "Missing required fields",
+      });
+    }
+
+    const newReturn = await pool.query(
+      `INSERT INTO order_return (order_id, user_id, return_date, prod_id, return_amount)
+       VALUES ($1, $2, CURRENT_TIMESTAMP, $3, $4) RETURNING *`,
+      [order_id, user_id, prod_id, return_amount]
+    );
+
+    res.status(201).json({
+      status: "success",
+      data: newReturn.rows[0],
+      message: "Order return created successfully",
+    });
+  } catch (err) {
+    console.error("Error creating order return:", err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while creating order return",
+    });
+  }
+});
+
+// Add new endpoint to fetch order details by order_id
+router.get("/details/:orderId", async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const orderDetails = await pool.query(
+      `SELECT o.order_id, od.prod_id, o.total_amt as total_amount
+       FROM orders o
+       JOIN order_detail od ON o.order_id = od.order_id
+       WHERE o.order_id = $1`,
+      [orderId]
+    );
+
+    if (orderDetails.rows.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "Order not found",
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: orderDetails.rows[0],
+    });
+  } catch (err) {
+    console.error("Error fetching order details:", err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while fetching order details",
+    });
+  }
+});
+
+// Add endpoint to get order details from bill ID
+router.get("/details/bill/:billId", async (req, res) => {
+  try {
+    const { billId } = req.params;
+
+    const orderDetails = await pool.query(
+      `SELECT o.order_id, od.prod_id, o.total_amt as total_amount
+       FROM orders o
+       JOIN bill_detail b ON b.order_id = o.order_id
+       JOIN order_detail od ON o.order_id = od.order_id
+       WHERE b.bill_id = $1`,
+      [billId]
+    );
+
+    if (orderDetails.rows.length === 0) {
+      return res.status(404).json({
+        status: "error",
+        message: "Order not found for this bill",
+      });
+    }
+
+    res.status(200).json({
+      status: "success",
+      data: orderDetails.rows[0],
+    });
+  } catch (err) {
+    console.error("Error fetching order details from bill:", err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while fetching order details",
+    });
+  }
+});
+
+// Add endpoint to check if order has been returned
+router.get("/check-return/:orderId", async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const returnCheck = await pool.query(
+      `SELECT * FROM order_return WHERE order_id = $1`,
+      [orderId]
+    );
+
+    res.status(200).json({
+      status: "success",
+      isReturned: returnCheck.rows.length > 0,
+    });
+  } catch (err) {
+    console.error("Error checking order return:", err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while checking order return",
+    });
+  }
+});
+
 module.exports = router;
