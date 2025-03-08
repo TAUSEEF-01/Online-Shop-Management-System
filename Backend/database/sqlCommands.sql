@@ -352,14 +352,14 @@ CREATE TABLE IF NOT EXISTS order_detail (
 
 
 CREATE TABLE IF NOT EXISTS bill_detail (
-    bill_id SERIAL PRIMARY KEY, -- Automatically incrementing bill ID
-    bill_date DATE NOT NULL, -- Date of the bill (set to current date)
-    user_id INT REFERENCES users(user_id) NOT NULL, -- Foreign key to users table
-    order_id INT REFERENCES orders(order_id) NOT NULL, -- Foreign key to orders table
-    user_name VARCHAR(100) NOT NULL, -- Name of the user
+    bill_id SERIAL PRIMARY KEY,
+    bill_date DATE NOT NULL, 
+    user_id INT REFERENCES users(user_id) NOT NULL, 
+    order_id INT REFERENCES orders(order_id) NOT NULL, 
+    user_name VARCHAR(100) NOT NULL,
     order_total_price DECIMAL(10, 2) NOT NULL, -- Total price of the order
     bill_total_price DECIMAL(10, 2) NOT NULL, -- Total price of the bill (after any adjustments)
-    pay_status VARCHAR(20) CHECK (pay_status IN ('paid', 'unpaid')) NOT NULL -- Payment status of the bill
+    pay_status VARCHAR(20) CHECK (pay_status IN ('paid', 'unpaid')) NOT NULL
 );
 
 

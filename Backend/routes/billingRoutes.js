@@ -386,4 +386,28 @@ router.get("/total-paid-amount", async (req, res) => {
   }
 });
 
+// Get order details from bill
+router.get("/order-details", async (req, res) => {
+  try {
+    const query = `
+      SELECT * from orders o, bill_detail b
+      WHERE b.order_id = o.order_id
+    `;
+
+    const result = await pool.query(query);
+
+    res.status(200).json({
+      status: "success",
+      data: result.rows,
+      message: "Order details retrieved successfully",
+    });
+  } catch (error) {
+    console.error("Error fetching order details:", error);
+    res.status(500).json({
+      status: "error",
+      message: "Failed to fetch order details",
+    });
+  }
+});
+
 module.exports = router;

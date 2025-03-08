@@ -115,10 +115,17 @@ export default function Profile() {
     }
   };
 
+  const handleReturnOrder = (billId: number) => {
+    if (userInfo) {
+      router.push(`/order-return?billId=${billId}&userId=${userInfo.user_id}`);
+    }
+  };
+
   const safeToFixed = (
-    value: number | string,
+    value: number | string | null | undefined,
     decimals: number = 2
   ): string => {
+    if (value === null || value === undefined) return "0.00";
     const numValue = typeof value === "string" ? parseFloat(value) : value;
     return isNaN(numValue) ? "0.00" : numValue.toFixed(decimals);
   };
@@ -362,14 +369,25 @@ export default function Profile() {
                               {billing.pay_status}
                             </span>
                           </div>
-                          {billing.pay_status.toLowerCase() === "unpaid" && (
-                            <Button
-                              onClick={() => handlePayment(billing.bill_id)}
-                              className="bg-blue-500 text-white hover:bg-blue-600 rounded-full px-4 py-1"
-                            >
-                              Pay Now
-                            </Button>
-                          )}
+                          <div className="flex gap-2">
+                            {billing.pay_status.toLowerCase() === "unpaid" ? (
+                              <Button
+                                onClick={() => handlePayment(billing.bill_id)}
+                                className="bg-blue-500 text-white hover:bg-blue-600 rounded-full px-4 py-1"
+                              >
+                                Pay Now
+                              </Button>
+                            ) : (
+                              <Button
+                                onClick={() =>
+                                  handleReturnOrder(billing.bill_id)
+                                }
+                                className="bg-orange-500 text-white hover:bg-orange-600 rounded-full px-4 py-1"
+                              >
+                                Return Order
+                              </Button>
+                            )}
+                          </div>
                         </div>
                         <div className="mt-2">
                           <div className="font-semibold text-gray-700">
