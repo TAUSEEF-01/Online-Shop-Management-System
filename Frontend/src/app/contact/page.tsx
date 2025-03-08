@@ -46,6 +46,16 @@ export default function Contact() {
                     >
                       mdtauseef.rahmang01@gmail.com
                     </a>
+                    </p>
+                    <p className="font-medium">
+                    Contact:{" "}
+                    <a
+                      href="mailto:faiazmahmudifti@gmail.com"
+                      className="text-blue-600 hover:underline"
+                    >
+                      faiazmahmudifti@gmail.com
+                    </a>
+                    
                   </p>
                 </div>
               </div>
