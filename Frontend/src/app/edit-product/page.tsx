@@ -287,13 +287,13 @@ const EditProductPage = () => {
               </div>
 
               <div className="flex justify-end gap-4 pt-6 border-t">
-                <Button
+                {/* <Button
                   onClick={handleDeleteProduct}
                   variant="destructive"
                   className="bg-red-500 hover:bg-red-600 transition-colors"
                 >
                   Delete Product
-                </Button>
+                </Button> */}
                 <Button
                   onClick={handleUpdateProduct}
                   className="bg-blue-600 hover:bg-blue-700 transition-colors"

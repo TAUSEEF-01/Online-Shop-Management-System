@@ -18,21 +18,32 @@ export default function WorkersPage() {
   const [workers, setWorkers] = useState<Worker[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchWorkers = async () => {
-      try {
-        setIsLoading(true);
-        const response = await api.getAllWorkers();
-        setWorkers(response); // API directly returns the workers array
-      } catch (error) {
-        console.error("Failed to fetch workers data:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const fetchWorkers = async () => {
+    try {
+      setIsLoading(true);
+      const response = await api.getAllWorkers();
+      setWorkers(response);
+    } catch (error) {
+      console.error("Failed to fetch workers data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchWorkers();
   }, []);
+
+  const handleDeleteWorker = async (workerId: number) => {
+    if (window.confirm("Are you sure you want to delete this worker?")) {
+      try {
+        await api.deleteWorker(workerId);
+        await fetchWorkers(); // Refresh the list
+      } catch (error) {
+        console.error("Failed to delete worker:", error);
+      }
+    }
+  };
 
   return (
     <ProtectedRoute>
@@ -64,6 +75,7 @@ export default function WorkersPage() {
                   <th className="px-4 py-2 text-left">Email</th>
                   <th className="px-4 py-2 text-left">Contact Number</th>
                   <th className="px-4 py-2 text-right">Salary</th>
+                  <th className="px-4 py-2 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -78,6 +90,14 @@ export default function WorkersPage() {
                     <td className="px-4 py-2">{worker.worker_contact_no}</td>
                     <td className="px-4 py-2 text-right font-medium">
                       ${worker.worker_salary.toFixed(2)}
+                    </td>
+                    <td className="px-4 py-2 text-center">
+                      <button
+                        onClick={() => handleDeleteWorker(worker.worker_id)}
+                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm transition-colors"
+                      >
+                        Delete
+                      </button>
                     </td>
                   </tr>
                 ))}

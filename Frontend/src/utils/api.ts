@@ -546,6 +546,14 @@ const api = {
     return handleResponse(response);
   },
 
+  deleteWorker: async (workerId: number) => {
+    const response = await fetch(`${API_BASE_URL}/workers/delete/${workerId}`, {
+      ...defaultOptions,
+      method: "DELETE",
+    });
+    return handleResponse(response);
+  },
+
   createOrderReturn: async (data: OrderReturnData) => {
     const response = await fetch(`${API_BASE_URL}/orders/return`, {
       ...defaultOptions,
