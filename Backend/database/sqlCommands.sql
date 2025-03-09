@@ -585,3 +585,119 @@ where o.order_id = b.order_id;
 SELECT AVG(prod_price) AS avg_price, 
 SUM(prod_price) AS total_price 
 FROM product;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- Create Users Table
+CREATE TABLE IF NOT EXISTS users (
+    user_id SERIAL PRIMARY KEY,
+    user_name VARCHAR(50) NOT NULL,
+    user_email VARCHAR(50) UNIQUE NOT NULL,
+    user_password VARCHAR(255) NOT NULL,
+    user_contact_no VARCHAR(20) NOT NULL,
+    is_admin BOOLEAN NOT NULL
+);
+
+-- Create Worker Table
+CREATE TABLE IF NOT EXISTS worker (
+    worker_id SERIAL PRIMARY KEY,
+    worker_name VARCHAR(50) NOT NULL,
+    worker_email VARCHAR(50) UNIQUE NOT NULL,
+    worker_contact_no VARCHAR(20) NOT NULL,
+    worker_salary DOUBLE PRECISION NOT NULL
+);
+
+-- Create Product Table
+CREATE TABLE IF NOT EXISTS product (
+    prod_id SERIAL PRIMARY KEY,
+    prod_name VARCHAR(255) UNIQUE NOT NULL,
+    prod_image VARCHAR(255) NOT NULL,
+    prod_quantity INTEGER NOT NULL, 
+    prod_price DECIMAL(10,2) NOT NULL,
+    rating_stars INTEGER NOT NULL,
+    rating_count INTEGER NOT NULL,
+    prod_discount DECIMAL(5,2) DEFAULT 0.0,
+    prod_keywords JSONB NOT NULL
+);
+
+-- Create Orders Table
+CREATE TABLE IF NOT EXISTS orders (
+    order_id SERIAL PRIMARY KEY,
+    order_date DATE NOT NULL,
+    user_id INT NOT NULL,
+    delivery_address VARCHAR(50) NOT NULL,
+    total_amt INT NOT NULL,
+    order_status VARCHAR(20) CHECK (order_status IN ('delivered', 'in process')) NOT NULL,
+    CONSTRAINT orders_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE
+); 
+
+-- Create Order Detail Table
+CREATE TABLE IF NOT EXISTS order_detail (
+    order_id INT NOT NULL,
+    prod_id INT NOT NULL,
+    prod_qty INT NOT NULL,
+    prod_price DOUBLE PRECISION NOT NULL,
+    prod_total_price DOUBLE PRECISION NOT NULL,
+    PRIMARY KEY (order_id, prod_id),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (prod_id) REFERENCES product(prod_id) ON DELETE CASCADE
+);
+
+-- Create Bill Detail Table
+CREATE TABLE IF NOT EXISTS bill_detail (
+    bill_id SERIAL PRIMARY KEY,
+    bill_date DATE NOT NULL, 
+    user_id INT NOT NULL, 
+    order_id INT NOT NULL, 
+    user_name VARCHAR(100) NOT NULL,
+    order_total_price DECIMAL(10,2) NOT NULL, 
+    bill_total_price DECIMAL(10,2) NOT NULL, 
+    pay_status VARCHAR(20) CHECK (pay_status IN ('paid', 'unpaid')) NOT NULL,
+    CONSTRAINT bill_detail_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE
+);
+
+-- Create Shopping Cart Table
+CREATE TABLE IF NOT EXISTS shopping_cart (
+    cart_id SERIAL PRIMARY KEY,
+    prod_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (prod_id) REFERENCES product(prod_id) ON DELETE CASCADE,
+    CONSTRAINT shopping_cart_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE
+);
+
+-- Create Order Return Table
+CREATE TABLE IF NOT EXISTS order_return (
+    order_return_id SERIAL PRIMARY KEY,
+    order_id INT NOT NULL,
+    user_id INT NOT NULL,
+    return_date TIMESTAMP NOT NULL,
+    prod_id INT NOT NULL,
+    return_amount DOUBLE PRECISION NOT NULL,
+    CONSTRAINT order_return_user_id_fkey FOREIGN KEY (user_id) REFERENCES users(user_id) ON UPDATE CASCADE,
+    FOREIGN KEY (order_id) REFERENCES orders(order_id) ON DELETE CASCADE,
+    FOREIGN KEY (prod_id) REFERENCES product(prod_id) ON DELETE CASCADE
+);
