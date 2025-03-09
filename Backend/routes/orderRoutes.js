@@ -313,4 +313,40 @@ router.get("/check-return/:orderId", async (req, res) => {
   }
 });
 
+// Add endpoint to get total number of orders
+router.get("/total-orders", async (req, res) => {
+  try {
+    const result = await pool.query(`SELECT COUNT(*) as total FROM orders`);
+    res.status(200).json({
+      status: "success",
+      data: parseInt(result.rows[0].total),
+    });
+  } catch (err) {
+    console.error("Error getting total orders:", err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while getting total orders",
+    });
+  }
+});
+
+// Add endpoint to get total number of returned orders
+router.get("/total-returned-orders", async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT COUNT(DISTINCT order_id) as total FROM order_return`
+    );
+    res.status(200).json({
+      status: "success",
+      data: parseInt(result.rows[0].total),
+    });
+  } catch (err) {
+    console.error("Error getting total returned orders:", err.message);
+    res.status(500).json({
+      status: "error",
+      message: "Server error while getting total returned orders",
+    });
+  }
+});
+
 module.exports = router;

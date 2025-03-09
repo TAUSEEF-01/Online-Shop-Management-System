@@ -593,6 +593,25 @@ const api = {
     return handleResponse(response);
   },
 
+  getTotalOrders: async () => {
+    const response = await fetch(`${API_BASE_URL}/orders/total-orders`, {
+      ...defaultOptions,
+      method: "GET",
+    });
+    return handleResponse(response);
+  },
+
+  getTotalReturnedOrders: async () => {
+    const response = await fetch(
+      `${API_BASE_URL}/orders/total-returned-orders`,
+      {
+        ...defaultOptions,
+        method: "GET",
+      }
+    );
+    return handleResponse(response);
+  },
+
   getProduct,
 };
 
