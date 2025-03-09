@@ -11,12 +11,16 @@ import {
   Flex,
   Metric,
   Badge,
+  AreaChart, // Changed from DonutChart
 } from "@tremor/react";
 import Link from "next/link";
 import ProtectedRoute from "../components/protected-route";
 import AdminLayout from "../components/admin-layout";
 import { api } from "@/utils/api";
 import { Package, Users, PencilRuler, Database } from "lucide-react";
+import dynamic from "next/dynamic";
+import ReactApexChart from "react-apexcharts";
+const ApexChart = dynamic(() => import("react-apexcharts").then((mod) => mod.default), { ssr: false });
 
 interface SaleData {
   date: string;
@@ -31,6 +35,8 @@ export default function AdminDashboard() {
   const [totalProducts, setTotalProducts] = useState<number>(0);
   const [totalSales, setTotalSales] = useState<number>(0);
   const [salesData, setSalesData] = useState<SaleData[]>([]);
+  const [totalOrders, setTotalOrders] = useState<number>(0);
+  const [totalReturnedOrders, setTotalReturnedOrders] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -38,12 +44,19 @@ export default function AdminDashboard() {
       try {
         setIsLoading(true);
 
-        const [productsResponse, salesResponse, dailySalesResponse] =
-          await Promise.all([
-            api.getTotalProducts(),
-            api.getTotalPaidAmount(),
-            api.getDailySales(),
-          ]);
+        const [
+          productsResponse,
+          salesResponse,
+          dailySalesResponse,
+          ordersResponse,
+          returnedOrdersResponse,
+        ] = await Promise.all([
+          api.getTotalProducts(),
+          api.getTotalPaidAmount(),
+          api.getDailySales(),
+          api.getTotalOrders(),
+          api.getTotalReturnedOrders(),
+        ]);
 
         if (productsResponse.status === "success") {
           setTotalProducts(productsResponse.data.total);
@@ -68,6 +81,14 @@ export default function AdminDashboard() {
           console.log("Formatted sales data:", formattedSalesData); // Debug log
           setSalesData(formattedSalesData);
         }
+
+        if (ordersResponse.status === "success") {
+          setTotalOrders(ordersResponse.data);
+        }
+
+        if (returnedOrdersResponse.status === "success") {
+          setTotalReturnedOrders(returnedOrdersResponse.data);
+        }
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
       } finally {
@@ -77,6 +98,57 @@ export default function AdminDashboard() {
 
     fetchData();
   }, []);
+
+  const orderData = [
+    {
+      date: "Regular Orders",
+      "Number of Orders": totalOrders - totalReturnedOrders,
+    },
+    {
+      date: "Returned Orders",
+      "Number of Orders": totalReturnedOrders,
+    },
+  ];
+
+  const chartOptions = {
+    chart: {
+      type: "area" as const,
+      animations: {
+        enabled: true,
+        easing: "easeinout",
+        speed: 800,
+      },
+    },
+    stroke: {
+      curve: "smooth",
+      width: 4,
+    },
+    colors: ["#f97316"], // orange color
+    xaxis: {
+      categories: ["Regular Orders", "Returned Orders"],
+    },
+    fill: {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        opacityFrom: 0.7,
+        opacityTo: 0.9,
+        stops: [0, 90, 100],
+      },
+    },
+    tooltip: {
+      y: {
+        formatter: (val) => `${val} orders`,
+      },
+    },
+  };
+
+  const chartSeries = [
+    {
+      name: "Number of Orders",
+      data: [totalOrders - totalReturnedOrders, totalReturnedOrders],
+    },
+  ];
 
   return (
     <ProtectedRoute>
@@ -263,6 +335,32 @@ export default function AdminDashboard() {
                   <div className="h-[400px] flex items-center justify-center">
                     <p>No sales data available</p>
                   </div>
+                )}
+              </div>
+            </Card>
+
+            <Card className="shadow-xl backdrop-blur-sm bg-white/90 mt-6">
+              <div className="p-6">
+                <Title className="text-xl font-semibold text-gray-800 mb-2">
+                  Orders Analysis
+                </Title>
+                <Text className="text-gray-600 mb-6">
+                  Distribution of regular vs returned orders
+                </Text>
+                {isLoading ? (
+                  <div className="h-[400px] flex items-center justify-center">
+                    <p>Loading chart data...</p>
+                  </div>
+                ) : (
+                  <ApexChart
+                    {...{
+                      options: chartOptions,
+                      series: chartSeries,
+                      type: "area",
+                      height: "100%"
+                    }}
+                    height="100%"
+                  />
                 )}
               </div>
             </Card>
