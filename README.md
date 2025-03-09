@@ -140,3 +140,7 @@ This project is submitted as part of the coursework for **Database Management Sy
 ## 📄 License
 
 This project is part of academic coursework and is subject to university guidelines.
+
+---
+
+## 🛒 Project Video: https://www.youtube.com/watch?v=stafexxyMCA
