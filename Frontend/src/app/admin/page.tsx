@@ -20,12 +20,22 @@ import { api } from "@/utils/api";
 import { Package, Users, PencilRuler, Database } from "lucide-react";
 import dynamic from "next/dynamic";
 import ReactApexChart from "react-apexcharts";
-const ApexChart = dynamic(() => import("react-apexcharts").then((mod) => mod.default), { ssr: false });
+const ApexChart = dynamic(
+  () => import("react-apexcharts").then((mod) => mod.default),
+  { ssr: false }
+);
 
 interface SaleData {
   date: string;
   amount: number;
   items: number;
+}
+
+interface UserOrderCount {
+  user_id: number;
+  user_name: string;
+  user_email: string;
+  order_count: number;
 }
 
 const dataFormatter = (number: number) =>
@@ -38,6 +48,7 @@ export default function AdminDashboard() {
   const [totalOrders, setTotalOrders] = useState<number>(0);
   const [totalReturnedOrders, setTotalReturnedOrders] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
+  const [userOrderData, setUserOrderData] = useState<UserOrderCount[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -88,6 +99,23 @@ export default function AdminDashboard() {
 
         if (returnedOrdersResponse.status === "success") {
           setTotalReturnedOrders(returnedOrdersResponse.data);
+        }
+
+        // Add new query for user order counts
+        const userOrderResponse: QueryResult = await api.executeRawQuery(`
+          SELECT u.user_id, u.user_name, u.user_email, 
+          (SELECT COUNT(*) FROM bill_detail b WHERE b.user_id = u.user_id) AS order_count
+          FROM users u
+          WHERE u.user_id = ANY (
+              SELECT user_id 
+              FROM bill_detail
+              GROUP BY user_id
+              HAVING COUNT(order_id) > 0
+          );
+        `);
+
+        if (userOrderResponse.success) {
+          setUserOrderData(userOrderResponse.data);
         }
       } catch (error) {
         console.error("Failed to fetch dashboard data:", error);
@@ -147,6 +175,59 @@ export default function AdminDashboard() {
     {
       name: "Number of Orders",
       data: [totalOrders - totalReturnedOrders, totalReturnedOrders],
+    },
+  ];
+
+  const userOrderChartOptions = {
+    chart: {
+      type: "bar" as const,
+      height: 400,
+      animations: {
+        enabled: true,
+        easing: "easeinout",
+        speed: 800,
+      },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: "55%",
+      },
+    },
+    dataLabels: {
+      enabled: false,
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ["transparent"],
+    },
+    xaxis: {
+      categories: userOrderData.map((user) => user.user_name),
+      title: {
+        text: "Users",
+      },
+    },
+    yaxis: {
+      title: {
+        text: "Number of Orders",
+      },
+    },
+    fill: {
+      opacity: 1,
+      colors: ["#4f46e5"], // indigo color
+    },
+    tooltip: {
+      y: {
+        formatter: (val: number) => `${val} orders`,
+      },
+    },
+  };
+
+  const userOrderChartSeries = [
+    {
+      name: "Orders",
+      data: userOrderData.map((user) => user.order_count),
     },
   ];
 
@@ -357,10 +438,39 @@ export default function AdminDashboard() {
                       options: chartOptions,
                       series: chartSeries,
                       type: "area",
-                      height: "100%"
+                      height: "100%",
                     }}
                     height="100%"
                   />
+                )}
+              </div>
+            </Card>
+
+            <Card className="shadow-xl backdrop-blur-sm bg-white/90 mt-6">
+              <div className="p-6">
+                <Title className="text-xl font-semibold text-gray-800 mb-2">
+                  User Order Analysis
+                </Title>
+                <Text className="text-gray-600 mb-6">
+                  Number of orders per user
+                </Text>
+                {isLoading ? (
+                  <div className="h-[400px] flex items-center justify-center">
+                    <p>Loading chart data...</p>
+                  </div>
+                ) : userOrderData.length > 0 ? (
+                  <div className="mt-6 h-[400px]">
+                    <ApexChart
+                      options={userOrderChartOptions}
+                      series={userOrderChartSeries}
+                      type="bar"
+                      height="100%"
+                    />
+                  </div>
+                ) : (
+                  <div className="h-[400px] flex items-center justify-center">
+                    <p>No user order data available</p>
+                  </div>
                 )}
               </div>
             </Card>
